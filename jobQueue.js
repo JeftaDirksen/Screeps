@@ -1,5 +1,5 @@
 var f = require('functions');
-if(!Memory.jobQueue) Memory.jobQueue = [];
+if(!Memory.jobQueue) Memory.jobQueue = {};
 
 module.exports = {
 	
@@ -10,12 +10,12 @@ module.exports = {
 			let spawn = Game.spawns[spawnName];
 			if (spawn.energy == spawn.energyCapacity) continue;
 			
-			let job = 'transfer';
+			let type = 'transfer';
 			let target = spawn.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
-			if(!jobExists(job, target)) {
-				createJob(job, target, resourceType, creepType);
+			if(!jobExists(type, target)) {
+				createJob(type, target, resourceType, creepType);
 			}
 		}
 		
@@ -24,28 +24,52 @@ module.exports = {
 		
 	},
 
-}
+	getJob(creepType) {
+		let jobs = _.filter(Memory.jobQueue, {
+			creepType:creepType,
+			assignedTo:''
+		});
+		if(jobs.length > 0) return jobs[0];
+		else return false;
+	},
 
-function getJobId() {
-	for(let i = 0; i < 1024; i++) {
-		if (!Memory.jobQueue[i]) return i;
+	assignJob(job, creep) {
+		creep.memory.job = job.id;
+		Memory.jobQueue[job.id].assignedTo = creep.name;
+	},
+
+	unassignJob(jobId) {
+		Memory.jobQueue[jobId].assignedTo = '';
 	}
+
 }
 
-function jobExists(job, target) {
-	let jobs = _.filter(Memory.jobQueue, {job:job, target:target});
+function generateId() {
+	let chars = 'abcdef0123456789'.split('');
+	let id = '';
+	for(let i = 0; i < 24; i++) {
+		let rnd = Math.floor(Math.random()*chars.length);
+		let char = chars[rnd];
+		id += char;
+	}
+	return id;
+}
+
+function jobExists(type, target) {
+	let jobs = _.filter(Memory.jobQueue, {type:type, target:target});
 	if (jobs.length) return true;
 	else return false;
 }
 
-function createJob(job, target, resourceType, creepType) {
-	let id = getJobId();
-	 Memory.jobQueue[id] = {
-		 job:job,
-		 target:target,
-		 resourceType:resourceType,
-		 creepType:creepType,
-		 assignedTo:'',
+function createJob(type, target, resourceType, creepType) {
+	let id = generateId();
+	Memory.jobQueue[id] = {
+		id:id,
+		type:type,
+		target:target,
+		resourceType:resourceType,
+		creepType:creepType,
+		assignedTo:'',
 	};
 	f.debug('Job created: '+id);
 }
