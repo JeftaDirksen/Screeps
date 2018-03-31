@@ -15,13 +15,24 @@ module.exports = {
 			let target = spawn.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
-			if(!jobExists(type, target)) {
+			if(countJobs(type, target) < 2) {
 				createJob(type, target, resourceType, creepType);
 			}
 		}
 		
 		// Upgrade room controller job
-		
+		for (let roomName in Game.rooms) {
+			let room = Game.rooms[roomName];
+			let rc = room.controller;
+			
+			let type = 'upgradeController';
+			let target = rc.id;
+			let resourceType = RESOURCE_ENERGY;
+			let creepType = 'A';
+			if(countJobs(type, target) < 2) {
+				createJob(type, target, resourceType, creepType);
+			}
+		}
 		
 	},
 
@@ -56,10 +67,9 @@ function generateId() {
 	return id;
 }
 
-function jobExists(type, target) {
+function countJobs(type, target) {
 	let jobs = _.filter(Memory.jobQueue, {type:type, target:target});
-	if (jobs.length) return true;
-	else return false;
+	return jobs.length;
 }
 
 function createJob(type, target, resourceType, creepType) {

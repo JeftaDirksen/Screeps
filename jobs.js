@@ -31,8 +31,31 @@ module.exports = {
 
             break;
 
+            case 'upgradeController':
+                // Task switcher
+                if ( creep.memory.reload && creep.isFull() ) {
+                    creep.memory.reload = false;
+                }
+                else if ( !creep.hasResource(job.resourceType) ) {
+                    creep.memory.reload = true;
+                }
+
+                // Reload
+                if (creep.memory.reload) {
+                    if (job.resourceType == RESOURCE_ENERGY) {
+                        creep.goGetEnergy();
+                    }
+                }
+
+                // Upgrade controller
+                else {
+                    creep.goUpgradeController();
+                }
+
+            break;
+
             default:
-                f.debug('jobs.run: Unknown job.type');
+                f.debug('jobs.run: Unknown job.type: '+job.type);
         }
 
 

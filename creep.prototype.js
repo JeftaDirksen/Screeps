@@ -80,6 +80,13 @@ Creep.prototype.goTransfer = function(structure, resourceType) {
 	}
 }
 
+// goUpgradeController
+Creep.prototype.goUpgradeController = function() {
+	if (this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
+		this.goTo(this.room.controller);
+	}
+}
+
 // goWithdraw
 Creep.prototype.goWithdraw = function(structure, resourceType) {
 	if(this.withdraw(structure, resourceType) == ERR_NOT_IN_RANGE) {
