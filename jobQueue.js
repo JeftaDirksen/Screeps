@@ -1,12 +1,11 @@
 var f = require('functions');
-if(!Memory.jobQueue) Memory.jobQueue = {};
 
 module.exports = {
 	
 	generateJobs() {
 		f.cpu('jobQueue.generateJobs');
 
-		// Spawn supply
+		// Spawn supply job
 		for (let spawnName in Game.spawns) {
 			let spawn = Game.spawns[spawnName];
 			if (spawn.energy == spawn.energyCapacity) continue;
@@ -51,8 +50,18 @@ module.exports = {
 	},
 
 	unassignJob(jobId) {
-		Memory.jobQueue[jobId].assignedTo = '';
-	}
+		if(Memory.jobQueue[jobId]) Memory.jobQueue[jobId].assignedTo = '';
+	},
+
+	removeJob(jobId) {
+		// Unassign job from creep
+		let creepName = _.filter(Memory.creeps,{job:jobId})[0];
+		let creep = Game.creeps[creepName];
+		if(creep) delete creep.memory.job;
+		// Remove job from queue
+		delete Memory.jobQueue[jobId];
+		f.debug('Job removed: '+jobId);
+	},
 
 }
 
@@ -82,5 +91,5 @@ function createJob(type, target, resourceType, creepType) {
 		creepType:creepType,
 		assignedTo:'',
 	};
-	f.debug('Job created: '+id);
+	f.debug('Job created: '+id+' '+type+' '+target);
 }

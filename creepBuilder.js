@@ -1,20 +1,32 @@
+var c = require('config');
 var f = require('functions');
 
 module.exports = {
 	
 	build(spawn) {
 		f.cpu('creepBuilder.build');
-		let type = 'A';
-		let availableEnergy = spawn.room.energyAvailable;
-		if(availableEnergy<200) return;
-		let body = pickBody(type, availableEnergy);
-		if(!body) return;
-		let parts = body.parts;
-		let name = generateName(type);
-		let memory = {memory:{type:type}};
-		let r = spawn.spawnCreep(body.parts, name, memory);
-		f.debug('Spawning creep: '+JSON.stringify(body));
-		if(r) f.error('spawnCreep: '+r);
+		for (let type in c.creepTypeCount) {
+			// Check available energy
+			let availableEnergy = spawn.room.energyAvailable;
+			if(availableEnergy<200) return;
+			// Check if this type is needed
+			let amountToBuild = c.creepTypeCount[type];
+			let currentAmount = _.filter(Memory.creeps,{type:type}).length;
+			if(currentAmount >= amountToBuild) continue;
+			// Pick body and name
+			let body = pickBody(type, availableEnergy);
+
+			if(!body) continue;
+			let parts = body.parts;
+			let name = generateName(type);
+			let memory = {memory:{type:type}};
+			// Spawn creep
+			let r = spawn.spawnCreep(body.parts, name, memory);
+			f.debug('Spawning creep: '+JSON.stringify(body));
+			if(r) f.error('spawnCreep: '+r);
+			else return;
+		}
+
 	},
 	
 }
@@ -22,7 +34,11 @@ module.exports = {
 function pickBody(type, maxCost) {
 	let baseParts = [];
 	if (type == 'A') baseParts = [MOVE,WORK,CARRY];
-	else return false;
+	if (type == 'B') baseParts = [ATTACK,MOVE];
+	if (!baseParts.length) {
+		f.error('creepBuilder.pickBody: Unknown body type');
+		return false;
+	}
 	
 	let body = {};
 	
@@ -33,9 +49,13 @@ function pickBody(type, maxCost) {
 		for (let p = 0; p <= baseParts.length-1; p++) {	// Part
 			for (let r = 1; r <= t; r++) {				// Multiply
 				parts.push(baseParts[p]);
+				if (baseParts[p] == TOUGH) cost += 10;
 				if (baseParts[p] == MOVE) cost += 50;
 				if (baseParts[p] == WORK) cost += 100;
 				if (baseParts[p] == CARRY) cost += 50;
+				if (baseParts[p] == ATTACK) cost += 80;
+				if (baseParts[p] == RANGED_ATTACK) cost += 150;
+				if (baseParts[p] == HEAL) cost += 250;
 			}
 		}
 		if (cost > maxCost) {

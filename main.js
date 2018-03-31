@@ -2,6 +2,7 @@
 var cb = require('creepBuilder');
 var jq = require('jobQueue');
 var f = require('functions');
+var c = require('config');
 
 // Load prototypes
 require('creep.prototype');
@@ -9,6 +10,18 @@ require('roomPosition.prototype');
 
 module.exports.loop = function () {
 	
+	// CPU
+	if (c.cpu && Game.cpu.bucket) {
+		let lastBucket = Memory.lastBucketAmount;
+		let currentBucket = Game.cpu.bucket;
+		Memory.lastBucketAmount = currentBucket;
+		let lastTickUsage = lastBucket - currentBucket;
+		f.cpu('lastTickUsage: '+lastTickUsage);
+	}
+	
+	// Requirements
+	if(!Memory.jobQueue) Memory.jobQueue = {};
+
 	// Clear memory
 	clearMemory();
 	

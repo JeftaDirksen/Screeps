@@ -1,10 +1,16 @@
 var f = require('functions');
+var jq = require('jobQueue');
 
 module.exports = {
 
     run: function (creep) {
         let job = Memory.jobQueue[creep.memory.job];
-        
+        if(!job) {
+            delete creep.memory.job;
+            f.debug('jobs.run: job not found, removed job from creep'+creep.name);
+            return;
+        }
+
         switch (job.type) {
 
             case 'transfer':
@@ -26,7 +32,8 @@ module.exports = {
                 // Transfer
                 else {
                     let structure = Game.getObjectById(job.target);
-                    creep.goTransfer(structure, job.resourceType);
+                    let r = creep.goTransfer(structure, job.resourceType);
+                    if (r == ERR_FULL) jq.removeJob(job.id);
                 }
 
             break;

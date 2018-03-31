@@ -39,17 +39,17 @@ Creep.prototype.goGetEnergy = function() {
 Creep.prototype.goHarvest = function() {
 	var source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 	if (source) {
-		if (this.harvest(source) == ERR_NOT_IN_RANGE) {
-			this.goTo(source);
-		}
+		let r = this.harvest(source);
+		if (r == ERR_NOT_IN_RANGE) this.goTo(source);
+		return r;
 	}
 }
 
 // goPickup
 Creep.prototype.goPickup = function(item) {
-	if(this.pickup(item) == ERR_NOT_IN_RANGE) {
-		this.goTo(item);
-	}
+	let r = this.pickup(item);
+	if(r == ERR_NOT_IN_RANGE) this.goTo(item);
+	return r;
 }
 
 // goTo
@@ -75,23 +75,23 @@ Creep.prototype.goTo = function(target) {
 
 // goTransfer
 Creep.prototype.goTransfer = function(structure, resourceType) {
-	if (this.transfer(structure, resourceType) == ERR_NOT_IN_RANGE) {
-		this.goTo(structure);
-	}
+	let r = this.transfer(structure, resourceType);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(structure);
+	return r;
 }
 
 // goUpgradeController
 Creep.prototype.goUpgradeController = function() {
-	if (this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
-		this.goTo(this.room.controller);
-	}
+	let r = this.upgradeController(this.room.controller);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(this.room.controller);
+	return r;
 }
 
 // goWithdraw
 Creep.prototype.goWithdraw = function(structure, resourceType) {
-	if(this.withdraw(structure, resourceType) == ERR_NOT_IN_RANGE) {
-		this.goTo(structure);
-	}
+	let r = this.withdraw(structure, resourceType);
+	if(r == ERR_NOT_IN_RANGE) this.goTo(structure);
+	return r;
 }
 
 // hasResource
@@ -106,18 +106,14 @@ Creep.prototype.isFull = function () {
 
 // run
 Creep.prototype.run = function() {
+    // Run job
+    if (this.memory.job) jobs.run(this);
 
     // Check job / Get job
-    if (!this.memory.job) {
-        let job = jq.getJob(this.memory.type);
-        if (job) {
-            jq.assignJob(job, this);
-        }
-        else return;
+    else {
+        let newJob = jq.getJob(this.memory.type);
+        if (newJob) jq.assignJob(newJob, this);
+		return;
     }
-
-    // Run job
-    jobs.run(this);
-
 }
 
