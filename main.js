@@ -5,6 +5,7 @@ var f = require('functions');
 
 // Load prototypes
 require('creep.prototype');
+require('roomPosition.prototype');
 
 module.exports.loop = function () {
 	
@@ -12,7 +13,7 @@ module.exports.loop = function () {
 	clearMemory();
 	
 	// Build creeps
-	if(thisTick(25)) cb.build(Game.spawns.Spawn1);
+	if(thisTick(50)) cb.build(Game.spawns.Spawn1);
 	
 	// Generate jobs
 	if(thisTick(1)) jq.generateJobs();
@@ -20,6 +21,7 @@ module.exports.loop = function () {
 	// Run creeps
 	for (let name in Game.creeps) {
 		let creep = Game.creeps[name];
+		if (creep.spawning) continue;
 		creep.run();
 	}
 

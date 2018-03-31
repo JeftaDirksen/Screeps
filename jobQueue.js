@@ -4,7 +4,8 @@ if(!Memory.jobQueue) Memory.jobQueue = {};
 module.exports = {
 	
 	generateJobs() {
-		
+		f.cpu('jobQueue.generateJobs');
+
 		// Spawn supply
 		for (let spawnName in Game.spawns) {
 			let spawn = Game.spawns[spawnName];
