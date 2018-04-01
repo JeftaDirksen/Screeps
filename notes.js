@@ -6,6 +6,9 @@ ToDo:
 + jobs
 + job upgrade controller
 + max creeps per type (config)
-- generate jobs amount (config)
++ generate jobs amount (config)
++ builder job
++ job priority
+- build roads
 
 */

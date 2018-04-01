@@ -7,6 +7,13 @@ Creep.prototype.getFreeCapacity = function() {
 	return this.carryCapacity - _.sum(this.carry);
 }
 
+// goBuild
+Creep.prototype.goBuild = function(site) {
+	let r = this.build(site);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(site);
+	return r;
+}
+
 // goGetEnergy
 Creep.prototype.goGetEnergy = function() {
 	// Get dropped energy in range

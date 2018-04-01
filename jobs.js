@@ -7,7 +7,7 @@ module.exports = {
         let job = Memory.jobQueue[creep.memory.job];
         if(!job) {
             delete creep.memory.job;
-            f.debug('jobs.run: job not found, removed job from creep'+creep.name);
+            f.debug('jobs.run: job not found, removed job from creep '+creep.name);
             return;
         }
 
@@ -35,7 +35,6 @@ module.exports = {
                     let r = creep.goTransfer(structure, job.resourceType);
                     if (r == ERR_FULL) jq.removeJob(job.id);
                 }
-
             break;
 
             case 'upgradeController':
@@ -58,8 +57,30 @@ module.exports = {
                 else {
                     creep.goUpgradeController();
                 }
-
             break;
+
+            case 'build':
+                // Task switcher
+                if ( creep.memory.reload && creep.isFull() ) {
+                    creep.memory.reload = false;
+                }
+                else if ( !creep.hasResource(job.resourceType) ) {
+                    creep.memory.reload = true;
+                }
+
+                // Reload
+                if (creep.memory.reload) {
+                    if (job.resourceType == RESOURCE_ENERGY) {
+                        creep.goGetEnergy();
+                    }
+                }
+
+                // Build
+                else {
+                    creep.goBuild(Game.getObjectById(job.target));
+                }
+            break;
+
 
             default:
                 f.debug('jobs.run: Unknown job.type: '+job.type);
