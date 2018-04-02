@@ -35,8 +35,8 @@ module.exports = {
 			let target = room.controller.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
-			let jobCount = c.jobCount.upgradeController;
-			let jobPrio = c.jobPriority.upgradeController;
+			let jobCount = c.jobCount[type];
+			let jobPrio = c.jobPriority[type];
 			if(countJobs(type, target) < jobCount) {
 				createJob(type, target, resourceType, creepType, jobPrio);
 			}
@@ -49,8 +49,8 @@ module.exports = {
 				let target = site.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
-				let jobCount = c.jobCount.build;
-				let jobPrio = c.jobPriority.build;
+				let jobCount = c.jobCount[type];
+				let jobPrio = c.jobPriority[type];
 				if(countJobs(type, target) < jobCount) {
 					createJob(type, target, resourceType, creepType, jobPrio);
 				}
@@ -70,8 +70,27 @@ module.exports = {
 				let target = structure.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
-				let jobCount = c.jobCount.harvest;
-				let jobPrio = c.jobPriority.harvest;
+				let jobCount = c.jobCount[type];
+				let jobPrio = c.jobPriority[type];
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPrio);
+				}
+			}
+
+			// Repair job
+			structures = room.find(FIND_STRUCTURES,{
+				filter: s => (s.structureType == STRUCTURE_ROAD
+					|| s.structureType == STRUCTURE_CONTAINER)
+					&& s.hits < s.hitsMax
+			});
+			for (let i in structures) {
+				let structure = structures[i];
+				let type = 'repair';
+				let target = structure.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				let jobCount = c.jobCount[type];
+				let jobPrio = c.jobPriority[type];
 				if(countJobs(type, target) < jobCount) {
 					createJob(type, target, resourceType, creepType, jobPrio);
 				}

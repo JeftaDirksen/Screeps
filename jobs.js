@@ -109,6 +109,31 @@ module.exports = {
                 }
             break;
 
+            case 'repair':
+                // Task switcher
+                if ( creep.memory.reload && creep.isFull() ) {
+                    creep.memory.reload = false;
+                }
+                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
+                    creep.memory.reload = true;
+                }
+
+                // Reload
+                if (creep.memory.reload) {
+                    if (job.resourceType == RESOURCE_ENERGY) {
+                        creep.goGetEnergy();
+                    }
+                }
+
+                // Repair
+                else {
+                    let target = Game.getObjectById(job.target);
+                    if(target.hits == target.hitsMax) jq.removeJob(job.id);
+                    let r = creep.goRepair(target);
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
+                }
+            break;
+
             default:
                 f.debug('jobs.run: Unknown job.type: '+job.type);
         }

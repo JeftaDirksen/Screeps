@@ -5,19 +5,21 @@ module.exports = {
 	pathUseMinimumTimesUsed: 10,
 	pathUseRemoveAge: 100,
 	creepTypeCount: {
-		A: 5,
-		B: 0,
+		A: 9,
+		B: 1,
 	},
 	jobCount: {
 		spawnSupply: 1,
 		upgradeController: 3,
 		build: 2,
 		harvest: 2,
+		repair: 1,
 	},
 	jobPriority: {
 		spawnSupply: 1,
 		harvest: 2,
-		build: 3,
+		repair: 3,
+		build: 4,
 		upgradeController: 5,
 	}
 };
