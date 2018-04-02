@@ -39,7 +39,9 @@ module.exports = {
                 else {
                     let structure = Game.getObjectById(job.target);
                     let r = creep.goTransfer(structure, job.resourceType);
+                    f.debug(r);
                     if (r == ERR_FULL) jq.removeJob(job.id);
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
                 }
             break;
 
@@ -111,6 +113,7 @@ module.exports = {
                     let structure = Game.getObjectById(job.target);
                     let r = creep.goTransfer(structure, job.resourceType);
                     if (r == ERR_FULL) jq.removeJob(job.id);
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
                 }
             break;
 
