@@ -93,15 +93,33 @@ module.exports = {
 				}
 			}
 
-			// Link supply job
+			// Link supply job (Supply link which is closest to a container)
 			structures = room.find(FIND_MY_STRUCTURES,{
-				filter: s => s.structureType == STRUCTURE_LINK
-					&& s.energy < s.energyCapacity
+				filter: {structureType: STRUCTURE_LINK}
 			});
+			//f.debug('links: '+JSON.stringify(_.pluck(structures,'id')));
+			var closestDistance = 100;
+			var linkWithClosest = null;
 			for (let i in structures) {
 				let structure = structures[i];
+				//f.debug('link: '+JSON.stringify(structure.id));
+				let pos = structure.pos;
+				let closest = pos.findClosestByRange(FIND_STRUCTURES,{
+					filter: {structureType: STRUCTURE_CONTAINER}
+				});
+				//f.debug('closestContainer: '+JSON.stringify(closest.id));
+				let distance = closest.pos.getRangeTo(structure);
+				//f.debug('distance: '+distance);
+				if (distance < closestDistance) {
+					closestDistance = distance;
+					linkWithClosest = structure;
+				}
+			}
+			if (linkWithClosest &&
+				linkWithClosest.energy < linkWithClosest.energyCapacity
+			) {
 				let type = 'transfer';
-				let target = structure.id;
+				let target = linkWithClosest.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
 				let jobCount = c.jobCount.linkSupply;
