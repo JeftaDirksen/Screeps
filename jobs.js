@@ -73,6 +73,7 @@ module.exports = {
                 }
                 else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
+                    jq.removeJob(job.id);
                 }
 
                 // Reload
