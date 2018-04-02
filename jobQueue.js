@@ -165,9 +165,7 @@ module.exports = {
 	assignJob(job, creep) {
 		creep.memory.job = job.id;
 		Memory.jobQueue[job.id].assignedTo = creep.name;
-		let targetStructureType = Game.getObjectById(job.target).structureType;
-		let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
-		f.debug('Job assigned '+job.type+' '+targetString+' '+creep.name+' '+job.id);
+		f.debug('Job assigned '+job.type+' '+creep.name+' '+job.id);
 	},
 
 	unassignJob(jobId) {
