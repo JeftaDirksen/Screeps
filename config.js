@@ -10,16 +10,14 @@ module.exports = {
 	},
 	jobCount: {
 		spawnSupply: 1,
-		extensionSupply: 1,
 		upgradeController: 3,
 		build: 2,
 		harvest: 2,
 	},
 	jobPriority: {
 		spawnSupply: 1,
-		extensionSupply: 1,
-		upgradeController: 4,
-		build: 3,
 		harvest: 2,
+		build: 3,
+		upgradeController: 5,
 	}
 };

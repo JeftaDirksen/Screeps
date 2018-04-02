@@ -10,39 +10,23 @@ module.exports = {
 		for (let roomName in Game.rooms) {
 			let room = Game.rooms[roomName];
 
-			// Spawn supply job
-			let spawns = room.find(FIND_MY_SPAWNS,{
-				filter: s => s.energy < s.energyCapacity
+			// Spawn/extension supply job
+			let structures = room.find(FIND_MY_STRUCTURES,{
+				filter: s => (
+					s.structureType == STRUCTURE_SPAWN
+					|| s.structureType == STRUCTURE_EXTENSION
+					) && s.energy < s.energyCapacity
 			});
-			for (let i in spawns) {
-				let spawn = spawns[i];
+			for (let i in structures) {
+				let structure = structures[i];
 				let type = 'transfer';
-				let target = spawn.id;
+				let target = structure.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
 				let jobCount = c.jobCount.spawnSupply;
-				let jobPriority = c.jobPriority.spawnSupply;
+				let jobPrio = c.jobPriority.spawnSupply;
 				if(countJobs(type, target) < jobCount) {
-					createJob(type, target, resourceType, creepType, jobPriority);
-				}
-			}
-			
-			// Extension supply job
-			let extensions = room.find(FIND_MY_STRUCTURES,{
-				filter: s =>
-					s.structureType == STRUCTURE_EXTENSION
-					&& s.energy < s.energyCapacity
-			});
-			for (let i in extensions) {
-				let extension = extensions[i];
-				let type = 'transfer';
-				let target = extension.id;
-				let resourceType = RESOURCE_ENERGY;
-				let creepType = 'A';
-				let jobCount = c.jobCount.extensionSupply;
-				let jobPriority = c.jobPriority.extensionSupply;
-				if(countJobs(type, target) < jobCount) {
-					createJob(type, target, resourceType, creepType, jobPriority);
+					createJob(type, target, resourceType, creepType, jobPrio);
 				}
 			}
 			
@@ -52,9 +36,9 @@ module.exports = {
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
 			let jobCount = c.jobCount.upgradeController;
-			let jobPriority = c.jobPriority.upgradeController;
+			let jobPrio = c.jobPriority.upgradeController;
 			if(countJobs(type, target) < jobCount) {
-				createJob(type, target, resourceType, creepType, jobPriority);
+				createJob(type, target, resourceType, creepType, jobPrio);
 			}
 		
 			// Build Construction sites job
@@ -66,14 +50,14 @@ module.exports = {
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
 				let jobCount = c.jobCount.build;
-				let jobPriority = c.jobPriority.build;
+				let jobPrio = c.jobPriority.build;
 				if(countJobs(type, target) < jobCount) {
-					createJob(type, target, resourceType, creepType, jobPriority);
+					createJob(type, target, resourceType, creepType, jobPrio);
 				}
 			}
 
 			// Harvester job
-			let structures = room.find(FIND_STRUCTURES,{
+			structures = room.find(FIND_STRUCTURES,{
 				filter: s => (s.structureType == STRUCTURE_LINK
 					|| s.structureType == STRUCTURE_STORAGE
 					|| s.structureType == STRUCTURE_CONTAINER)
@@ -87,9 +71,9 @@ module.exports = {
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
 				let jobCount = c.jobCount.harvest;
-				let jobPriority = c.jobPriority.harvest;
+				let jobPrio = c.jobPriority.harvest;
 				if(countJobs(type, target) < jobCount) {
-					createJob(type, target, resourceType, creepType, jobPriority);
+					createJob(type, target, resourceType, creepType, jobPrio);
 				}
 			}
 
