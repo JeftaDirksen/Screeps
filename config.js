@@ -5,7 +5,7 @@ module.exports = {
 	pathUseMinimumTimesUsed: 10,
 	pathUseRemoveAge: 100,
 	creepTypeCount: {
-		A: 5,
+		A: 9,
 		B: 1,
 	},
 	jobCount: {
