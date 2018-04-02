@@ -165,13 +165,17 @@ module.exports = {
 	assignJob(job, creep) {
 		creep.memory.job = job.id;
 		Memory.jobQueue[job.id].assignedTo = creep.name;
-		f.debug('Job assigned '+job.type+' '+creep.name+' '+job.id);
+		let targetStructureType = Game.getObjectById(job.target).structureType;
+		let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
+		f.debug('Job assigned '+job.type+' '+targetString+' '+creep.name+' '+job.id);
 	},
 
 	unassignJob(jobId) {
 		if(Memory.jobQueue[jobId]) {
 			let job = Memory.jobQueue[jobId];
-			f.debug('Job unassigned '+job.type+' '+job.assignedTo+' '+job.id);
+			let targetStructureType = Game.getObjectById(job.target).structureType;
+			let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
+			f.debug('Job unassigned '+job.type+' '+targetString+' '+job.assignedTo+' '+job.id);
 			Memory.jobQueue[jobId].assignedTo = '';
 		}
 	},
@@ -187,20 +191,18 @@ module.exports = {
 		}
 		// Remove job from queue
 		delete Memory.jobQueue[jobId];
-		f.debug('Job removed '+job.type+' '+job.assignedTo+' '+jobId);
+		let targetStructureType = Game.getObjectById(job.target).structureType;
+		let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
+		f.debug('Job removed '+job.type+' '+targetString+' '+job.assignedTo+' '+jobId);
 	},
 
 }
 
 function generateId() {
-	let chars = 'abcdef0123456789'.split('');
-	let id = '';
-	for(let i = 0; i < 24; i++) {
-		let rnd = Math.floor(Math.random()*chars.length);
-		let char = chars[rnd];
-		id += char;
+	while (true) {
+		let id = 'j' + getRndInteger(1000,9999);
+		if (!Memory.jobQueue.id) return id;
 	}
-	return id;
 }
 
 function countJobs(type, target) {
@@ -219,5 +221,12 @@ function createJob(type, target, resourceType, creepType, priority = 3) {
 		assignedTo:'',
 		priority:priority,
 	};
-	f.debug('Job created '+type+' '+target+' '+id);
+
+	let targetStructureType = Game.getObjectById(target).structureType;
+	let targetString = targetStructureType+'('+target.substring(0,3)+')';
+	f.debug('Job created '+type+' '+targetString+' '+id);
+}
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
 }

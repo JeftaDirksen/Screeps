@@ -28,7 +28,7 @@ module.exports = function () {
 		let amount = linkMax.energy - linksEnergyBalance;
 		if (amount >= 100) {
 			linkMax.transferEnergy(linkMin, amount);
-			f.debug('Link transfer '+amount+ ' ('+linksEnergyBalance+')');
+			f.debug('Link transfer '+amount+ ' '+linksEnergyBalance);
 		}
 		
 	}
