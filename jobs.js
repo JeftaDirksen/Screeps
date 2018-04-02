@@ -9,7 +9,7 @@ module.exports = {
         // Fix invalid job
         if(!job) {
             delete creep.memory.job;
-            f.debug('jobs.run: job not found, removed job from creep '+creep.name);
+            f.debug('Job not found, removed job from creep '+creep.name);
             return;
         }
 
@@ -43,7 +43,7 @@ module.exports = {
                 }
             break;
 
-            case 'upgradeController':
+            case 'upgrade':
                 // Task switcher
                 if ( creep.memory.reload && creep.isFull() ) {
                     creep.memory.reload = false;
@@ -139,7 +139,8 @@ module.exports = {
             break;
 
             default:
-                f.debug('jobs.run: Unknown job.type: '+job.type);
+                f.debug('Unknown job type '+job.type);
+                jq.removeJob(job.id);
         }
 
 

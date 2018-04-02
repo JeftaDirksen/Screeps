@@ -31,7 +31,7 @@ module.exports = {
 			}
 			
 			// Upgrade room controller job
-			let type = 'upgradeController';
+			let type = 'upgrade';
 			let target = room.controller.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';

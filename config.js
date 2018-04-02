@@ -10,7 +10,7 @@ module.exports = {
 	},
 	jobCount: {
 		spawnSupply: 1,
-		upgradeController: 3,
+		upgrade: 3,
 		build: 2,
 		harvest: 3,
 		repair: 1,
@@ -24,6 +24,6 @@ module.exports = {
 		linkSupply: 3,
 		repair: 3,
 		build: 4,
-		upgradeController: 5,
+		upgrade: 5,
 	}
 };
