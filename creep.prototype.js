@@ -16,7 +16,7 @@ Creep.prototype.goBuild = function(site) {
 }
 
 // goGetEnergy
-Creep.prototype.goGetEnergy = function() {
+Creep.prototype.goGetEnergy = function(includeLink = true) {
 	// Get dropped energy in range
 	let droppedEnergy = this.pos.findClosestByPathInRange(FIND_DROPPED_RESOURCES, 5);
 	if (droppedEnergy) {
@@ -25,16 +25,27 @@ Creep.prototype.goGetEnergy = function() {
 	}
 
 	// Get energy from storage/container/link (with enough energy)
-	var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
-		filter: (s) => (
-			s.structureType == STRUCTURE_STORAGE
-			|| s.structureType == STRUCTURE_CONTAINER
-			|| s.structureType == STRUCTURE_LINK
-		) && (
-			s.energy >= this.getFreeCapacity()
-			|| (s.store && s.store.energy >= this.getFreeCapacity())
-		)
-	});
+	if(includeLink) {
+		var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
+			filter: (s) => (
+				s.structureType == STRUCTURE_STORAGE
+				|| s.structureType == STRUCTURE_CONTAINER
+				|| s.structureType == STRUCTURE_LINK
+			) && (
+				s.energy >= this.getFreeCapacity()
+				|| (s.store && s.store.energy >= this.getFreeCapacity())
+			)
+		});
+	}
+	// Get energy from storage/container (with enough energy)
+	else {
+		var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
+			filter: (s) => (
+				s.structureType == STRUCTURE_STORAGE
+				|| s.structureType == STRUCTURE_CONTAINER
+			) && s.store.energy >= this.getFreeCapacity()
+		});
+	}
 	if (energyStore) this.goWithdraw(energyStore, RESOURCE_ENERGY);
 
 	// Harvest

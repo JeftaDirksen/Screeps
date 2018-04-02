@@ -4,6 +4,8 @@ var jq = require('jobQueue');
 var f = require('functions');
 var c = require('config');
 var roads = require('roads');
+var tower = require('tower');
+var link = require('link');
 
 // Load prototypes
 require('creep.prototype');
@@ -39,6 +41,12 @@ module.exports.loop = function () {
 		if (creep.spawning) continue;
 		creep.run();
 	}
+
+	// Tower
+	tower();
+
+	// Link
+	if(thisTick(8)) link();
 
 	// Build roads
 	if(thisTick(10)) roads.build();

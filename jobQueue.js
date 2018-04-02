@@ -58,11 +58,8 @@ module.exports = {
 
 			// Harvester job
 			structures = room.find(FIND_STRUCTURES,{
-				filter: s => (s.structureType == STRUCTURE_LINK
-					|| s.structureType == STRUCTURE_STORAGE
-					|| s.structureType == STRUCTURE_CONTAINER)
-					&& (s.energy < s.energyCapacity
-					|| _.sum(s.store) < s.storeCapacity)
+				filter: s => s.structureType == STRUCTURE_CONTAINER
+					&& _.sum(s.store) < s.storeCapacity
 			});
 			for (let i in structures) {
 				let structure = structures[i];
@@ -91,6 +88,42 @@ module.exports = {
 				let creepType = 'A';
 				let jobCount = c.jobCount[type];
 				let jobPrio = c.jobPriority[type];
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPrio);
+				}
+			}
+
+			// Link supply job
+			structures = room.find(FIND_MY_STRUCTURES,{
+				filter: s => s.structureType == STRUCTURE_LINK
+					&& s.energy < s.energyCapacity
+			});
+			for (let i in structures) {
+				let structure = structures[i];
+				let type = 'transfer';
+				let target = structure.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				let jobCount = c.jobCount.linkSupply;
+				let jobPrio = c.jobPriority.linkSupply;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPrio);
+				}
+			}
+
+			// Tower supply job
+			structures = room.find(FIND_MY_STRUCTURES,{
+				filter: s => s.structureType == STRUCTURE_TOWER
+					&& s.energy < s.energyCapacity
+			});
+			for (let i in structures) {
+				let structure = structures[i];
+				let type = 'transfer';
+				let target = structure.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				let jobCount = c.jobCount.towerSupply;
+				let jobPrio = c.jobPriority.towerSupply;
 				if(countJobs(type, target) < jobCount) {
 					createJob(type, target, resourceType, creepType, jobPrio);
 				}

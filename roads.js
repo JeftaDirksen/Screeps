@@ -57,7 +57,7 @@ function pullMostUsed (minTimesUsed = 1) {
 	if (index === false) return false;
 	let pathUse = Memory.pathUse.splice(index, 1)[0];
 	let age = Game.time - pathUse.lastUsed;
-	f.debug('Building road: room:'+pathUse.roomName+' x:'+pathUse.x+' y:'+pathUse.y+' timesUsed:'+pathUse.timesUsed+' lastUsedAgo:'+age);
+	f.debug('Road building room:'+pathUse.roomName+' x:'+pathUse.x+' y:'+pathUse.y+' timesUsed:'+pathUse.timesUsed+' lastUsedAgo:'+age);
 	let pos = new RoomPosition(pathUse.x, pathUse.y, pathUse.roomName);
 	return pos;
 }
