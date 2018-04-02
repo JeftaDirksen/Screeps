@@ -6,46 +6,65 @@ module.exports = {
 	generateJobs() {
 		f.cpu('jobQueue.generateJobs');
 
-		// Spawn supply job
-		for (let spawnName in Game.spawns) {
-			let spawn = Game.spawns[spawnName];
-			if (spawn.energy == spawn.energyCapacity) continue;
-			
-			let type = 'transfer';
-			let target = spawn.id;
-			let resourceType = RESOURCE_ENERGY;
-			let creepType = 'A';
-			if(countJobs(type, target) < c.jobCount.spawnSupply) {
-				createJob(type, target, resourceType, creepType, 1);
-			}
-		}
-		
-		// Upgrade room controller job
+		// For every room
 		for (let roomName in Game.rooms) {
 			let room = Game.rooms[roomName];
-			let rc = room.controller;
+
+			// Spawn supply job
+			let spawns = room.find(FIND_MY_SPAWNS,{
+				filter: s => s.energy < s.energyCapacity
+			});
+			for (let i in spawns) {
+				let spawn = spawns[i];
+				let type = 'transfer';
+				let target = spawn.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				if(countJobs(type, target) < c.jobCount.spawnSupply) {
+					createJob(type, target, resourceType, creepType, 1);
+				}
+			}
 			
+			// Extension supply job
+			let extensions = room.find(FIND_MY_STRUCTURES,{
+				filter: s =>
+					s.structureType == STRUCTURE_EXTENSION
+					&& s.energy < s.energyCapacity
+			});
+			for (let i in extensions) {
+				let extension = extensions[i];
+				let type = 'transfer';
+				let target = extension.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				if(countJobs(type, target) < c.jobCount.extensionSupply) {
+					createJob(type, target, resourceType, creepType, 1);
+				}
+			}
+			
+			// Upgrade room controller job
 			let type = 'upgradeController';
-			let target = rc.id;
+			let target = room.controller.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
 			if(countJobs(type, target) < c.jobCount.upgradeController) {
 				createJob(type, target, resourceType, creepType, 4);
 			}
-		}
-	
-		// Build Construction sites job
-		for (let siteId in Game.constructionSites) {
-			let site = Game.constructionSites[siteId];
-			let type = 'build';
-			let target = siteId;
-			let resourceType = RESOURCE_ENERGY;
-			let creepType = 'A';
-			if(countJobs(type, target) < c.jobCount.build) {
-				createJob(type, target, resourceType, creepType);
+		
+			// Build Construction sites job
+			let constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+			for (let i in constructionSites) {
+				let site = constructionSites[i];
+				let type = 'build';
+				let target = site.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				if(countJobs(type, target) < c.jobCount.build) {
+					createJob(type, target, resourceType, creepType);
+				}
 			}
-		}
 
+		}
 	},
 
 	getJob(creepType) {
@@ -54,17 +73,16 @@ module.exports = {
 			creepType:creepType,
 			assignedTo:''
 		});
-		f.debug('unsorted: '+JSON.stringify(jobs));
-		// Sort priority
-		jobs = _.sortBy(jobs, 'priority');
-		f.debug('sorted: '+JSON.stringify(jobs));
-		if(jobs.length > 0) return jobs[0];
-		else return false;
+		if (!jobs.length) return false;
+		// Sort by priority
+		if(jobs.length > 1)	jobs = _.sortBy(jobs, 'priority');
+		return jobs[0];
 	},
 
 	assignJob(job, creep) {
 		creep.memory.job = job.id;
 		Memory.jobQueue[job.id].assignedTo = creep.name;
+		f.debug('Job '+job.id+' assigned to '+creep.name);
 	},
 
 	unassignJob(jobId) {

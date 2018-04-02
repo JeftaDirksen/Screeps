@@ -5,6 +5,8 @@ module.exports = {
 
     run: function (creep) {
         let job = Memory.jobQueue[creep.memory.job];
+
+        // Fix invalid job
         if(!job) {
             delete creep.memory.job;
             f.debug('jobs.run: job not found, removed job from creep '+creep.name);
@@ -80,7 +82,6 @@ module.exports = {
                     creep.goBuild(Game.getObjectById(job.target));
                 }
             break;
-
 
             default:
                 f.debug('jobs.run: Unknown job.type: '+job.type);
