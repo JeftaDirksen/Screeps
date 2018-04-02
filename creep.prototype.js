@@ -53,6 +53,13 @@ Creep.prototype.goHarvest = function() {
 	}
 }
 
+// goHarvestSource
+Creep.prototype.goHarvestSource = function(source) {
+	let r = this.harvest(source);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(source);
+	return r;
+}
+
 // goPickup
 Creep.prototype.goPickup = function(item) {
 	let r = this.pickup(item);

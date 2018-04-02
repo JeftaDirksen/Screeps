@@ -22,7 +22,7 @@ module.exports = {
 			let memory = {memory:{type:type}};
 			// Spawn creep
 			let r = spawn.spawnCreep(body.parts, name, memory);
-			f.debug('Spawning creep '+JSON.stringify(body));
+			f.debug('Creep spawning '+name+' '+JSON.stringify(body));
 			if(r) f.error('spawnCreep: '+r);
 			else return;
 		}

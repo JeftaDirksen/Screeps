@@ -52,6 +52,7 @@ function thisTick(everyThisTicks) {
 function clearMemory() {
 	for (let name in Memory.creeps) {
 		if (Game.creeps[name]) continue;
+		f.debug('Creep died ' + name);
 		
 		// A creep disapeared
 		// Unassing job
@@ -60,6 +61,5 @@ function clearMemory() {
 		// Delete memory
 		delete Memory.creeps[name];
 		// Debug message
-		f.debug('Creep died: ' + name);
 	}
 }

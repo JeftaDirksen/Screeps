@@ -20,8 +20,10 @@ module.exports = {
 				let target = spawn.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
-				if(countJobs(type, target) < c.jobCount.spawnSupply) {
-					createJob(type, target, resourceType, creepType, 1);
+				let jobCount = c.jobCount.spawnSupply;
+				let jobPriority = c.jobPriority.spawnSupply;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPriority);
 				}
 			}
 			
@@ -37,8 +39,10 @@ module.exports = {
 				let target = extension.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
-				if(countJobs(type, target) < c.jobCount.extensionSupply) {
-					createJob(type, target, resourceType, creepType, 1);
+				let jobCount = c.jobCount.extensionSupply;
+				let jobPriority = c.jobPriority.extensionSupply;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPriority);
 				}
 			}
 			
@@ -47,8 +51,10 @@ module.exports = {
 			let target = room.controller.id;
 			let resourceType = RESOURCE_ENERGY;
 			let creepType = 'A';
-			if(countJobs(type, target) < c.jobCount.upgradeController) {
-				createJob(type, target, resourceType, creepType, 4);
+			let jobCount = c.jobCount.upgradeController;
+			let jobPriority = c.jobPriority.upgradeController;
+			if(countJobs(type, target) < jobCount) {
+				createJob(type, target, resourceType, creepType, jobPriority);
 			}
 		
 			// Build Construction sites job
@@ -59,8 +65,26 @@ module.exports = {
 				let target = site.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
-				if(countJobs(type, target) < c.jobCount.build) {
-					createJob(type, target, resourceType, creepType);
+				let jobCount = c.jobCount.build;
+				let jobPriority = c.jobPriority.build;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPriority);
+				}
+			}
+
+			// Harvester job (for every spawn)
+			spawns = room.find(FIND_MY_SPAWNS);
+			for (let i in spawns) {
+				let spawn = spawns[i];
+				let source = spawn.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+				let type = 'harvest';
+				let target = source.id;
+				let resourceType = RESOURCE_ENERGY;
+				let creepType = 'A';
+				let jobCount = c.jobCount.harvest;
+				let jobPriority = c.jobPriority.harvest;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPriority);
 				}
 			}
 
@@ -82,14 +106,20 @@ module.exports = {
 	assignJob(job, creep) {
 		creep.memory.job = job.id;
 		Memory.jobQueue[job.id].assignedTo = creep.name;
-		f.debug('Job '+job.id+' assigned to '+creep.name);
+		f.debug('Job assigned '+job.type+' '+creep.name+' '+job.id);
 	},
 
 	unassignJob(jobId) {
-		if(Memory.jobQueue[jobId]) Memory.jobQueue[jobId].assignedTo = '';
+		if(Memory.jobQueue[jobId]) {
+			let job = Memory.jobQueue[jobId];
+			f.debug('Job unassigned '+job.type+' '+job.assignedTo+' '+job.id);
+			Memory.jobQueue[jobId].assignedTo = '';
+		}
 	},
 
 	removeJob(jobId) {
+		// Get job
+		let job = Memory.jobQueue[jobId];
 		// Unassign job from creep
 		for (let creepName in Memory.creeps) {
 			if (Memory.creeps[creepName].job == jobId) {
@@ -98,7 +128,7 @@ module.exports = {
 		}
 		// Remove job from queue
 		delete Memory.jobQueue[jobId];
-		f.debug('Job removed: '+jobId);
+		f.debug('Job removed '+job.type+' '+job.assignedTo+' '+jobId);
 	},
 
 }
@@ -130,5 +160,5 @@ function createJob(type, target, resourceType, creepType, priority = 3) {
 		assignedTo:'',
 		priority:priority,
 	};
-	f.debug('Job created: '+id+' '+type+' '+target);
+	f.debug('Job created '+type+' '+target+' '+id);
 }
