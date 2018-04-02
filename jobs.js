@@ -39,7 +39,6 @@ module.exports = {
                 else {
                     let structure = Game.getObjectById(job.target);
                     let r = creep.goTransfer(structure, job.resourceType);
-                    f.debug(r);
                     if (r == ERR_FULL) jq.removeJob(job.id);
                     if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
                 }
@@ -52,7 +51,7 @@ module.exports = {
                 }
                 else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
-                    jq.removeJob(job.id);
+                    jq.unassignJob(job.id);
                 }
 
                 // Reload
@@ -75,7 +74,7 @@ module.exports = {
                 }
                 else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
-                    jq.removeJob(job.id);
+                    jq.unassignJob(job.id);
                 }
 
                 // Reload

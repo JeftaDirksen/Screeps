@@ -169,11 +169,16 @@ module.exports = {
 	},
 
 	unassignJob(jobId) {
+		// Unassign job from creep
+		for (let creepName in Memory.creeps) {
+			if (Memory.creeps[creepName].job == jobId) {
+				Memory.creeps[creepName].job = '';
+			}
+		}
+		// Unassign creep from job
 		if(Memory.jobQueue[jobId]) {
 			let job = Memory.jobQueue[jobId];
-			let targetStructureType = Game.getObjectById(job.target).structureType;
-			let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
-			f.debug('Job unassigned '+job.type+' '+targetString+' '+job.assignedTo+' '+job.id);
+			f.debug('Job unassigned '+job.type+' '+job.assignedTo+' '+job.id);
 			Memory.jobQueue[jobId].assignedTo = '';
 		}
 	},
@@ -189,9 +194,7 @@ module.exports = {
 		}
 		// Remove job from queue
 		delete Memory.jobQueue[jobId];
-		let targetStructureType = Game.getObjectById(job.target).structureType;
-		let targetString = targetStructureType+'('+job.target.substring(0,3)+')';
-		f.debug('Job removed '+job.type+' '+targetString+' '+job.assignedTo+' '+jobId);
+		f.debug('Job removed '+job.type+' '+job.assignedTo+' '+jobId);
 	},
 
 }
