@@ -79,7 +79,8 @@ module.exports = {
 
                 // Build
                 else {
-                    creep.goBuild(Game.getObjectById(job.target));
+                    let r = creep.goBuild(Game.getObjectById(job.target));
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
                 }
             break;
 

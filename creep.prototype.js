@@ -1,6 +1,7 @@
 var f = require('functions');
 var jq = require('jobQueue');
 var jobs = require('jobs');
+var roads = require('roads');
 
 // getFreeCapacity
 Creep.prototype.getFreeCapacity = function() {
@@ -67,6 +68,7 @@ Creep.prototype.goTo = function(target) {
 			break;
 		case ERR_TIRED:
 			this.say('.');
+			roads.registerPath(this.pos);
 			break;
 		case ERR_NO_PATH:
 			this.say('?');

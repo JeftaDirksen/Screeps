@@ -3,6 +3,7 @@ var cb = require('creepBuilder');
 var jq = require('jobQueue');
 var f = require('functions');
 var c = require('config');
+var roads = require('roads');
 
 // Load prototypes
 require('creep.prototype');
@@ -21,6 +22,7 @@ module.exports.loop = function () {
 	
 	// Requirements
 	if(!Memory.jobQueue) Memory.jobQueue = {};
+	if (!Memory.pathUse) Memory.pathUse = [];
 
 	// Clear memory
 	clearMemory();
@@ -37,6 +39,9 @@ module.exports.loop = function () {
 		if (creep.spawning) continue;
 		creep.run();
 	}
+
+	// Build roads
+	if(thisTick(10)) roads.build();
 
 }
 
