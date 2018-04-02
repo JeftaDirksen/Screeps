@@ -4,7 +4,6 @@ var f = require('functions');
 module.exports = {
 	
 	generateJobs() {
-		f.cpu('jobQueue.generateJobs');
 
 		// For every room
 		for (let roomName in Game.rooms) {

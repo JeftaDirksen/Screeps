@@ -16,7 +16,9 @@ module.exports.loop = function () {
 	// CPU
 	if (c.cpu && Game.cpu.bucket) {
 		let lastBucket = Memory.lastBucketAmount;
+		f.cpu('lastBucket: '+lastBucket);
 		let currentBucket = Game.cpu.bucket;
+		f.cpu('currentBucket: '+currentBucket);
 		Memory.lastBucketAmount = currentBucket;
 		let lastTickUsage = lastBucket - currentBucket;
 		f.cpu('lastTickUsage: '+lastTickUsage);
