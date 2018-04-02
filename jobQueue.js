@@ -75,21 +75,27 @@ module.exports = {
 			}
 
 			// Repair job
-			structures = room.find(FIND_STRUCTURES,{
-				filter: s => (s.structureType == STRUCTURE_ROAD
-					|| s.structureType == STRUCTURE_CONTAINER)
-					&& s.hits < s.hitsMax
+			var tower = room.find(FIND_MY_STRUCTURES,{
+				filter: {structureType: STRUCTURE_TOWER}
 			});
-			for (let i in structures) {
-				let structure = structures[i];
-				let type = 'repair';
-				let target = structure.id;
-				let resourceType = RESOURCE_ENERGY;
-				let creepType = 'A';
-				let jobCount = c.jobCount[type];
-				let jobPrio = c.jobPriority[type];
-				if(countJobs(type, target) < jobCount) {
-					createJob(type, target, resourceType, creepType, jobPrio);
+			// Only when no tower in room
+			if (!tower.length) {
+				structures = room.find(FIND_STRUCTURES,{
+					filter: s => (s.structureType == STRUCTURE_ROAD
+						|| s.structureType == STRUCTURE_CONTAINER)
+						&& s.hits < s.hitsMax
+				});
+				for (let i in structures) {
+					let structure = structures[i];
+					let type = 'repair';
+					let target = structure.id;
+					let resourceType = RESOURCE_ENERGY;
+					let creepType = 'A';
+					let jobCount = c.jobCount[type];
+					let jobPrio = c.jobPriority[type];
+					if(countJobs(type, target) < jobCount) {
+						createJob(type, target, resourceType, creepType, jobPrio);
+					}
 				}
 			}
 
