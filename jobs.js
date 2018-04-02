@@ -20,7 +20,7 @@ module.exports = {
                 if ( creep.memory.reload && creep.isFull() ) {
                     creep.memory.reload = false;
                 }
-                else if ( !creep.hasResource(job.resourceType) ) {
+                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
                 }
 
@@ -67,7 +67,7 @@ module.exports = {
                 if ( creep.memory.reload && creep.isFull() ) {
                     creep.memory.reload = false;
                 }
-                else if ( !creep.hasResource(job.resourceType) ) {
+                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
                 }
 
@@ -90,32 +90,22 @@ module.exports = {
                 if ( creep.memory.reload && creep.isFull() ) {
                     creep.memory.reload = false;
                 }
-                else if ( !creep.hasResource(job.resourceType) ) {
+                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
                 }
 
-                // Harvest
+                // Reload
                 if (creep.memory.reload) {
-                    let target = Game.getObjectById(job.target);
-                    let r = creep.goHarvestSource(target);
-                    if(r == ERR_NOT_ENOUGH_RESOURCES) jq.removeJob(job.id);
+                    if (job.resourceType == RESOURCE_ENERGY) {
+                        creep.goHarvest();
+                    }
                 }
 
                 // Transfer
                 else {
-                    let pos = creep.pos;
-                    let structure = pos.findClosestByPath(FIND_STRUCTURES,{
-                        filter: s => (s.structureType == STRUCTURE_LINK
-                            || s.structureType == STRUCTURE_STORAGE
-                            || s.structureType == STRUCTURE_CONTAINER)
-                            && (s.energy < s.energyCapacity
-                            || _.sum(s.store) < s.storeCapacity)
-                    });
-                    if(!structure) {
-                        jq.removeJob(job.id);
-                        break;
-                    }
-                    creep.goTransfer(structure, job.resourceType);
+                    let structure = Game.getObjectById(job.target);
+                    let r = creep.goTransfer(structure, job.resourceType);
+                    if (r == ERR_FULL) jq.removeJob(job.id);
                 }
             break;
 

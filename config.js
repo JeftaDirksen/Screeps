@@ -20,6 +20,6 @@ module.exports = {
 		extensionSupply: 1,
 		upgradeController: 4,
 		build: 3,
-		harvest: 3,
+		harvest: 2,
 	}
 };

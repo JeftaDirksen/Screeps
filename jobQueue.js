@@ -72,13 +72,18 @@ module.exports = {
 				}
 			}
 
-			// Harvester job (for every spawn)
-			spawns = room.find(FIND_MY_SPAWNS);
-			for (let i in spawns) {
-				let spawn = spawns[i];
-				let source = spawn.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+			// Harvester job
+			let structures = room.find(FIND_STRUCTURES,{
+				filter: s => (s.structureType == STRUCTURE_LINK
+					|| s.structureType == STRUCTURE_STORAGE
+					|| s.structureType == STRUCTURE_CONTAINER)
+					&& (s.energy < s.energyCapacity
+					|| _.sum(s.store) < s.storeCapacity)
+			});
+			for (let i in structures) {
+				let structure = structures[i];
 				let type = 'harvest';
-				let target = source.id;
+				let target = structure.id;
 				let resourceType = RESOURCE_ENERGY;
 				let creepType = 'A';
 				let jobCount = c.jobCount.harvest;
