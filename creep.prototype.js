@@ -64,6 +64,10 @@ Creep.prototype.goHarvest = function() {
 	}
 }
 
+Creep.prototype.goIdle = function() {
+	this.goTo(Game.flags.Idle);
+}
+
 // goPickup
 Creep.prototype.goPickup = function(item) {
 	let r = this.pickup(item);
@@ -140,7 +144,7 @@ Creep.prototype.run = function() {
     else {
         let newJob = jq.getJob(this.memory.type);
         if (newJob) jq.assignJob(newJob, this);
-		return;
+		else this.goIdle();
     }
 }
 
