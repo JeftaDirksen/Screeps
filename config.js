@@ -8,22 +8,15 @@ module.exports = {
 		A: 9,
 		B: 1,
 	},
-	jobCount: {
-		spawnSupply: 1,
-		upgrade: 3,
-		build: 2,
-		harvest: 3,
-		repair: 1,
-		linkSupply: 1,
-		towerSupply: 1,
+	job: {
+		spawnSupply:		{ count: 1, priority: 1},
+		containerHarvest:	{ count: 3, priority: 2},
+		towerSupply:		{ count: 2, priority: 2},
+		linkSupply:			{ count: 1, priority: 3},
+		repair:				{ count: 1, priority: 3},
+		build:				{ count: 2, priority: 4},
+		storageHarvest:		{ count: 1, priority: 5},
+		upgrade:			{ count: 3, priority: 5},
+
 	},
-	jobPriority: {
-		spawnSupply: 1,
-		harvest: 2,
-		towerSupply: 2,
-		linkSupply: 3,
-		repair: 3,
-		build: 4,
-		upgrade: 5,
-	}
 };
