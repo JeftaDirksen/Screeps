@@ -28,7 +28,7 @@ module.exports = {
                 if (creep.memory.reload) {
                     if (job.resourceType == RESOURCE_ENERGY) {
                         let target = Game.getObjectById(job.target);
-                        if (target && target.structureType == STRUCTURE_LINK) {
+                        if (target !== null && target.structureType == STRUCTURE_LINK) {
                             creep.goGetEnergy(false);
                         }
                         else creep.goGetEnergy();
