@@ -16,13 +16,7 @@ module.exports = {
         switch (job.type) {
 
             case 'transfer':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                }
+                taskSwitcher(creep);
 
                 // Reload
                 if (creep.memory.reload) {
@@ -45,14 +39,7 @@ module.exports = {
             break;
 
             case 'upgrade':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                    jq.unassignJob(job.id);
-                }
+                taskSwitcher(creep, true);
 
                 // Reload
                 if (creep.memory.reload) {
@@ -68,14 +55,7 @@ module.exports = {
             break;
 
             case 'build':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                    jq.unassignJob(job.id);
-                }
+                taskSwitcher(creep, true);
 
                 // Reload
                 if (creep.memory.reload) {
@@ -92,13 +72,7 @@ module.exports = {
             break;
 
             case 'harvest':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                }
+                taskSwitcher(creep);
 
                 // Reload
                 if (creep.memory.reload) {
@@ -117,13 +91,7 @@ module.exports = {
             break;
 
             case 'repair':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                }
+                taskSwitcher(creep);
 
                 // Reload
                 if (creep.memory.reload) {
@@ -142,14 +110,7 @@ module.exports = {
             break;
 
             case 'mineral':
-                // Task switcher
-                if ( creep.memory.reload && creep.isFull() ) {
-                    creep.memory.reload = false;
-                }
-                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
-                    creep.memory.reload = true;
-                    jq.unassignJob(job.id);
-                }
+                taskSwitcher(creep, true);
 
                 // Get mineral
                 if (creep.memory.reload) {
@@ -175,4 +136,16 @@ module.exports = {
 
     },
 
+}
+
+function taskSwitcher(creep, unassignOnReload = false) {
+    let jobId = creep.memory.job;
+    let job = Memory.jobQueue[jobId];
+    if ( creep.memory.reload && creep.isFull() ) {
+        creep.memory.reload = false;
+    }
+    else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
+        creep.memory.reload = true;
+        if(unassignOnReload) jq.unassignJob(jobId);
+    }
 }
