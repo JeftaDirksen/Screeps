@@ -4,6 +4,7 @@ var f = require('functions');
 module.exports = {
 	
 	build(spawn) {
+		if (spawn.spawning) return;
 		f.cpu('creepBuilder.build');
 		for (let type in c.creepTypeCount) {
 			// Check available energy
