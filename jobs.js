@@ -141,6 +141,31 @@ module.exports = {
                 }
             break;
 
+            case 'mineral':
+                // Task switcher
+                if ( creep.memory.reload && creep.isFull() ) {
+                    creep.memory.reload = false;
+                }
+                else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
+                    creep.memory.reload = true;
+                }
+
+                // Get mineral
+                if (creep.memory.reload) {
+                    let mineral = Game.getObjectById(job.target);
+                    let r = creep.goHarvestMineral(mineral);
+                    if (r == ERR_NOT_ENOUGH_RESOURCES) jq.removeJob(job.id);
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
+                }
+
+                // Unload
+                else {
+                    let r = creep.goTransfer(room.storage, job.resourceType);
+                    if (r == ERR_FULL) jq.removeJob(job.id);
+                    if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
+                }
+            break;
+
             default:
                 f.debug('Unknown job type '+job.type);
                 jq.removeJob(job.id);

@@ -170,6 +170,26 @@ module.exports = {
 				}
 			}
 
+			// Mineral harvester job
+			var extractor = room.find(FIND_MY_STRUCTURES, {
+				filter: {structureType: STRUCTURE_EXTRACTOR}
+			})[0];
+			if (extractor &&
+				room.storage &&
+				_.sum(room.storage.store) < room.storage.storeCapacity
+			) {
+				let mineral = extractor.pos.lookFor(LOOK_MINERALS)[0];
+				let type = 'mineral';
+				let target = mineral.id;
+				let resourceType = mineral.mineralType;
+				let creepType = 'A';
+				let jobCount = c.job.mineralHarvest.count;
+				let jobPrio = c.job.mineralHarvest.priority;
+				if(countJobs(type, target) < jobCount) {
+					createJob(type, target, resourceType, creepType, jobPrio);
+				}
+			}
+
 		}
 	},
 

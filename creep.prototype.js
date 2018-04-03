@@ -64,6 +64,13 @@ Creep.prototype.goHarvest = function() {
 	}
 }
 
+// goHarvestMineral
+Creep.prototype.goHarvestMineral = function(mineral) {
+	let r = this.harvest(mineral);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(mineral);
+	return r;
+}
+
 Creep.prototype.goIdle = function() {
 	this.goTo(Game.flags.Idle);
 }
