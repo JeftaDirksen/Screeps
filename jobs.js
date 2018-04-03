@@ -148,6 +148,7 @@ module.exports = {
                 }
                 else if ( !creep.memory.reload && !creep.hasResource(job.resourceType) ) {
                     creep.memory.reload = true;
+                    jq.unassignJob(job.id);
                 }
 
                 // Get mineral
@@ -160,7 +161,7 @@ module.exports = {
 
                 // Unload
                 else {
-                    let r = creep.goTransfer(room.storage, job.resourceType);
+                    let r = creep.goTransfer(creep.room.storage, job.resourceType);
                     if (r == ERR_FULL) jq.removeJob(job.id);
                     if (r == ERR_INVALID_TARGET) jq.removeJob(job.id);
                 }
