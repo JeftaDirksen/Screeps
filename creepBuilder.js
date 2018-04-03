@@ -42,7 +42,7 @@ function pickBody(type, maxCost) {
 	
 	let body = {};
 	
-	for (let t = 1; t <= 10; t++) {			// Increment parts multiplier
+	for (let t = 1; t <= 100; t++) {			// Increment parts multiplier
 		let parts = [];
 		let cost = 0;
 		
