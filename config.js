@@ -16,7 +16,7 @@ module.exports = {
 		repair:				{ count: 1, priority: 3},
 		build:				{ count: 2, priority: 4},
 		storageHarvest:		{ count: 1, priority: 5},
-		mineralHarvest:		{ count: 1, priority: 5},
+		mineralHarvest:		{ count: 1, priority: 5, unassignOnReload: true},
 		upgrade:			{ count: 3, priority: 5},
 	},
 };
