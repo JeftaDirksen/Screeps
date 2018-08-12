@@ -68,8 +68,18 @@ module.exports = {
 				let creepType = 'A';
 				let jobCount = c.job.containerHarvest.count;
 				let jobPrio = c.job.containerHarvest.priority;
-				if(countJobs(type, target) < jobCount) {
+				// Find near non depleted sources
+				let source = structure.pos.findInRange(FIND_SOURCES_ACTIVE,2);
+				if(source.length && countJobs(type, target) < jobCount) {
 					createJob(type, target, resourceType, creepType, jobPrio);
+				}
+				// Remove jobs when no active source
+				else if (!source.length && countJobs(type, target)) {
+					let jobs = getJobsForTarget(type, target);
+					for (let i in jobs) {
+						let job = jobs[i];
+						this.removeJob(job.id);
+					}
 				}
 			}
 
@@ -252,6 +262,11 @@ function generateId() {
 function countJobs(type, target) {
 	let jobs = _.filter(Memory.jobQueue, {type:type, target:target});
 	return jobs.length;
+}
+
+function getJobsForTarget(type, target) {
+	let jobs = _.filter(Memory.jobQueue, {type:type, target:target});
+	return jobs;
 }
 
 function createJob(type, target, resourceType, creepType, priority = 3) {
