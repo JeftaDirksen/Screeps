@@ -282,7 +282,7 @@ function createJob(type, target, resourceType, creepType, priority = 3) {
 	};
 
 	let targetStructureType = Game.getObjectById(target).structureType;
-	let targetString = targetStructureType+'('+target.substring(0,3)+')';
+	let targetString = targetStructureType+'('+target.substring(21)+')';
 	f.debug('Job created '+type+' '+targetString+' '+id);
 }
 
