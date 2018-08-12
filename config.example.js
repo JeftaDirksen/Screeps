@@ -1,11 +1,11 @@
 module.exports = {
 	debug: true,
 	cpu: false,
-	maxConstructionSites: 1,
+	maxConstructionSites: 2,
 	pathUseMinimumTimesUsed: 10,
 	pathUseRemoveAge: 100,
 	creepTypeCount: {
-		A: 9,
+		A: 10,
 		B: 0,
 	},
 	job: {
