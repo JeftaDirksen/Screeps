@@ -144,7 +144,21 @@ Creep.prototype.isFull = function () {
 
 // run
 Creep.prototype.run = function() {
-    // Run job
+    // Renew when needed
+	if(this.memory.renew && this.ticksToLive > 1000) {
+		this.memory.renew = false;
+	}
+	if(this.memory.renew || this.ticksToLive < 50) {
+		this.say('^');
+		f.debug('Creep '+this.name+' needs to renew');
+		this.memory.renew = true;
+		jq.unassignJob(this.memory.job);
+		let spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
+		this.goTo(spawn);
+		return;
+	}
+	
+	// Run job
     if (this.memory.job) jobs.run(this);
 
     // Check job / Get job

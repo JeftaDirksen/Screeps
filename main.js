@@ -6,6 +6,7 @@ var c = require('config');
 var roads = require('roads');
 var tower = require('tower');
 var link = require('link');
+var renew = require('renewCreep');
 
 // Load prototypes
 require('creep.prototype');
@@ -51,6 +52,8 @@ module.exports.loop = function () {
 	// Build roads
 	if(thisTick(10)) roads.build();
 
+	// Renew creeps
+	if(thisTick(1)) renew.renew(Game.spawns.Spawn1);
 }
 
 function thisTick(everyThisTicks) {
