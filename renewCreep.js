@@ -10,8 +10,9 @@ module.exports = {
 		let creeps = spawn.pos.findInRange(FIND_MY_CREEPS,1);
 		if(creeps.length) {
 			let creep = creeps[0];
+			if(creep.ticksToLive >= 1000) return;
 			let error = spawn.renewCreep(creep);
-			if(!error) f.debug('Renewed creep '+creep.name+' ('+creep.ticksToLive+')');
+			if(!error) f.debug('Renewing creep '+creep.name+' ('+creep.ticksToLive+')');
 			else if(error != ERR_FULL) f.error('renewCreep.renew returned: ' + error);
 		}
 	},

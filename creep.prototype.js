@@ -145,7 +145,7 @@ Creep.prototype.isFull = function () {
 // run
 Creep.prototype.run = function() {
     // Renew when needed
-	if(this.memory.renew && this.ticksToLive > 1000) {
+	if(this.memory.renew && this.ticksToLive >= 1000) {
 		this.memory.renew = false;
 	}
 	if(this.memory.renew || this.ticksToLive < 50) {
