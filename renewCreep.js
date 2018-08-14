@@ -12,8 +12,7 @@ module.exports = {
 			let creep = creeps[0];
 			if(creep.ticksToLive >= 1000) return;
 			let error = spawn.renewCreep(creep);
-			if(!error) f.debug('Renewing creep '+creep.name+' ('+creep.ticksToLive+')');
-			else if(error != ERR_FULL) f.error('renewCreep.renew returned: ' + error);
+			if(error && error != ERR_FULL) f.error('renewCreep.renew returned: ' + error);
 		}
 	},
 	
