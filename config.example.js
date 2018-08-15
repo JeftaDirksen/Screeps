@@ -4,8 +4,11 @@ module.exports = {
 	maxConstructionSites: 2,
 	pathUseMinimumTimesUsed: 10,
 	pathUseRemoveAge: 100,
+	renewTimes: 3,
+	renewFrom: 50,
+	renewTo: 1000,
 	creepTypeCount: {
-		A: 10,
+		A: 8,
 		B: 0,
 	},
 	job: {

@@ -1,3 +1,4 @@
+var c = require('config');
 var f = require('functions');
 var jq = require('jobQueue');
 var jobs = require('jobs');
@@ -144,18 +145,21 @@ Creep.prototype.isFull = function () {
 
 // run
 Creep.prototype.run = function() {
-    // Renew when needed
-	if(this.memory.renew && this.ticksToLive >= 1000) {
+    // Stop renew
+	if(this.memory.renew && this.ticksToLive >= c.renewTo) {
 		this.memory.renew = false;
 	}
-	if(this.memory.renew || this.ticksToLive < 50) {
-		this.say('^');
-		if(!this.memory.renew) {
-			f.debug('Creep '+this.name+' needs to renew');
-			this.memory.renewTimes++;
-			this.memory.renew = true;
-		}
+	// Start renew
+	if(!this.memory.renew && this.ticksToLive < c.renewFrom && !(this.memory.renewTimes >= c.renewTimes)) {
+		if(!this.memory.renewTimes) this.memory.renewTimes = 0;
+		this.memory.renewTimes++;
+		f.debug('Creep '+this.name+' needs to renew ('+this.memory.renewTimes+')');
+		this.memory.renew = true;
 		jq.unassignJob(this.memory.job);
+	}
+	// Renew
+	if(this.memory.renew) {
+		this.say('^');
 		let spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
 		this.goTo(spawn);
 		return;
