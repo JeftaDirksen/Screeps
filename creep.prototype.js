@@ -150,8 +150,11 @@ Creep.prototype.run = function() {
 	}
 	if(this.memory.renew || this.ticksToLive < 50) {
 		this.say('^');
-		if(!this.memory.renew) f.debug('Creep '+this.name+' needs to renew');
-		this.memory.renew = true;
+		if(!this.memory.renew) {
+			f.debug('Creep '+this.name+' needs to renew');
+			this.memory.renewTimes++;
+			this.memory.renew = true;
+		}
 		jq.unassignJob(this.memory.job);
 		let spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
 		this.goTo(spawn);
