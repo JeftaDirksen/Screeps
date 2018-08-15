@@ -12,7 +12,7 @@ module.exports = {
 			let creep = creeps[0];
 			if(!creep.memory.renew) return;
 			let error = spawn.renewCreep(creep);
-			if(error && error != ERR_FULL) f.error('renewCreep.renew returned: ' + error);
+			if(error && error != ERR_FULL && error != ERR_NOT_ENOUGH_ENERGY) f.error('renewCreep.renew returned: ' + error);
 		}
 	},
 	
