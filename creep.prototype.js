@@ -16,6 +16,13 @@ Creep.prototype.goBuild = function(site) {
 	return r;
 }
 
+// goClaim
+Creep.prototype.goClaim = function(controller) {
+	let r = this.claimController(controller);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(controller);
+	return r;
+}
+
 // goGetEnergy
 Creep.prototype.goGetEnergy = function(includeLink = true) {
 	// Get dropped energy in range

@@ -128,6 +128,11 @@ module.exports = {
                 }
             break;
 
+			case 'claim':
+				let r = creep.goClaim(job.target);
+				//f.debug('goClaim: '+r);
+			break;
+			
             default:
                 f.debug('Unknown job type '+job.type);
                 jq.removeJob(job.id);

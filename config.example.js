@@ -7,9 +7,11 @@ module.exports = {
 	renewTimes: 3,
 	renewFrom: 50,
 	renewTo: 1000,
+	claimRoomController: '55c34a6b5be41a0a6e80c70f',
 	creepTypeCount: {
 		A: 8,
 		B: 0,
+		C: 0,
 	},
 	job: {
 		spawnSupply:		{ count: 1, priority: 1},
@@ -21,5 +23,6 @@ module.exports = {
 		storageHarvest:		{ count: 1, priority: 5},
 		mineralHarvest:		{ count: 1, priority: 5, unassignOnReload: true},
 		upgrade:			{ count: 3, priority: 5},
+		claim:				{ count: 1, priority: 5},
 	},
 };

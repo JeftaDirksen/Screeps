@@ -36,6 +36,7 @@ function pickBody(type, maxCost) {
 	let baseParts = [];
 	if (type == 'A') baseParts = [MOVE,WORK,CARRY];
 	if (type == 'B') baseParts = [ATTACK,MOVE];
+	if (type == 'C') baseParts = [CLAIM,MOVE];
 	if (!baseParts.length) {
 		f.error('creepBuilder.pickBody: Unknown body type');
 		return false;
@@ -57,6 +58,7 @@ function pickBody(type, maxCost) {
 				if (baseParts[p] == ATTACK) cost += 80;
 				if (baseParts[p] == RANGED_ATTACK) cost += 150;
 				if (baseParts[p] == HEAL) cost += 250;
+				if (baseParts[p] == CLAIM) cost += 600;
 			}
 		}
 		if (cost > maxCost) {

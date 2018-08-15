@@ -199,6 +199,23 @@ module.exports = {
 					createJob(type, target, resourceType, creepType, jobPrio);
 				}
 			}
+			
+			// Claim
+			// Check if claimer creep (Type C) exists
+			let claimers = _.filter(Memory.creeps,{type:'C'}).length;
+			if(claimers) {
+				//if(Game.getObjectById(c.claimRoomController)) {
+					let type = 'claim';
+					let target = c.claimRoomController;
+					let creepType = 'C';
+					let jobCount = c.job.claim.count;
+					let jobPrio = c.job.claim.priority;
+					if(countJobs(type, target) < jobCount) {
+						createJob(type, target, null, creepType, jobPrio);
+					}
+				//}
+			}
+			
 
 		}
 	},
@@ -281,7 +298,9 @@ function createJob(type, target, resourceType, creepType, priority = 3) {
 		priority:priority,
 	};
 
-	let targetStructureType = Game.getObjectById(target).structureType;
+	let targetStructureType = null;
+	if(Game.getObjectById(target)) targetStructureType = Game.getObjectById(target).structureType;
+	else targetStructureType = '?';
 	let targetString = targetStructureType+'('+target.substring(21)+')';
 	f.debug('Job created '+type+' '+targetString+' '+id);
 }
