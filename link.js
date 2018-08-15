@@ -24,9 +24,9 @@ module.exports = function () {
 		let linksEnergyTotal = _.sum(links, function(o){return o.energy;});
 		let linksEnergyBalance = Math.round(linksEnergyTotal / linksCount);
 		
-		// Transfer from max to min, amount: above balance, with minimum of 100
+		// Transfer from max to min, amount: above balance, with minimum of 50
 		let amount = linkMax.energy - linksEnergyBalance;
-		if (amount >= 100) {
+		if (amount >= 50) {
 			linkMax.transferEnergy(linkMin, amount);
 			f.debug('Link transfer '+amount+ ' '+linksEnergyBalance);
 		}
