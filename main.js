@@ -47,7 +47,7 @@ module.exports.loop = function () {
 	tower();
 
 	// Link
-	if(thisTick(8)) link();
+	if(thisTick(4)) link();
 
 	// Build roads
 	if(thisTick(10)) roads.build();
