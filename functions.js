@@ -23,15 +23,7 @@ module.exports = {
 		let msg = tick+warning+message;
 		console.log(msg);
 	},
-	
-	cpu(message) {
-		if(!c.cpu) return;
-		let tick = font('['+Game.time+'] ','Gray');
-		let cpu = font('cpu: ','Plum');
-		let msg = tick+cpu+message;
-		console.log(msg);
-	},
-	
+
 };
 
 function font(string,color) {
