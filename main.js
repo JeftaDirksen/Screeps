@@ -15,7 +15,7 @@ module.exports.loop = function () {
 	for (let name in Game.creeps) {
 		let creep = Game.creeps[name];
 		if (creep.spawning) continue;
-		creep.run();
+		//creep.run();
 	}
 
 }

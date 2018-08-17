@@ -24,6 +24,10 @@ module.exports = {
 		console.log(msg);
 	},
 
+	thisTick(everyThisTicks) {
+		return !(Game.time % everyThisTicks);
+	},
+	
 };
 
 function font(string,color) {
