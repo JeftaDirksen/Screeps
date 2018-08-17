@@ -2,6 +2,10 @@
 var c = require('config');
 var f = require('functions');
 var buildCreeps = require('buildCreeps');
+var role = [];
+for(let roleName in c.creep.role) {
+	role[roleName] = require('role.'+roleName);
+}
 
 module.exports.loop = function () {
 	
@@ -9,13 +13,13 @@ module.exports.loop = function () {
 	clearMemory();
 	
 	// Build creeps
-	if(thisTick(50)) buildCreeps.build(Game.spawns.Spawn1);
+	if(thisTick(50)) buildCreeps(Game.spawns.Spawn1);
 
-	// Run creeps
-	for (let name in Game.creeps) {
-		let creep = Game.creeps[name];
+	// Run creep roles
+	for (let creepName in Game.creeps) {
+		let creep = Game.creeps[creepName];
 		if (creep.spawning) continue;
-		//creep.run();
+		role[creep.memory.role](creep);
 	}
 
 }
