@@ -1,7 +1,12 @@
+// Load prototypes
+require('creep.prototype');
+
 // Load modules
 var c = require('config');
 var f = require('functions');
 var buildCreeps = require('buildCreeps');
+
+// Load roles
 var role = [];
 for(let roleName in c.creep.role) {
 	role[roleName] = require('role.'+roleName);

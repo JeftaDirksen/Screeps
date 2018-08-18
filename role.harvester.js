@@ -3,22 +3,19 @@ var f = require('functions');
 
 module.exports = function (creep) {
 	// Check if empty
-	if(!creep.memory.harvest && !_.sum(creep.carry)) {
+	if(!creep.memory.harvest && creep.isEmpty()) {
 		creep.memory.harvest = true;
 	}
 	// Check if full
-	if(creep.memory.harvest && _.sum(creep.carry) == creep.carryCapacity) {
+	if(creep.memory.harvest && creep.isFull()) {
 		creep.memory.harvest = false;
 	}
 	
 	// Harvest
 	if(creep.memory.harvest) {
 		let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-		if(source) {
-			if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(source);
-			}
-		}
+		if(source) creep.goHarvest();
+		else creep.goIdle();
 	}
 	// Unload
 	else {
@@ -51,7 +48,7 @@ module.exports = function (creep) {
 		// Unload at target
 		if(target) {
 			if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(target);
+				creep.goTo(target);
 			}
 		}
 	}

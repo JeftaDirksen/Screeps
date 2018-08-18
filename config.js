@@ -19,6 +19,10 @@ module.exports = {
 				count: 2,
 				creepType: 'a',
 			},
+			transporter: {
+				count: 2,
+				creepType: 'a',
+			},
 		},
 	},
 };
