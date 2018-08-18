@@ -14,30 +14,18 @@ Creep.prototype.goBuild = function(site) {
 }
 
 // goGetEnergy
-Creep.prototype.goGetEnergy = function(includeLink = true) {
+Creep.prototype.goGetEnergy = function() {
 	// Get energy from storage/container/link (with enough energy)
-	if(includeLink) {
-		var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: (s) => (
-				s.structureType == STRUCTURE_STORAGE
-				|| s.structureType == STRUCTURE_CONTAINER
-				|| s.structureType == STRUCTURE_LINK
-			) && (
-				s.energy >= this.getFreeCapacity()
-				|| (s.store && s.store.energy >= this.getFreeCapacity())
-			)
-		});
-	}
-	// Get energy from storage/container (with enough energy)
-	else {
-		var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: (s) => (
-				s.structureType == STRUCTURE_STORAGE
-				|| s.structureType == STRUCTURE_CONTAINER
-			) && s.store.energy >= this.getFreeCapacity()
-		});
-	}
-	// goWithdraw
+	var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
+		filter: (s) => (
+			s.structureType == STRUCTURE_STORAGE
+			|| s.structureType == STRUCTURE_CONTAINER
+			|| s.structureType == STRUCTURE_LINK
+		) && (
+			s.energy >= this.getFreeCapacity()
+			|| (s.store && s.store.energy >= this.getFreeCapacity())
+		)
+	});
 	if (energyStore) return this.goWithdraw(energyStore, RESOURCE_ENERGY);
 	
 	// Get dropped energy
