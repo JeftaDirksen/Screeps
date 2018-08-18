@@ -16,11 +16,11 @@ module.exports = {
 				count: 7,
 				creepType: 'a',
 			},
-			builder: {
+			transporter: {
 				count: 2,
 				creepType: 'a',
 			},
-			transporter: {
+			builder: {
 				count: 2,
 				creepType: 'a',
 			},
