@@ -23,6 +23,10 @@ module.exports = {
 				count: 2,
 				creepType: 'a',
 			},
+			upgrader: {
+				count: 1,
+				creepType: 'a',
+			},
 		},
 	},
 };
