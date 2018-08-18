@@ -21,11 +21,17 @@ module.exports = function (creep) {
 	else {
 		let target = null;
 		
-		// Find container
+		// Find container/link
 		if(!target) {
 			let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: s => s.structureType == STRUCTURE_CONTAINER
-					&& _.sum(s.store) < s.storeCapacity
+				filter: s => (
+					s.structureType == STRUCTURE_CONTAINER
+					|| s.structureType == STRUCTURE_LINK
+				)
+				&& (
+					(s.store && _.sum(s.store) < s.storeCapacity)
+					|| s.energy < s.energyCapacity
+				)
 			});
 			if(container) target = container;
 		}

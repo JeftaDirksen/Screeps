@@ -5,6 +5,8 @@ require('creep.prototype');
 var c = require('config');
 var f = require('functions');
 var buildCreeps = require('buildCreeps');
+var tower = require('tower');
+var link = require('link');
 
 // Load roles
 var role = [];
@@ -26,6 +28,12 @@ module.exports.loop = function () {
 		if (creep.spawning) continue;
 		role[creep.memory.role](creep);
 	}
+	
+	// Tower
+	tower();
+
+	// Link
+	if(thisTick(4)) link();
 
 }
 

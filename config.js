@@ -3,8 +3,9 @@ module.exports = {
 	creep: {
 		type: {
 			a: [
-				{cost: 250, body: [MOVE, MOVE, CARRY, WORK]},
-				{cost: 500, body: [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK]},
+				{cost:  250, body: [MOVE, MOVE, CARRY, WORK]},
+				{cost:  500, body: [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK]},
+				{cost: 1000, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK]},
 			],
 			b: [
 				{cost: 260, body: [MOVE, MOVE, ATTACK, ATTACK]},
@@ -12,7 +13,7 @@ module.exports = {
 		},
 		role: {
 			harvester: {
-				count: 4,
+				count: 7,
 				creepType: 'a',
 			},
 			builder: {

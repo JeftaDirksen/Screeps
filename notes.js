@@ -7,7 +7,10 @@ x buildCreeps
   x harvester
   x builder
   x transporter
-  - upgrader
+  x upgrader
+  x tower
+  x link
+  
 
 
 */
