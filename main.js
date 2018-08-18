@@ -33,7 +33,7 @@ module.exports.loop = function () {
 	tower();
 
 	// Link
-	if(thisTick(5)) link();
+	link();
 
 }
 
