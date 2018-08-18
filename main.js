@@ -20,7 +20,7 @@ module.exports.loop = function () {
 	clearMemory();
 	
 	// Build creeps
-	if(thisTick(50)) buildCreeps(Game.spawns.Spawn1);
+	if(thisTick(10)) buildCreeps(Game.spawns.Spawn1);
 
 	// Run creep roles
 	for (let creepName in Game.creeps) {
