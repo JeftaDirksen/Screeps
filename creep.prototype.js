@@ -17,9 +17,13 @@ Creep.prototype.goBuild = function(site) {
 Creep.prototype.goGetEnergy = function() {
 	// Get energy from storage/container/link (with enough energy)
 	let structures = this.room.find(FIND_STRUCTURES, {
-		filter: s => s.structureType == STRUCTURE_STORAGE
+		filter: s => (
+			s.structureType == STRUCTURE_STORAGE
 			|| s.structureType == STRUCTURE_CONTAINER
 			|| s.structureType == STRUCTURE_LINK
+		) && (
+			s.energy || (s.store && s.store.energy)
+		)
 	});
 	
 	// Get dropped energy
