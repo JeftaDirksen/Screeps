@@ -1,5 +1,5 @@
 module.exports = {
-	debug: true,
+	debug: false,
 	creep: {
 		type: {
 			a: [
@@ -8,7 +8,10 @@ module.exports = {
 				{cost: 1000, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK]},
 			],
 			b: [
-				{cost: 260, body: [MOVE, MOVE, ATTACK, ATTACK]},
+				{cost:  200, body: [MOVE, MOVE, CARRY, CARRY]},
+				{cost:  400, body: [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY]},
+				{cost:  800, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]},
+				{cost: 1600, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]},
 			],
 		},
 		role: {
@@ -18,7 +21,7 @@ module.exports = {
 			},
 			transporter: {
 				count: 2,
-				creepType: 'a',
+				creepType: 'b',
 			},
 			builder: {
 				count: 2,
