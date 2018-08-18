@@ -31,7 +31,6 @@ Creep.prototype.goGetEnergy = function() {
 	let dropped = this.room.find(FIND_DROPPED_RESOURCES, {
 		filter: (e) => (
 			e.resourceType == RESOURCE_ENERGY
-			&& e.amount >= this.getFreeCapacity()
 		)
 	});
 
