@@ -5,6 +5,7 @@ module.exports = function(spawn) {
 	if (spawn.spawning) return;
 	let energyCapacity = spawn.room.energyCapacityAvailable;
 	if(!_.filter(Memory.creeps,{role:'harvester'}).length) energyCapacity = 300;
+	if(!_.filter(Memory.creeps,{role:'transporter'}).length) energyCapacity = 300;
 	let energyAvailable = spawn.room.energyAvailable;
 	if(energyAvailable < energyCapacity) return;
 	
