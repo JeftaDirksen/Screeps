@@ -2,8 +2,10 @@
 
 ToDo:
 x Strip everything
-- buildCreeps
+x buildCreeps
 - creepRoles
+  x harvester
+  - builder
 
 
 */
