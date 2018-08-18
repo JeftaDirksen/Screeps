@@ -15,6 +15,10 @@ module.exports = {
 				count: 3,
 				creepType: 'a',
 			},
+			builder: {
+				count: 2,
+				creepType: 'a',
+			},
 		},
 	},
 };

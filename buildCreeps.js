@@ -17,13 +17,12 @@ module.exports = function(spawn) {
 		// Get body
 		let body = getBody(role.creepType, energyCapacity);
 		if(!body) continue;
-		f.debug('body: '+JSON.stringify(body));
 		let name = generateName(roleName);
 		let memory = {memory:{role:roleName}};
 		// Build creep
 		let r = spawn.spawnCreep(body, name, memory);
-		f.debug('Creep spawning '+name+' '+JSON.stringify(body));
-		if(r) f.error('spawnCreep: '+r);
+		f.debug('Creep spawning '+name);
+		if(r) f.error('spawn.spawnCreep '+r);
 		else return;
 	}
 }

@@ -5,7 +5,8 @@ x Strip everything
 x buildCreeps
 - creepRoles
   x harvester
-  - builder
+  x builder
+  - transporter
 
 
 */
