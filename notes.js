@@ -11,5 +11,6 @@ x creepRoles
   - claimer
 x tower
 x link
+x goGetEnergy always get nearest
 
 */

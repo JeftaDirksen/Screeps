@@ -17,28 +17,28 @@ Creep.prototype.goBuild = function(site) {
 Creep.prototype.goGetEnergy = function() {
 	// Get energy from storage/container/link (with enough energy)
 	let structures = this.room.find(FIND_STRUCTURES, {
-		filter: (s) => ((
-			s.structureType == STRUCTURE_STORAGE
+		filter: s => s.structureType == STRUCTURE_STORAGE
 			|| s.structureType == STRUCTURE_CONTAINER
 			|| s.structureType == STRUCTURE_LINK
-		) && (
-			s.energy >= this.getFreeCapacity()
-			|| (s.store && s.store.energy >= this.getFreeCapacity())
-		))
 	});
 	
 	// Get dropped energy
 	let dropped = this.room.find(FIND_DROPPED_RESOURCES, {
-		filter: (e) => (
-			e.resourceType == RESOURCE_ENERGY
-		)
+		filter: e => e.resourceType == RESOURCE_ENERGY
 	});
 
+	// Get tombstone energy
+	let tombstone = this.room.find(FIND_TOMBSTONES, {
+		filter: t => t.store.energy
+	});
+	
 	// Combine/Get closest
-	let energy = structures.concat(dropped);
+	let energy = structures.concat(dropped).concat(tombstone);
 	energy = this.pos.findClosestByPath(energy);
-	if(energy && energy.structureType) return this.goWithdraw(energy, RESOURCE_ENERGY);
-	if(energy && energy.resourceType) return this.goPickup(energy);
+	if(energy && (energy instanceof Structure || energy instanceof Tombstone))
+		return this.goWithdraw(energy, RESOURCE_ENERGY);
+	if(energy && energy instanceof Resource)
+		return this.goPickup(energy);
 	
 	// goIdle
 	this.goIdle();
