@@ -12,7 +12,7 @@ module.exports = {
 		},
 		role: {
 			harvester: {
-				count: 3,
+				count: 4,
 				creepType: 'a',
 			},
 			builder: {
