@@ -29,7 +29,7 @@ module.exports = function (creep) {
 					|| s.structureType == STRUCTURE_LINK
 				)
 				&& (
-					(s.store && _.sum(s.store) < s.storeCapacity)
+					_.sum(s.store) < s.storeCapacity
 					|| s.energy < s.energyCapacity
 				)
 			});
@@ -43,7 +43,10 @@ module.exports = function (creep) {
 					s.structureType == STRUCTURE_SPAWN
 					|| s.structureType == STRUCTURE_EXTENSION
 					|| s.structureType == STRUCTURE_STORAGE
-					) && s.energy < s.energyCapacity
+					) && (
+						s.energy < s.energyCapacity
+						|| _.sum(s.store) < s.storeCapacity
+					)
 			});		
 			if(other) target = other;
 		}
