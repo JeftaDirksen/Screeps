@@ -16,32 +16,30 @@ Creep.prototype.goBuild = function(site) {
 // goGetEnergy
 Creep.prototype.goGetEnergy = function() {
 	// Get energy from storage/container/link (with enough energy)
-	var energyStore = this.pos.findClosestByPath(FIND_STRUCTURES, {
-		filter: (s) => (
+	let structures = this.room.find(FIND_STRUCTURES, {
+		filter: (s) => ((
 			s.structureType == STRUCTURE_STORAGE
 			|| s.structureType == STRUCTURE_CONTAINER
 			|| s.structureType == STRUCTURE_LINK
 		) && (
 			s.energy >= this.getFreeCapacity()
 			|| (s.store && s.store.energy >= this.getFreeCapacity())
-		)
+		))
 	});
-	if (energyStore) return this.goWithdraw(energyStore, RESOURCE_ENERGY);
 	
 	// Get dropped energy
-	let droppedEnergy = this.room.find(FIND_DROPPED_RESOURCES, {
-		filter: {resourceType: RESOURCE_ENERGY}
-	}).length;
-	if (droppedEnergy) {
-		let droppedEnergy = this.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-			filter: {resourceType: RESOURCE_ENERGY}
-		});
-		if(droppedEnergy) {
-			let r = this.pickup(droppedEnergy);
-			if (r == ERR_NOT_IN_RANGE) this.goTo(droppedEnergy);
-			return;
-		}
-	}
+	let dropped = this.room.find(FIND_DROPPED_RESOURCES, {
+		filter: (e) => (
+			e.resourceType == RESOURCE_ENERGY
+			&& e.amount >= this.getFreeCapacity()
+		)
+	});
+
+	// Combine/Get closest
+	let energy = structures.concat(dropped);
+	energy = this.pos.findClosestByPath(energy);
+	if(energy && energy.structureType) return this.goWithdraw(energy, RESOURCE_ENERGY);
+	if(energy && energy.resourceType) return this.goPickup(energy);
 	
 	// goIdle
 	this.goIdle();
@@ -60,6 +58,13 @@ Creep.prototype.goHarvest = function() {
 // goIdle
 Creep.prototype.goIdle = function() {
 	this.goTo(this.room.controller);
+}
+
+// goPickup
+Creep.prototype.goPickup = function(target) {
+	let r = this.pickup(target);
+	if(r == ERR_NOT_IN_RANGE) this.goTo(target);
+	return r;
 }
 
 // goTo
