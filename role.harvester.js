@@ -27,22 +27,19 @@ module.exports = function (creep) {
 				filter: s => s.structureType == STRUCTURE_CONTAINER
 					&& _.sum(s.store) < s.storeCapacity
 			});
-			if (container) target = container;
+			if(container) target = container;
 		}
 		
 		// Find other (spawn/extensions/storage)
-		let other = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-			filter: s => (
-				s.structureType == STRUCTURE_SPAWN
-				|| s.structureType == STRUCTURE_EXTENSION
-				|| s.structureType == STRUCTURE_STORAGE
-				) && s.energy < s.energyCapacity
-		});		
-		if (other) target = other;
-		
-		// Upgrade
 		if(!target) {
-			target = creep.room.controller;
+			let other = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+				filter: s => (
+					s.structureType == STRUCTURE_SPAWN
+					|| s.structureType == STRUCTURE_EXTENSION
+					|| s.structureType == STRUCTURE_STORAGE
+					) && s.energy < s.energyCapacity
+			});		
+			if(other) target = other;
 		}
 		
 		// Unload at target
@@ -51,5 +48,8 @@ module.exports = function (creep) {
 				creep.goTo(target);
 			}
 		}
+		
+		// Drop
+		else creep.drop(RESOURCE_ENERGY);
 	}
 }

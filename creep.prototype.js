@@ -37,8 +37,22 @@ Creep.prototype.goGetEnergy = function(includeLink = true) {
 			) && s.store.energy >= this.getFreeCapacity()
 		});
 	}
+	// goWithdraw
 	if (energyStore) this.goWithdraw(energyStore, RESOURCE_ENERGY);
-	else this.goIdle();
+
+	// Get dropped energy
+	else {
+		let droppedEnergy = this.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+			filter: {resourceType: RESOURCE_ENERGY}
+		});
+		if(droppedEnergy) {
+			let r = this.pickup(droppedEnergy);
+			if (r == ERR_NOT_IN_RANGE) this.goTo(droppedEnergy);
+		}
+		
+		// goIdle
+		else this.goIdle();
+	}
 }
 
 // goHarvest
