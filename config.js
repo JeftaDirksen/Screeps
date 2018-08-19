@@ -25,11 +25,11 @@ module.exports = {
 				creepType: 'c',
 			},
 			harvester: {
-				count: 5,
+				count: 1,
 				creepType: 'a',
 			},
 			transporter: {
-				count: 2,
+				count: 1,
 				creepType: 'b',
 			},
 			builder: {

@@ -4,7 +4,19 @@ var f = require('functions');
 module.exports = function() {
 	for (let spawnName in Game.spawns) {
 		let spawn = Game.spawns[spawnName];
+		
+		// Check if spawn memory is set
+		for(let roleName in c.creep.role) {
+			if(!(spawn.memory[roleName+'s'] >= 0)) {
+				f.debug(spawnName+' set memory '+roleName+'s');
+				spawn.memory[roleName+'s'] = c.creep.role[roleName].count;
+			}
+		}
+		
+		// Check if spawn already spawning
 		if (spawn.spawning) return;
+		
+		// Get energy stats
 		let energyCapacity = spawn.room.energyCapacityAvailable;
 		if(!_.filter(Memory.creeps,{role:'harvester'}).length) energyCapacity = 300;
 		if(!_.filter(Memory.creeps,{role:'transporter'}).length) energyCapacity = 300;
@@ -17,7 +29,7 @@ module.exports = function() {
 			let currentCount = spawn.room.find(FIND_MY_CREEPS,{
 				filter: c => c.memory.role == roleName
 			}).length;
-			let toBuildCount = role.count;
+			let toBuildCount = spawn.memory[roleName+'s'];
 			if(currentCount >= toBuildCount) continue;
 			// Claimer only when claim is set
 			if(roleName == 'claimer' && !spawn.memory.claim) continue;

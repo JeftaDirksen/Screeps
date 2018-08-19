@@ -14,6 +14,6 @@ x link
 x goGetEnergy always get nearest
 x Creep count should be per room
 x Claimer should be build by spawn.memory.claim
-- Creeps number-to-build to spawn memory
+x Creeps number-to-build to spawn memory
 
 */
