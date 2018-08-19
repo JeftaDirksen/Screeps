@@ -14,6 +14,9 @@ module.exports = {
 				{cost:  800, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]},
 				{cost: 1600, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]},
 			],
+			c: [
+				{cost:  650, body: [MOVE, CLAIM]},
+			],
 		},
 		role: {
 			harvester: {
@@ -31,6 +34,10 @@ module.exports = {
 			upgrader: {
 				count: 1,
 				creepType: 'a',
+			},
+			claimer: {
+				count: 1,
+				creepType: 'c',
 			},
 		},
 	},
