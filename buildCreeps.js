@@ -19,16 +19,24 @@ module.exports = function() {
 			}).length;
 			let toBuildCount = role.count;
 			if(currentCount >= toBuildCount) continue;
+			// Claimer only when claim is set
+			if(roleName == 'claimer' && !spawn.memory.claim) continue;
 			// Get body
 			let body = getBody(role.creepType, energyCapacity);
 			if(!body) continue;
 			let name = generateName(roleName);
 			let memory = {memory:{role:roleName}};
+			// Claimer memory.target
+			if(roleName == 'claimer') memory = {memory:{role:roleName, target:spawn.memory.claim}};
 			// Build creep
 			let r = spawn.spawnCreep(body, name, memory);
-			f.debug('Creep spawning '+name);
 			if(r) f.error('spawn.spawnCreep '+r);
-			else return;
+			else {
+				// Claimer reset spawn memory
+				if(roleName == 'claimer') spawn.memory.claim = null;
+				f.debug('Creep spawning '+name);
+				return;
+			}
 		}
 	}
 }

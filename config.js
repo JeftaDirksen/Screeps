@@ -20,6 +20,10 @@ module.exports = {
 			],
 		},
 		role: {
+			claimer: {
+				count: 1,
+				creepType: 'c',
+			},
 			harvester: {
 				count: 7,
 				creepType: 'a',
@@ -35,10 +39,6 @@ module.exports = {
 			upgrader: {
 				count: 1,
 				creepType: 'a',
-			},
-			claimer: {
-				count: 0,
-				creepType: 'c',
 			},
 		},
 	},
