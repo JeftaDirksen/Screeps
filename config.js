@@ -1,7 +1,7 @@
 module.exports = {
 	debug: true,
 	sign: '',
-	wallRepair: 'slow',
+	wallRepair: 'medium',
 	creep: {
 		type: {
 			a: [
@@ -29,7 +29,7 @@ module.exports = {
 				creepType: 'b',
 			},
 			builder: {
-				count: 2,
+				count: 1,
 				creepType: 'a',
 			},
 			upgrader: {
@@ -37,7 +37,7 @@ module.exports = {
 				creepType: 'a',
 			},
 			claimer: {
-				count: 1,
+				count: 0,
 				creepType: 'c',
 			},
 		},

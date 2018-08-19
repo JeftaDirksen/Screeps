@@ -19,8 +19,6 @@ module.exports = function() {
 			}).length;
 			let toBuildCount = role.count;
 			if(currentCount >= toBuildCount) continue;
-			// Builder only when there is a construction site
-			if(roleName == 'builder' && !spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length) continue;
 			// Get body
 			let body = getBody(role.creepType, energyCapacity);
 			if(!body) continue;

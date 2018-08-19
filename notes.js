@@ -13,5 +13,6 @@ x tower
 x link
 x goGetEnergy always get nearest
 x Creep count should be per room
+- Claimer should be build by spawn.memory.claim
 
 */
