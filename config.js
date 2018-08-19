@@ -25,7 +25,7 @@ module.exports = {
 				creepType: 'c',
 			},
 			harvester: {
-				count: 7,
+				count: 5,
 				creepType: 'a',
 			},
 			transporter: {

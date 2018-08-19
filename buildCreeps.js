@@ -34,7 +34,7 @@ module.exports = function() {
 			else {
 				// Claimer reset spawn memory
 				if(roleName == 'claimer') spawn.memory.claim = null;
-				f.debug('Creep spawning '+name);
+				f.debug(spawnName+' spawning creep '+name);
 				return;
 			}
 		}

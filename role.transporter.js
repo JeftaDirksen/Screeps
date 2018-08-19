@@ -2,6 +2,11 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function (creep) {
+	// Room switch
+	if(creep.memory.target && creep.memory.target != creep.room.name) {
+		return creep.goTo(Game.rooms[creep.memory.target].controller);
+	}
+	
 	// Check if empty
 	if(creep.memory.transport && creep.isEmpty()) {
 		creep.memory.transport = false;
