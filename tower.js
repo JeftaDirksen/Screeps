@@ -32,8 +32,8 @@ module.exports = function () {
 				else {
 					// Repair
 					let speed = 15;
-					if(c.wallRepair == 'medium') speed = 10;
-					else if(c.wallRepair == 'fast') speed = 5;
+					if(c.wallRepair == 'medium') speed = 8;
+					else if(c.wallRepair == 'fast') speed = 1;
 					
 					let target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: s => {
@@ -47,7 +47,7 @@ module.exports = function () {
 					}
 					
 					else if (!(Game.time % speed)) {
-						// Slow repair Rampart/Wall
+						// Repair Rampart/Wall
 						let targets = tower.room.find(FIND_STRUCTURES, {
 							filter: s => {
 								return (
