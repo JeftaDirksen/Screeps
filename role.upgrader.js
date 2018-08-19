@@ -2,6 +2,17 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function (creep) {
+	// Room switch
+	if(creep.memory.target) {
+		if (creep.room.name != creep.memory.target) {
+			// Move to target room
+			let exit = creep.room.findExitTo(creep.memory.target);
+			let r = creep.goTo(creep.pos.findClosestByRange(exit));
+			return;
+		}
+		else creep.memory.target = null;
+	}
+
 	// Check if empty
 	if(creep.memory.upgrade && creep.isEmpty()) {
 		creep.memory.upgrade = false;
