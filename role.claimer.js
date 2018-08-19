@@ -14,7 +14,7 @@ module.exports = function (creep) {
 	else {
 		let r = creep.claimController(creep.room.controller);
 		if(r == ERR_NOT_IN_RANGE) creep.goTo(creep.room.controller);
-		else if(!r) creep.memory.target = null;
+		else if(!r || r == ERR_INVALID_TARGET) creep.memory.target = null;
 		else f.debug('creep.claimController '+r);
 	}
 	
