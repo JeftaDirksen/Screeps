@@ -1,32 +1,35 @@
 var c = require('config');
 var f = require('functions');
 
-module.exports = function(spawn) {
-	if (spawn.spawning) return;
-	let energyCapacity = spawn.room.energyCapacityAvailable;
-	if(!_.filter(Memory.creeps,{role:'harvester'}).length) energyCapacity = 300;
-	if(!_.filter(Memory.creeps,{role:'transporter'}).length) energyCapacity = 300;
-	let energyAvailable = spawn.room.energyAvailable;
-	if(energyAvailable < energyCapacity) return;
-	
-	for(let roleName in c.creep.role) {
-		let role = c.creep.role[roleName];
-		// Check if build enough already
-		let currentCount = _.filter(Memory.creeps,{role:roleName}).length;
-		let toBuildCount = role.count;
-		if(currentCount >= toBuildCount) continue;
-		// Builder only when there is a construction site
-		if(roleName == 'builder' && !spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length) continue;
-		// Get body
-		let body = getBody(role.creepType, energyCapacity);
-		if(!body) continue;
-		let name = generateName(roleName);
-		let memory = {memory:{role:roleName}};
-		// Build creep
-		let r = spawn.spawnCreep(body, name, memory);
-		f.debug('Creep spawning '+name);
-		if(r) f.error('spawn.spawnCreep '+r);
-		else return;
+module.exports = function() {
+	for (let spawnName in Game.spawns) {
+		let spawn = Game.spawns[spawnName];
+		if (spawn.spawning) return;
+		let energyCapacity = spawn.room.energyCapacityAvailable;
+		if(!_.filter(Memory.creeps,{role:'harvester'}).length) energyCapacity = 300;
+		if(!_.filter(Memory.creeps,{role:'transporter'}).length) energyCapacity = 300;
+		let energyAvailable = spawn.room.energyAvailable;
+		if(energyAvailable < energyCapacity) return;
+		
+		for(let roleName in c.creep.role) {
+			let role = c.creep.role[roleName];
+			// Check if build enough already
+			let currentCount = _.filter(Memory.creeps,{role:roleName}).length;
+			let toBuildCount = role.count;
+			if(currentCount >= toBuildCount) continue;
+			// Builder only when there is a construction site
+			if(roleName == 'builder' && !spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length) continue;
+			// Get body
+			let body = getBody(role.creepType, energyCapacity);
+			if(!body) continue;
+			let name = generateName(roleName);
+			let memory = {memory:{role:roleName}};
+			// Build creep
+			let r = spawn.spawnCreep(body, name, memory);
+			f.debug('Creep spawning '+name);
+			if(r) f.error('spawn.spawnCreep '+r);
+			else return;
+		}
 	}
 }
 

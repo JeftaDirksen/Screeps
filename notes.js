@@ -8,9 +8,10 @@ x creepRoles
   x builder
   x transporter
   x upgrader
-  - claimer
+  x claimer
 x tower
 x link
 x goGetEnergy always get nearest
+- Creep count should be per room
 
 */
