@@ -12,6 +12,6 @@ x creepRoles
 x tower
 x link
 x goGetEnergy always get nearest
-- Creep count should be per room
+x Creep count should be per room
 
 */

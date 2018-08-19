@@ -14,7 +14,9 @@ module.exports = function() {
 		for(let roleName in c.creep.role) {
 			let role = c.creep.role[roleName];
 			// Check if build enough already
-			let currentCount = _.filter(Memory.creeps,{role:roleName}).length;
+			let currentCount = spawn.room.find(FIND_MY_CREEPS,{
+				filter: c => c.memory.role == roleName
+			}).length;
 			let toBuildCount = role.count;
 			if(currentCount >= toBuildCount) continue;
 			// Builder only when there is a construction site
