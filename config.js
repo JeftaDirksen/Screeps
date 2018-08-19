@@ -1,6 +1,7 @@
 module.exports = {
 	debug: true,
 	sign: '',
+	wallRepair: 'slow',
 	creep: {
 		type: {
 			a: [

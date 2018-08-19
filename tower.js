@@ -1,3 +1,4 @@
+var c = require('config');
 var f = require('functions');
 
 module.exports = function () {
@@ -30,6 +31,10 @@ module.exports = function () {
 
 				else {
 					// Repair
+					let speed = 15;
+					if(c.wallRepair == 'medium') speed = 10;
+					else if(c.wallRepair == 'fast') speed = 5;
+					
 					let target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: s => {
 							return s.structureType != STRUCTURE_WALL
@@ -41,7 +46,7 @@ module.exports = function () {
 						tower.repair(target);
 					}
 					
-					else if (!(Game.time % 15)) {
+					else if (!(Game.time % speed)) {
 						// Slow repair Rampart/Wall
 						let targets = tower.room.find(FIND_STRUCTURES, {
 							filter: s => {
