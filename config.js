@@ -1,5 +1,6 @@
 module.exports = {
-	debug: false,
+	debug: true,
+	sign: '',
 	creep: {
 		type: {
 			a: [

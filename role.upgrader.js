@@ -14,6 +14,11 @@ module.exports = function (creep) {
 	// Upgrade
 	if(creep.memory.upgrade) {
 		let controller = creep.room.controller;
+		
+		// Sign controller
+		signController(creep, controller, c.sign);
+		
+		// Upgrade
 		let r = creep.upgradeController(controller);
 		if (r == ERR_NOT_IN_RANGE) creep.goTo(controller);
 		else creep.goIdle();
@@ -21,4 +26,13 @@ module.exports = function (creep) {
 	
 	// Load
 	else creep.goGetEnergy();
+}
+
+function signController(creep, controller, text) {
+	if((!controller.sign && text != '') || (controller.sign && controller.sign.text != text)) {
+		let r = creep.signController(controller, text);
+		if (r == ERR_NOT_IN_RANGE) creep.goTo(controller);
+		if (!r && text) f.debug('Controller signed with \''+text+'\'');
+		else if (!r && !text) f.debug('Controller unsigned');
+	}
 }
