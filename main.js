@@ -15,6 +15,11 @@ for(let roleName in c.creep.role) {
 }
 
 module.exports.loop = function () {
+	// CPU Bucket checked
+	if(Game.cpu.bucket < 100) {
+		f.warning('Skipping tick due to low CPU bucket');
+		return;
+	}
 	
 	// Clear memory
 	clearMemory();
