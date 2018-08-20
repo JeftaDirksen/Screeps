@@ -14,7 +14,7 @@ module.exports = function() {
 		}
 		
 		// Check if spawn already spawning
-		if (spawn.spawning) return;
+		if (spawn.spawning) continue;
 		
 		// Get energy stats
 		let energyCapacity = spawn.room.energyCapacityAvailable;
@@ -31,7 +31,7 @@ module.exports = function() {
 		if(!roomTransporter) energyCapacity = 300;
 		
 		// Check if energy full
-		if(energyAvailable < energyCapacity) return;
+		if(energyAvailable < energyCapacity) continue;
 		
 		for(let roleName in c.creep.role) {
 			let role = c.creep.role[roleName];
