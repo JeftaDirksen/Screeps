@@ -4,7 +4,7 @@ var f = require('functions');
 module.exports = function () {
 	for (let roomName in Game.rooms) {
 		let towers = Game.rooms[roomName].find(FIND_STRUCTURES, {
-			filter: (s) => s.structureType == STRUCTURE_TOWER
+			filter: s => s.structureType == STRUCTURE_TOWER
 		});
 		for (let tower of towers) {
 			// Attack healers
@@ -36,11 +36,10 @@ module.exports = function () {
 					else if(c.wallRepair == 'fast') speed = 1;
 					
 					let target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-						filter: s => {
-							return s.structureType != STRUCTURE_WALL
+						filter: s =>
+							s.structureType != STRUCTURE_WALL
 							&& s.structureType != STRUCTURE_RAMPART
-							&& s.hits < s.hitsMax;
-						}
+							&& s.hits < s.hitsMax
 					});
 					if (target) {
 						tower.repair(target);
@@ -49,12 +48,12 @@ module.exports = function () {
 					else if (!(Game.time % speed)) {
 						// Repair Rampart/Wall
 						let targets = tower.room.find(FIND_STRUCTURES, {
-							filter: s => {
-								return (
+							filter: s =>
+								(
 									s.structureType == STRUCTURE_WALL
 									|| s.structureType == STRUCTURE_RAMPART
-								) && s.hits < s.hitsMax;
-							}
+								)
+								&& s.hits < s.hitsMax
 						});
 						let target = _.sortBy(targets, 'hits')[0];
 						if (target) {
