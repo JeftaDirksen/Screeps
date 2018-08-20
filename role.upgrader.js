@@ -26,7 +26,7 @@ module.exports = function (creep) {
 		// Upgrade
 		let r = creep.upgradeController(controller);
 		if (r == ERR_NOT_IN_RANGE) creep.goTo(controller);
-		else creep.goIdle();
+		else if(r) creep.goIdle();
 	}
 	
 	// Load
