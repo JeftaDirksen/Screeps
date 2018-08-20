@@ -3,9 +3,7 @@ var f = require('functions');
 
 module.exports = function (creep) {
 	// Room switch
-	if(creep.memory.target && creep.memory.target != creep.room.name) {
-		return creep.goTo(Game.rooms[creep.memory.target].controller);
-	}
+	if(f.roomSwitch(creep)) return;
 
 	if(!creep.memory.target) return;
 	let r = creep.claimController(creep.room.controller);
