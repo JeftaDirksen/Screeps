@@ -114,11 +114,33 @@ Creep.prototype.goWithdraw = function(structure, resourceType) {
 }
 
 // isEmpty
-Creep.prototype.isEmpty = function () {
+Creep.prototype.isEmpty = function() {
     return !_.sum(this.carry);
 }
 
 // isFull
-Creep.prototype.isFull = function () {
+Creep.prototype.isFull = function() {
     return _.sum(this.carry) == this.carryCapacity;
+}
+
+// Switch room
+Creep.prototype.switchRoom = function() {
+	let target = this.memory.target;
+	if(target && target != this.room.name) {
+		// Room visible
+		let targetRoom = Game.rooms[target];
+		if(targetRoom) {
+			this.goTo(Game.rooms[target].controller);
+			return true;
+		}
+		// Room not visible yet
+		else {
+			let exit = this.pos.findClosestByRange(
+				this.room.findExitTo(target)
+			);
+			this.goTo(exit);
+			return true;
+		}
+	}
+	else return false;
 }

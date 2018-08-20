@@ -2,9 +2,6 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function (creep) {
-	// Room switch
-	if(f.roomSwitch(creep)) return;
-	
 	// Check if empty
 	if(creep.memory.transport && creep.isEmpty()) {
 		creep.memory.transport = false;

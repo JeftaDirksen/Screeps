@@ -27,27 +27,7 @@ module.exports = {
 	thisTick(everyThisTicks) {
 		return !(Game.time % everyThisTicks);
 	},
-	
-	roomSwitch(creep) {
-		if(creep.memory.target && creep.memory.target != creep.room.name) {
-			// Room visible
-			let room = Game.rooms[creep.memory.target];
-			if(room) {
-				creep.goTo(Game.rooms[creep.memory.target].controller);
-				return true;
-			}
-			// Room not visible yet
-			else {
-				let exit = creep.pos.findClosestByRange(
-					creep.room.findExitTo(creep.memory.target)
-				);
-				creep.goTo(exit);
-				return true;
-			}
-		}
-		else return false;
-	},
-	
+
 };
 
 function font(string,color) {
