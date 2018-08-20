@@ -9,6 +9,7 @@ x creepRoles
   x transporter
   x upgrader
   x claimer
+  x repairer (if no tower)
 x tower
 x link
 x goGetEnergy always get nearest

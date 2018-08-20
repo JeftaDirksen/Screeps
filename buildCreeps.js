@@ -20,7 +20,7 @@ module.exports = function() {
 		let energyCapacity = spawn.room.energyCapacityAvailable;
 		let energyAvailable = spawn.room.energyAvailable;
 		
-		// Role specific checks
+		// Spawn failure checks/fixes
 		let roomHarvesters = spawn.room.find(FIND_MY_CREEPS,{
 				filter: c => c.memory.role == 'harvester'
 		}).length;
@@ -41,15 +41,24 @@ module.exports = function() {
 			}).length;
 			let toBuildCount = spawn.memory[roleName+'s'];
 			if(currentCount >= toBuildCount) continue;
+			// Role specific checks
 			// Claimer only when claim is set
 			if(roleName == 'claimer' && !spawn.memory.claim) continue;
+			// Repairer only when no tower in room
+			if(roleName == 'repairer') {
+				let towers = spawn.room.find(FIND_MY_STRUCTURES, {
+					filter: { structureType: STRUCTURE_TOWER }
+				}).length;
+				if(towers) continue;
+			}
 			// Get body
 			let body = getBody(role.creepType, energyCapacity);
 			if(!body) continue;
 			let name = generateName(roleName);
 			let memory = {memory:{role:roleName}};
 			// Claimer memory.target
-			if(roleName == 'claimer') memory = {memory:{role:roleName, target:spawn.memory.claim}};
+			if(roleName == 'claimer')
+				memory = {memory:{role:roleName, target:spawn.memory.claim}};
 			// Build creep
 			let r = spawn.spawnCreep(body, name, memory);
 			if(r) f.error('spawn.spawnCreep '+r);

@@ -41,6 +41,10 @@ module.exports = {
 				count: 1,
 				creepType: 'a',
 			},
+			repairer: {
+				count: 1,
+				creepType: 'a',
+			},
 		},
 	},
 };

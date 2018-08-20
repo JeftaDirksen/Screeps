@@ -78,6 +78,13 @@ Creep.prototype.goPickup = function(target) {
 	return r;
 }
 
+// goRepair
+Creep.prototype.goRepair = function(structure) {
+	let r = this.repair(structure);
+	if (r == ERR_NOT_IN_RANGE) this.goTo(structure);
+	return r;
+}
+
 // goTo
 Creep.prototype.goTo = function(target) {
 	let r = this.moveTo(target);
