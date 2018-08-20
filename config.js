@@ -2,6 +2,7 @@ module.exports = {
 	debug: true,
 	sign: '',
 	wallRepair: 'medium',
+	tickIdleThreshold: 10,
 	creep: {
 		type: {
 			a: [

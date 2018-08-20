@@ -60,7 +60,15 @@ Creep.prototype.goHarvest = function() {
 
 // goIdle
 Creep.prototype.goIdle = function() {
-	this.goTo(this.room.controller);
+	// Reset ticksIdle if not idle last tick
+	if(this.memory.lastIdleTick != Game.time-1) this.memory.ticksIdle = 0;
+	// Increase ticks idle
+	this.memory.ticksIdle++;
+	// Set last idle tick
+	this.memory.lastIdleTick = Game.time;
+	// Go to idle point if ticks idle above threshold
+	if(this.memory.ticksIdle >= c.tickIdleThreshold)
+		this.goTo(this.room.controller);
 }
 
 // goPickup
