@@ -22,10 +22,8 @@ module.exports = function (creep) {
 		// Road/Container
 		let structure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: s =>
-				(
-					s.structureType == STRUCTURE_ROAD
-					|| s.structureType == STRUCTURE_CONTAINER
-				)
+				s.structureType != STRUCTURE_WALL
+				&& s.structureType != STRUCTURE_RAMPART
 				&& s.hits < s.hitsMax
 		});
 		if(structure) {
@@ -34,7 +32,7 @@ module.exports = function (creep) {
 		
 		else {
 			// Repair Rampart/Wall
-			let targets = creep.room.find(FIND_STRUCTURES, {
+			let structures = creep.room.find(FIND_STRUCTURES, {
 				filter: s =>
 					(
 						s.structureType == STRUCTURE_WALL
@@ -42,9 +40,9 @@ module.exports = function (creep) {
 					)
 					&& s.hits < s.hitsMax
 			});
-			let target = _.sortBy(targets, 'hits')[0];
-			if (target) {
-				creep.goRepair(target);
+			let structure = _.sortBy(structures, 'hits')[0];
+			if (structure) {
+				creep.goRepair(structure);
 			}
 			
 			// Idle
