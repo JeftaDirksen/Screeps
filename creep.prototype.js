@@ -87,7 +87,7 @@ Creep.prototype.goRepair = function(structure) {
 
 // goTo
 Creep.prototype.goTo = function(target) {
-	let r = this.moveTo(target);
+	let r = this.moveTo(target,{visualizePathStyle:{}});
 	switch(r) {
 		case OK:
 			break;
@@ -127,6 +127,7 @@ Creep.prototype.isFull = function() {
 Creep.prototype.switchRoom = function() {
 	let target = this.memory.target;
 	if(target && target != this.room.name) {
+		f.debug(this.name+' switchCode');
 		// Room visible
 		let targetRoom = Game.rooms[target];
 		if(targetRoom) {
