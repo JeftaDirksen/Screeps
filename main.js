@@ -31,13 +31,10 @@ module.exports.loop = function () {
 	for (let creepName in Game.creeps) {
 		let creep = Game.creeps[creepName];
 		if (creep.spawning) continue;
-		role[creep.memory.role](creep);
-	}
-	
-	// Run creep roomSwitch
-	for (let creepName in Game.creeps) {
-		let creep = Game.creeps[creepName];
-		creep.switchRoom();
+		// Switch room or do role
+		if(!creep.switchRoom()) {
+			role[creep.memory.role](creep);
+		}
 	}
 	
 	// Tower
