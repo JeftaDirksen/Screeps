@@ -18,9 +18,19 @@ module.exports = function() {
 		
 		// Get energy stats
 		let energyCapacity = spawn.room.energyCapacityAvailable;
-		if(!_.filter(Memory.creeps,{role:'harvester'}).length) energyCapacity = 300;
-		if(!_.filter(Memory.creeps,{role:'transporter'}).length) energyCapacity = 300;
 		let energyAvailable = spawn.room.energyAvailable;
+		
+		// Role specific checks
+		let roomHarvesters = spawn.room.find(FIND_MY_CREEPS,{
+				filter: c => c.memory.role == 'harvester'
+		}).length;
+		if(!roomHarvesters) energyCapacity = 300;
+		let roomTransporter = spawn.room.find(FIND_MY_CREEPS,{
+				filter: c => c.memory.role == 'transporter'
+		}).length;
+		if(!roomTransporter) energyCapacity = 300;
+		
+		// Check if energy full
 		if(energyAvailable < energyCapacity) return;
 		
 		for(let roleName in c.creep.role) {
