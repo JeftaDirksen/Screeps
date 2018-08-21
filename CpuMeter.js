@@ -3,12 +3,14 @@ const f = require('functions');
 
 module.exports = class CpuMeter {
 	
-	constructor(meterName) {
+	constructor(meterName, valueCount = 10) {
 		this.name = meterName;
+		this.valueCount = valueCount;
 		if(!Memory.CpuMeter) Memory.CpuMeter = {};
 		if(!Memory.CpuMeter[this.name]) Memory.CpuMeter[this.name] = {};
-		if(!Memory.CpuMeter[this.name].values)
+		if(!Memory.CpuMeter[this.name].values) {
 			Memory.CpuMeter[this.name].values = [];
+		}
 	}
 	
 	start() {
@@ -20,7 +22,9 @@ module.exports = class CpuMeter {
 		let cpuUsed = this.stopCpuUsed - this.startCpuUsed;
 		let values = Memory.CpuMeter[this.name].values;
 		values.push(cpuUsed);
-		if(values.length>10) values = values.slice(values.length-10);
+		if(values.length>this.valueCount) {
+			values = values.slice(values.length-this.valueCount);
+		}
 		Memory.CpuMeter[this.name].values = values;
 	}
 	
@@ -31,7 +35,12 @@ module.exports = class CpuMeter {
 			sum += values[i];
 		}
 		let average = sum / values.length;
-		return Math.round(average*Math.pow(10,decimals))/Math.pow(10,decimals);
+		return round(average, decimals);
 	}
 	
 };
+
+function round(number, decimals) {
+	let decimalFactor = Math.pow(10,decimals);
+	return Math.round(number*decimalFactor)/decimalFactor;
+}
