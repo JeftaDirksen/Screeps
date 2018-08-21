@@ -15,7 +15,7 @@ module.exports = function (creep) {
 	if(creep.memory.transport) {
 		
 		// Supply spawn/extensions
-		let spawn = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,{
+		let spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
 			filter: s => (
 				s.structureType == STRUCTURE_SPAWN
 				|| s.structureType == STRUCTURE_EXTENSION
@@ -29,7 +29,7 @@ module.exports = function (creep) {
 		}
 
 		// Supply tower
-		let tower = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,{
+		let tower = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
 			filter: s => (
 				s.structureType == STRUCTURE_TOWER
 			) && s.energy < s.energyCapacity

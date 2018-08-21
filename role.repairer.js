@@ -15,7 +15,7 @@ module.exports = function (creep) {
 	if(creep.memory.repair) {
 		
 		// Road/Container
-		let structure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+		let structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
 			filter: s =>
 				s.structureType != STRUCTURE_WALL
 				&& s.structureType != STRUCTURE_RAMPART

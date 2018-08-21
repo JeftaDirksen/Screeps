@@ -38,7 +38,7 @@ Creep.prototype.goGetEnergy = function() {
 	
 	// Combine/Get closest
 	let energy = structures.concat(dropped).concat(tombstone);
-	energy = this.pos.findClosestByRange(energy);
+	energy = this.pos.findClosestByPath(energy);
 	if(energy && (energy instanceof Structure || energy instanceof Tombstone))
 		return this.goWithdraw(energy, RESOURCE_ENERGY);
 	if(energy && energy instanceof Resource)
@@ -50,7 +50,7 @@ Creep.prototype.goGetEnergy = function() {
 
 // goHarvest
 Creep.prototype.goHarvest = function() {
-	var source = this.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+	var source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 	if (source) {
 		let r = this.harvest(source);
 		if (r == ERR_NOT_IN_RANGE) this.goTo(source);
@@ -140,7 +140,7 @@ Creep.prototype.switchRoom = function() {
 		}
 		// Room not visible yet
 		else {
-			let exit = this.pos.findClosestByRange(
+			let exit = this.pos.findClosestByPath(
 				this.room.findExitTo(target)
 			);
 			this.goTo(exit);

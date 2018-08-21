@@ -13,7 +13,7 @@ module.exports = function (creep) {
 	
 	// Harvest
 	if(creep.memory.harvest) {
-		let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+		let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 		if(source) creep.goHarvest();
 		else creep.goIdle();
 	}
@@ -22,7 +22,7 @@ module.exports = function (creep) {
 		let target = null;
 		
 		// Find container/link
-		let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+		let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
 			filter: s => (
 				s.structureType == STRUCTURE_CONTAINER
 				|| s.structureType == STRUCTURE_LINK
@@ -39,7 +39,7 @@ module.exports = function (creep) {
 		}
 		
 		// Find other (spawn/extensions/storage)
-		let other = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+		let other = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
 			filter: s => (
 				s.structureType == STRUCTURE_SPAWN
 				|| s.structureType == STRUCTURE_EXTENSION
