@@ -87,7 +87,7 @@ Creep.prototype.goRepair = function(structure) {
 
 // goTo
 Creep.prototype.goTo = function(target) {
-	let r = this.moveTo(target,{visualizePathStyle:{}});
+	let r = this.moveTo(target,{visualizePathStyle: {}, reusePath: c.reusePath});
 	switch(r) {
 		case OK:
 			break;

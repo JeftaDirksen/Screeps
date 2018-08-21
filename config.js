@@ -3,6 +3,7 @@ module.exports = {
 	sign: '',
 	wallRepair: 'medium',
 	tickIdleThreshold: 15,
+	reusePath: 10,
 	creep: {
 		type: {
 			a: [
