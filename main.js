@@ -43,6 +43,13 @@ module.exports.loop = function () {
 	// Link
 	link();
 
+	// CPU average calculation
+	//if(!Memory.averageCpu) Memory.averageCpu = 1;
+	let usedThisTick = Game.cpu.getUsed();
+	let averageCpu = (Memory.averageCpu*9+usedThisTick)/10
+	Memory.averageCpu = averageCpu;
+	f.cpu('average: '+Math.round(averageCpu*10)/10+', bucket: '+Math.round(Game.cpu.bucket/100)+'%');
+
 }
 
 function thisTick(everyThisTicks) {
