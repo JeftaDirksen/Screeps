@@ -29,11 +29,7 @@ module.exports.loop = function () {
 	clearMemory();
 	
 	// Build creeps
-	const meterBuildCreeps = new CpuMeter('buildCreeps', 30);
-	meterBuildCreeps.start();
 	if(thisTick(10)) buildCreeps();
-	meterBuildCreeps.stop();
-	f.cpu('meterBuildCreeps: '+meterBuildCreeps.getAverage());
 	
 	// Run creep roles
 	const meterCreepRoles = new CpuMeter('creepRoles');
