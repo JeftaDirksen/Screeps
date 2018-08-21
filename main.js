@@ -16,6 +16,7 @@ for(let roleName in c.creep.role) {
 }
 
 module.exports.loop = function () {
+	// CPU Main
 	const meterMain = new CpuMeter('main');
 	meterMain.start();
 	
@@ -51,8 +52,10 @@ module.exports.loop = function () {
 	// Link
 	link();
 
+	// CPU Main
+	let bucket = Math.round(Game.cpu.bucket/100);
 	meterMain.stop();
-	f.cpu('main: '+meterMain.getAverage(1));
+	f.cpu('main: '+meterMain.getAverage(1)+', bucket: '+bucket+'%');
 	
 }
 
