@@ -2,11 +2,12 @@
 require('creep.prototype');
 
 // Load modules
-var c = require('config');
-var f = require('functions');
-var buildCreeps = require('buildCreeps');
-var tower = require('tower');
-var link = require('link');
+const c = require('config');
+const f = require('functions');
+const buildCreeps = require('buildCreeps');
+const tower = require('tower');
+const link = require('link');
+const CpuMeter = require('CpuMeter');
 
 // Load roles
 var role = [];
@@ -15,6 +16,9 @@ for(let roleName in c.creep.role) {
 }
 
 module.exports.loop = function () {
+	const meterMain = new CpuMeter('main');
+	meterMain.start();
+	
 	// CPU Bucket checked
 	if(Game.cpu.bucket < 100) {
 		f.warning('Skipping tick due to low CPU bucket');
@@ -25,9 +29,15 @@ module.exports.loop = function () {
 	clearMemory();
 	
 	// Build creeps
+	const meterBuildCreeps = new CpuMeter('buildCreeps');
+	meterBuildCreeps.start();
 	if(thisTick(10)) buildCreeps();
+	meterBuildCreeps.stop();
+	f.cpu('meterBuildCreeps: '+meterBuildCreeps.getAverage());
 	
 	// Run creep roles
+	const meterCreepRoles = new CpuMeter('creepRoles');
+	meterCreepRoles.start();
 	for (let creepName in Game.creeps) {
 		let creep = Game.creeps[creepName];
 		if (creep.spawning) continue;
@@ -36,6 +46,8 @@ module.exports.loop = function () {
 			role[creep.memory.role](creep);
 		}
 	}
+	meterCreepRoles.stop();
+	f.cpu('meterCreepRoles: '+meterCreepRoles.getAverage());
 	
 	// Tower
 	tower();
@@ -43,14 +55,9 @@ module.exports.loop = function () {
 	// Link
 	link();
 
-	// CPU average calculation
-	if(c.cpu) {
-		let usedThisTick = Game.cpu.getUsed();
-		let averageCpu = (Memory.averageCpu*24+usedThisTick)/25
-		Memory.averageCpu = averageCpu;
-		f.cpu('average: '+Math.round(averageCpu*10)/10+', bucket: '+Math.round(Game.cpu.bucket/100)+'%');
-	}
-
+	meterMain.stop();
+	f.cpu('main: '+meterMain.getAverage(1));
+	
 }
 
 function thisTick(everyThisTicks) {
