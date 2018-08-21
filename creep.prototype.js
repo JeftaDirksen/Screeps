@@ -126,8 +126,12 @@ Creep.prototype.isFull = function() {
 // Switch room
 Creep.prototype.switchRoom = function() {
 	let target = this.memory.target;
-	if(target && target != this.room.name) {
-		f.debug(this.name+' switchCode');
+	if(!target) return false;
+	else if(target == this.room.name) {
+		this.memory.target = null;
+		return false;
+	}
+	else if(target != this.room.name) {
 		// Room visible
 		let targetRoom = Game.rooms[target];
 		if(targetRoom) {
