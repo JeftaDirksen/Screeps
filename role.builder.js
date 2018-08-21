@@ -13,7 +13,7 @@ module.exports = function (creep) {
 	
 	// Build
 	if(creep.memory.build) {
-		let site = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+		let site = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
 		if(site) {
 			creep.goBuild(site);
 		}
