@@ -17,6 +17,12 @@ module.exports = function (creep) {
 		if(site) {
 			creep.goBuild(site);
 		}
+		
+		// Load if not full or goIdle
+		else if(!creep.isFull()) {
+			creep.memory.transport = false;
+			creep.goGetEnergy();
+		}
 		else creep.goIdle();
 	}
 	
