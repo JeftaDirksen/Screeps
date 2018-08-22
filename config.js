@@ -1,6 +1,6 @@
 module.exports = {
 	debug: true,
-	cpu: true,
+	cpu: false,
 	sign: '',
 	wallRepair: 'slow',
 	tickIdleThreshold: 15,
@@ -9,7 +9,7 @@ module.exports = {
 		type: {
 			a: [
 				{cost:  250, body: [MOVE, MOVE, CARRY, WORK]},
-				{cost:  350, body: [MOVE, MOVE, CARRY, WORK, WORK]},
+				{cost:  400, body: [MOVE, MOVE, MOVE, CARRY, WORK, WORK]},
 				{cost:  500, body: [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK]},
 				{cost: 1000, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK]},
 			],
