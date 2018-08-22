@@ -52,7 +52,7 @@ module.exports = function() {
 				if(towers) continue;
 			}
 			// Get body
-			let body = getBody(role.creepType, energyCapacity);
+			let body = getBody(role.creepType, energyAvailable);
 			if(!body) continue;
 			let name = generateName(roleName);
 			let memory = {memory:{role:roleName}};
