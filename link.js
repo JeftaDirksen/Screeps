@@ -9,14 +9,14 @@ module.exports = function () {
 		let links = room.find(FIND_MY_STRUCTURES, {
 			filter: s => s.structureType == STRUCTURE_LINK
 		});
-		if (!links.length) return;
+		if (!links.length) continue;
 		
 		// Links statistics
 		links = _.sortBy(links, 'energy');
 		let linksCount = links.length;
 		let linkMin = links[0];
 		let linkMax = links[linksCount-1];
-		if(linkMax.cooldown) return;
+		if(linkMax.cooldown) continue;
 		let linksEnergyTotal = _.sum(links, function(o){return o.energy;});
 		let linksEnergyBalance = Math.round(linksEnergyTotal / linksCount);
 		
