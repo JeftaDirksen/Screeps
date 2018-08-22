@@ -18,7 +18,7 @@ for(let roleName in c.creep.role) {
 module.exports.loop = function () {
 	// CPU Main
 	const meterMain = new CpuMeter('main');
-	meterMain.start();
+	if(f.cpu) meterMain.start();
 	
 	// CPU Bucket checked
 	if(Game.cpu.bucket < 100) {
@@ -33,8 +33,6 @@ module.exports.loop = function () {
 	if(thisTick(10)) buildCreeps();
 	
 	// Run creep roles
-	const meterCreepRoles = new CpuMeter('creepRoles');
-	meterCreepRoles.start();
 	for (let creepName in Game.creeps) {
 		let creep = Game.creeps[creepName];
 		if (creep.spawning) continue;
@@ -43,8 +41,6 @@ module.exports.loop = function () {
 			role[creep.memory.role](creep);
 		}
 	}
-	meterCreepRoles.stop();
-	f.cpu('meterCreepRoles: '+meterCreepRoles.getAverage());
 	
 	// Tower
 	tower();
@@ -53,9 +49,11 @@ module.exports.loop = function () {
 	link();
 
 	// CPU Main
-	let bucket = Math.round(Game.cpu.bucket/100);
-	meterMain.stop();
-	f.cpu('main: '+meterMain.getAverage(1)+', bucket: '+bucket+'%');
+	if(f.cpu) {
+		let bucket = Math.round(Game.cpu.bucket/100);
+		meterMain.stop();
+		f.cpu('main: '+meterMain.getAverage(1)+', bucket: '+bucket+'%');
+	}
 	
 }
 
