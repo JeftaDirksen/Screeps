@@ -86,8 +86,12 @@ Creep.prototype.goRepair = function(structure) {
 }
 
 // goTo
-Creep.prototype.goTo = function(target) {
-	let r = this.moveTo(target,{visualizePathStyle: {}, reusePath: c.reusePath});
+Creep.prototype.goTo = function(target, maxRooms = 1) {
+	let r = this.moveTo(target,{
+		visualizePathStyle: {},
+		reusePath: c.reusePath,
+		maxRooms: maxRooms,
+	});
 	switch(r) {
 		case OK:
 			break;
@@ -135,7 +139,7 @@ Creep.prototype.switchRoom = function() {
 		// Room visible
 		let targetRoom = Game.rooms[target];
 		if(targetRoom) {
-			this.goTo(Game.rooms[target].controller);
+			this.goTo(Game.rooms[target].controller, 16);
 			return true;
 		}
 		// Room not visible yet
