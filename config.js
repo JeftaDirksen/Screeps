@@ -2,7 +2,7 @@ module.exports = {
 	debug: true,
 	cpu: true,
 	sign: '',
-	wallRepair: 'medium',
+	wallRepair: 'slow',
 	tickIdleThreshold: 15,
 	reusePath: 15,
 	creep: {
