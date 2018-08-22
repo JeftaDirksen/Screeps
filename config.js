@@ -1,6 +1,6 @@
 module.exports = {
 	debug: true,
-	cpu: false,
+	cpu: true,
 	sign: '',
 	wallRepair: 'slow',
 	tickIdleThreshold: 15,
