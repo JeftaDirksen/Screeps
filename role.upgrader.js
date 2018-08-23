@@ -16,7 +16,7 @@ module.exports = function (creep) {
 		let controller = creep.room.controller;
 		
 		// Sign controller
-		signController(creep, controller, c.sign);
+		signController(creep, controller, Memory.signText);
 		
 		// Upgrade
 		let r = creep.upgradeController(controller);

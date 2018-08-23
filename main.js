@@ -17,8 +17,8 @@ for(let roleName in c.creep.role) {
 
 module.exports.loop = function () {
 	// CPU Main
-	const meterMain = new CpuMeter('main');
-	if(f.cpu) meterMain.start();
+	const meterMain = new CpuMeter('main', 50);
+	if(Memory.cpu) meterMain.start();
 	
 	// CPU Bucket checked
 	if(Game.cpu.bucket < 100) {
@@ -26,8 +26,15 @@ module.exports.loop = function () {
 		return;
 	}
 	
+	// Memory setup
+	if(Memory.debug == undefined) Memory.debug = false;
+	if(Memory.cpu == undefined) Memory.cpu = false;
+	if(Memory.signText == undefined) Memory.signText = '';
+	if(Memory.idleThresholdTicks == undefined) Memory.idleThresholdTicks = 15;
+	if(Memory.reusePath == undefined) Memory.reusePath = 5;
+	
 	// Clear memory
-	clearMemory();
+	clearCreepMemory();
 	
 	// Build creeps
 	if(thisTick(10)) buildCreeps();
@@ -49,7 +56,7 @@ module.exports.loop = function () {
 	link();
 
 	// CPU Main
-	if(f.cpu) {
+	if(Memory.cpu) {
 		let bucket = Math.round(Game.cpu.bucket/100);
 		meterMain.stop();
 		f.cpu('main: '+meterMain.getAverage(1)+', bucket: '+bucket+'%');
@@ -61,7 +68,7 @@ function thisTick(everyThisTicks) {
 	return !(Game.time % everyThisTicks);
 }
 
-function clearMemory() {
+function clearCreepMemory() {
 	for (let name in Memory.creeps) {
 		if (Game.creeps[name]) continue;
 		f.debug('Creep died ' + name);

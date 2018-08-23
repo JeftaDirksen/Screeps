@@ -3,7 +3,7 @@ var c = require('config');
 module.exports = {
 	
 	debug(message) {
-		if(!c.debug) return;
+		if(!Memory.debug) return;
 		let tick = font('['+Game.time+'] ','Gray');
 		let debug = font('debug: ','LightSkyBlue');
 		let msg = tick+debug+message;
@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	cpu(message) {
-		if(!c.cpu) return;
+		if(!Memory.cpu) return;
 		let tick = font('['+Game.time+'] ','Gray');
 		let cpu = font('cpu: ','Plum');
 		let msg = tick+cpu+message;

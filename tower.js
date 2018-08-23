@@ -3,6 +3,11 @@ var f = require('functions');
 
 module.exports = function () {
 	for (let roomName in Game.rooms) {
+		let room = Game.rooms[roomName];
+		
+		// Memory setup
+		if(room.memory.wallRepairSpeed == undefined) room.memory.wallRepairSpeed = 'slow';	// slow, medium, fast
+		
 		let towers = Game.rooms[roomName].find(FIND_STRUCTURES, {
 			filter: s => s.structureType == STRUCTURE_TOWER
 		});
@@ -32,8 +37,8 @@ module.exports = function () {
 				else {
 					// Repair
 					let speed = 15;
-					if(c.wallRepair == 'medium') speed = 8;
-					else if(c.wallRepair == 'fast') speed = 1;
+					if(room.memory.wallRepairSpeed == 'medium') speed = 8;
+					else if(room.memory.wallRepairSpeed == 'fast') speed = 1;
 					
 					let target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
 						filter: s =>

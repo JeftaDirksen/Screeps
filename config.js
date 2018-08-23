@@ -1,10 +1,4 @@
 module.exports = {
-	debug: false,
-	cpu: false,
-	sign: '',
-	wallRepair: 'slow',
-	tickIdleThreshold: 15,
-	reusePath: 15,
 	creep: {
 		type: {
 			a: [

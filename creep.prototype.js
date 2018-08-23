@@ -67,7 +67,7 @@ Creep.prototype.goIdle = function() {
 	// Set last idle tick
 	this.memory.lastIdleTick = Game.time;
 	// Go to idle point if ticks idle above threshold
-	if(this.memory.ticksIdle >= c.tickIdleThreshold)
+	if(this.memory.ticksIdle >= Memory.idleThresholdTicks)
 		this.goTo(this.room.controller);
 }
 
@@ -89,7 +89,7 @@ Creep.prototype.goRepair = function(structure) {
 Creep.prototype.goTo = function(target, maxRooms = 1) {
 	let r = this.moveTo(target,{
 		visualizePathStyle: {},
-		reusePath: c.reusePath,
+		reusePath: Memory.reusePath,
 		maxRooms: maxRooms,
 	});
 	switch(r) {
