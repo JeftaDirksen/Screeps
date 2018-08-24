@@ -19,7 +19,6 @@ module.exports = function (creep) {
 	}
 	// Unload
 	else {
-		let target = null;
 		
 		// Find container/link
 		let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
