@@ -61,9 +61,14 @@ module.exports = function() {
 			if(!body) continue;
 			let name = generateName(roleName);
 			let memory = {memory:{role:roleName}};
-			// Claimer memory.target
-			if(roleName == 'claimer')
-				memory = {memory:{role:roleName, target:spawn.memory.claim}};
+			// Claimer memory
+			if(roleName == 'claimer') {
+				memory = {memory:{
+					role:roleName,
+					roomTarget: spawn.memory.claim,
+					claimTarget: spawn.memory.claim,
+				}};
+			}
 			// Build creep
 			let r = spawn.spawnCreep(body, name, memory);
 			if(r) f.error('spawn.spawnCreep '+r);
