@@ -44,6 +44,11 @@ module.exports = function() {
 			// Role specific checks
 			// Claimer only when claim is set
 			if(roleName == 'claimer' && !spawn.memory.claim) continue;
+			// Builder only when constructionSite exists
+			if(roleName == 'builder') {
+				let sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length;
+				if(!sites) continue;
+			}
 			// Repairer only when no tower in room
 			if(roleName == 'repairer') {
 				let towers = spawn.room.find(FIND_MY_STRUCTURES, {
