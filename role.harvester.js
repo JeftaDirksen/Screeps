@@ -2,6 +2,53 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function (creep) {
+	let source = Game.getObjectById(creep.memory.source);
+	let moveTarget = creep.memory.moveTarget;
+	let movePath;
+	if(creep.memory.movePath)
+		movePath = Room.deserializePath(creep.memory.movePath);
+	let harvest = creep.memory.harvest;
+	
+	// Check if empty
+	if(!harvest && creep.isEmpty()) {
+		harvest = creep.memory.harvest = true;
+	}
+	// Check if full
+	if(harvest && creep.isFull()) {
+		harvest = creep.memory.harvest = false;
+	}
+
+	// Check target reached
+	if(moveTarget && creep.pos.inRangeTo(moveTarget, 1)) {
+		moveTarget = creep.memory.moveTarget = null;
+		movePath = creep.memory.movePath = null;
+		f.debug('target reached');
+	}
+	
+	// Move by path
+	if(movePath) {
+		let r = creep.moveByPath(movePath);
+		if(r == OK) return;
+		f.debug('moveByPath: '+r);
+	}
+	
+	// Harvest
+	if(creep.harvest(source) == OK) return;
+	
+	// Get moveTarget/movePath
+	if(!moveTarget) {
+		let find = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+		if(find) {
+			creep.memory.source = find.id;
+			moveTarget = creep.memory.moveTarget = find.pos;
+			movePath = creep.pos.findPathTo(moveTarget);
+			creep.memory.movePath = Room.serializePath(movePath);
+		}
+	}
+	
+	
+	
+	/*
 	// Check if empty
 	if(!creep.memory.harvest && creep.isEmpty()) {
 		creep.memory.harvest = true;
@@ -57,4 +104,6 @@ module.exports = function (creep) {
 		// Drop
 		creep.drop(RESOURCE_ENERGY);
 	}
+	
+	*/
 }
