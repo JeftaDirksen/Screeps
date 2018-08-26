@@ -74,6 +74,7 @@ module.exports = function (creep) {
 		if(jobTarget) {
 			let r = creep.transfer(jobTarget, RESOURCE_ENERGY);
 			if(r == ERR_NOT_IN_RANGE) creep.goTo(jobTarget);
+			else if(r != OK) creep.memory.jobTarget = null;
 		}
 		else {
 			// Drop
