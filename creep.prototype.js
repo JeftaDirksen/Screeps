@@ -48,16 +48,6 @@ Creep.prototype.goGetEnergy = function() {
 	this.goIdle();
 }
 
-// goHarvest
-Creep.prototype.goHarvest = function() {
-	var source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-	if (source) {
-		let r = this.harvest(source);
-		if (r == ERR_NOT_IN_RANGE) this.goTo(source);
-		return r;
-	}
-}
-
 // goIdle
 Creep.prototype.goIdle = function() {
 	// Reset ticksIdle if not idle last tick
