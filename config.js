@@ -6,6 +6,7 @@ module.exports = {
 				{cost:  400, body: [MOVE, MOVE, MOVE, CARRY, WORK, WORK]},
 				{cost:  500, body: [MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, WORK, WORK]},
 				{cost: 1000, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK]},
+				{cost: 1750, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK]},
 			],
 			b: [
 				{cost:  200, body: [MOVE, MOVE, CARRY, CARRY]},
