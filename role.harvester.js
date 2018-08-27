@@ -31,6 +31,7 @@ module.exports = function (creep) {
 				let r = creep.goTo(jobTarget);
 				if(r != OK) creep.memory.jobTarget = null;
 			}
+			else if(r != OK) creep.memory.jobTarget = null;
 		}
 		else creep.goIdle();
 	}
