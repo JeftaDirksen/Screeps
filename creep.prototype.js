@@ -117,7 +117,7 @@ Creep.prototype.isFull = function() {
     return _.sum(this.carry) == this.carryCapacity;
 }
 
-// Switch room
+// switchRoom
 Creep.prototype.switchRoom = function() {
 	let roomTarget = this.memory.roomTarget;
 	if(!roomTarget) return false;
@@ -142,4 +142,18 @@ Creep.prototype.switchRoom = function() {
 		}
 	}
 	else return false;
+}
+
+// setHarvest
+Creep.prototype.setHarvest = function() {
+	// Check if empty
+	if(!this.memory.harvest && this.isEmpty()) {
+		this.memory.harvest = true;
+		this.memory.jobTarget = null;
+	}
+	// Check if full
+	if(this.memory.harvest && this.isFull()) {
+		this.memory.harvest = false;
+		this.memory.jobTarget = null;
+	}
 }

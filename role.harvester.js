@@ -2,16 +2,7 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function (creep) {
-	// Check if empty
-	if(!creep.memory.harvest && creep.isEmpty()) {
-		creep.memory.harvest = true;
-		creep.memory.jobTarget = null;
-	}
-	// Check if full
-	if(creep.memory.harvest && creep.isFull()) {
-		creep.memory.harvest = false;
-		creep.memory.jobTarget = null;
-	}
+	creep.setHarvest();
 	
 	// Harvest
 	if(creep.memory.harvest) {
