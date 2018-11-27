@@ -1,5 +1,6 @@
 // Load prototypes
 require('creep.prototype');
+require('roomPosition.prototype');
 
 // Load modules
 const c = require('config');
