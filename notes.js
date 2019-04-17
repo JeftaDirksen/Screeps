@@ -5,6 +5,7 @@ ToDo:
 + switchRoom/roomTarget -> room (creep.memory.room)
 + config count -> defaultAmount
 + transporter > collector
-- transporter
++ transporter
+- Room claim (Memory.claim > claim.js)
 
 */
