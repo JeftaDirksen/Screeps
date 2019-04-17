@@ -26,15 +26,15 @@ module.exports = {
         },
         role: {
             harvester: {
-                count: 1,
+                defaultAmount: 2,
                 creepType: 'a',
             },
             transporter: {
-                count: 1,
+                defaultAmount: 2,
                 creepType: 'b',
             },
             builder: {
-                count: 1,
+                defaultAmount: 2,
                 creepType: 'c',
             },
         },

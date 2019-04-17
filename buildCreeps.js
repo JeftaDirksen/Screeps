@@ -9,7 +9,7 @@ module.exports = function() {
 		for(let roleName in c.creep.role) {
 			if(!(spawn.memory[roleName+'s'] >= 0)) {
 				f.debug(spawnName+' set memory '+roleName+'s');
-				spawn.memory[roleName+'s'] = c.creep.role[roleName].count;
+				spawn.memory[roleName+'s'] = c.creep.role[roleName].defaultAmount;
 			}
 		}
 		
@@ -60,12 +60,12 @@ module.exports = function() {
 			let body = getBody(role.creepType, energyAvailable);
 			if(!body) continue;
 			let name = generateName(roleName);
-			let memory = {memory:{role:roleName}};
+			let memory = {memory:{role:roleName,room:spawn.room.name}};
 			// Claimer memory
 			if(roleName == 'claimer') {
 				memory = {memory:{
 					role:roleName,
-					roomTarget: spawn.memory.claim,
+					room: spawn.memory.claim,
 					claimTarget: spawn.memory.claim,
 				}};
 			}

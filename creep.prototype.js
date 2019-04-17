@@ -56,15 +56,10 @@ Creep.prototype.isFull = function() {
 
 // switchRoom
 Creep.prototype.switchRoom = function() {
-    let roomTarget = this.memory.roomTarget;
-    if(!roomTarget) return false;
-    else if(roomTarget == this.room.name) {
-        this.memory.roomTarget = null;
-        return false;
-    }
-    else if(roomTarget != this.room.name) {
+    let roomName = this.memory.room;
+    if(roomName != this.room.name) {
         // Room visible
-        let room = Game.rooms[roomTarget];
+        let room = Game.rooms[roomName];
         if(room) {
             this.goTo(room.controller, 16);
             return true;
@@ -72,11 +67,12 @@ Creep.prototype.switchRoom = function() {
         // Room not visible yet
         else {
             let exit = this.pos.findClosestByPath(
-                this.room.findExitTo(roomTarget)
+                this.room.findExitTo(roomName)
             );
             this.goTo(exit);
             return true;
         }
     }
-    else return false;
+    
+    return false;
 }

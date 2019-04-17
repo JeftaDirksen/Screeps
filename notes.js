@@ -2,7 +2,7 @@
 
 ToDo:
 + Simplify
-- switchRoom -> room (creep.memory.room)
-- config count -> defaultAmount
++ switchRoom/roomTarget -> room (creep.memory.room)
++ config count -> defaultAmount
 
 */
