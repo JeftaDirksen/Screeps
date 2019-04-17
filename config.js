@@ -30,7 +30,7 @@ module.exports = {
                 creepType: 'a',
             },
             collector: {
-                defaultAmount: 2,
+                defaultAmount: 1,
                 creepType: 'b',
             },
             builder: {
@@ -38,8 +38,12 @@ module.exports = {
                 creepType: 'c',
             },
             upgrader: {
-                defaultAmount: 2,
+                defaultAmount: 1,
                 creepType: 'c',
+            },
+            transporter: {
+                defaultAmount: 2,
+                creepType: 'b',
             },
         },
     },
