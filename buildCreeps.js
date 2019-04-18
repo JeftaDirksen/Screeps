@@ -38,15 +38,35 @@ module.exports = function() {
 function roleNeedsCreep(spawn, roleName) {
     let role = c.creep.role[roleName];
     
+    // roomClaimer
+    if(roleName == 'roomClaimer') {
+        if(!spawn.memory.claim) return false;
+        
+        // Check if claim complete
+        if(
+            Game.rooms[spawn.memory.claim].controller.my &&
+            Game.rooms[spawn.memory.claim].find(FIND_MY_STRUCTURES, {
+                filter: { structureType: STRUCTURE_SPAWN }
+            }).length
+        ) {
+            f.debug('Claim completed');
+            spawn.memory.claim = null;
+            return false;
+        }
+
+        // Check if build enough roomClaimers (in all rooms)
+        let currentCount = _.filter(Game.creeps,{memory: {role: 'roomClaimer'}}).length;
+        let toBuildCount = spawn.memory[roleName+'s'];
+        if(currentCount >= toBuildCount) return false;
+        else return true;
+    }
+    
     // Check if build enough already
     let currentCount = spawn.room.find(FIND_MY_CREEPS,{
         filter: c => c.memory.role == roleName
     }).length;
     let toBuildCount = spawn.memory[roleName+'s'];
     if(currentCount >= toBuildCount) return false;
-    
-    // roomClaimer (only when claim is set)
-    if(roleName == 'roomClaimer' && !spawn.memory.claim) return false;
     
     // Builder (only when constructionSite exists)
     if(roleName == 'builder') {
@@ -68,11 +88,21 @@ function checkSpawnMemory(spawn) {
 
 function buildCreep(spawn, roleName, energy) {
     let role = c.creep.role[roleName];
+    
     // Get body
     let body = getBody(role.creepType, energy);
     if(!body) return false;
+    
+    // Name / Memory
     let name = generateName(roleName);
     let memory = {memory:{role:roleName,room:spawn.room.name}};
+    
+    // Role specific memory
+    if(roleName == 'roomClaimer') {
+        let roomName = Game.rooms[spawn.memory.claim].name;
+        memory = {memory:{role:roleName,room:roomName}};
+    }
+    
     // Build creep
     let r = spawn.spawnCreep(body, name, memory);
     if(r) {
@@ -80,7 +110,7 @@ function buildCreep(spawn, roleName, energy) {
         return false;
     }
     else {
-        f.debug(spawn.name + '(' + spawn.room.name + ') spawning creep ' + name);
+        f.debug(spawn.name + ' (' + spawn.room.name + ') spawning creep ' + name);
         return true;
     }
 }
