@@ -8,6 +8,7 @@ module.exports = function (creep) {
         let r = creep.claimController(creep.room.controller);
         if (r == ERR_NOT_IN_RANGE) creep.goTo(creep.room.controller);
         else if (r == ERR_INVALID_TARGET) creep.goIdle();
+        else if (r == OK) f.debug(creep.name + ' claimed the controller in ' + creep.room.name + '!');
         else f.debug('creep.claimController '+r);
     }
     

@@ -6,6 +6,7 @@ ToDo:
 + config count -> defaultAmount
 + transporter > collector
 + transporter
-- Room claim (Memory.claim > claim.js)
++ roomClaimer
+- collector: collect from larges pile of dropped energy
 
 */
