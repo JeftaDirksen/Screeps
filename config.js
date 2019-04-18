@@ -21,7 +21,7 @@ module.exports = {
               {cost: 1750, body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK]},
             ],
             d: [
-                {cost:  650, body: [MOVE, CLAIM]},
+                {cost: 650, body: [MOVE, CLAIM]},
             ],
         },
         role: {
@@ -44,6 +44,10 @@ module.exports = {
             transporter: {
                 defaultAmount: 2,
                 creepType: 'b',
+            },
+            roomClaimer: {
+                defaultAmount: 1,
+                creepType: 'd',
             },
         },
     },

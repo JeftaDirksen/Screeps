@@ -40,13 +40,12 @@ module.exports = function (creep) {
 			else if (r) f.error('creep.transfer '+r);
 			return;
 		}
-		
-		// goIdle
-		creep.goIdle();
+        
 	}
 	
 	// Load
 	else {
+        
         // Get energy from storage/container/link (with enough energy)
         let structures = creep.room.find(FIND_STRUCTURES, {
             filter: s => (
@@ -64,4 +63,8 @@ module.exports = function (creep) {
             return r;
         }
     }
+    
+    // goIdle
+    creep.goIdle();
+    
 }

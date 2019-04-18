@@ -30,7 +30,7 @@ module.exports.loop = function () {
 	// Clear memory
 	for (let name in Memory.creeps) {
 		if (Game.creeps[name]) continue;
-		f.debug('Creep died ' + name);
+		f.debug('Creep died ' + name + ' (' + Memory.creeps[name].room + ')');
 		delete Memory.creeps[name];
 	}
 	
@@ -52,5 +52,5 @@ module.exports.loop = function () {
 
 	// Link
 	link();
-
+    
 }
