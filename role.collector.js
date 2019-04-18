@@ -13,23 +13,19 @@ module.exports = function (creep) {
 
     // Collect
     if(creep.memory.collect) {
-        
         // Get dropped energy
         let dropped = creep.room.find(FIND_DROPPED_RESOURCES, {
-            filter: e => e.resourceType == RESOURCE_ENERGY
+            filter: e => (
+                e.resourceType == RESOURCE_ENERGY
+                && e.amount >= 50
+            )
         });
-
-        // Get tombstone energy
-        let tombstone = creep.room.find(FIND_TOMBSTONES, {
-            filter: t => t.store.energy
-        });
-
-        // Combine/Get closest
-        let energy = dropped.concat(tombstone);
-        let closestEnergy = creep.pos.findClosestByPath(energy);
-        if(closestEnergy) {
-            let r = creep.pickup(closestEnergy);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(closestEnergy);
+        dropped = creep.pos.findClosestByPath(dropped);
+        if(dropped) {
+            let r = creep.pickup(dropped);
+            if(r == ERR_NOT_IN_RANGE) {
+                creep.goTo(dropped);
+            }
             return r;
         }
 

@@ -49,7 +49,7 @@ function roleNeedsCreep(spawn, roleName) {
                 filter: { structureType: STRUCTURE_SPAWN }
             }).length
         ) {
-            f.debug('Claim completed');
+            f.debug('Claim completed ('+ spawn.memory.claim +')');
             spawn.memory.claim = null;
             return false;
         }
