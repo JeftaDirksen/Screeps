@@ -30,7 +30,7 @@ module.exports = {
                 creepType: 'a',
             },
             collector: {
-                defaultAmount: 1,
+                defaultAmount: 2,
                 creepType: 'b',
             },
             builder: {

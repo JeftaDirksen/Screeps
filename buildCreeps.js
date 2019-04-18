@@ -2,46 +2,52 @@ var c = require('config');
 var f = require('functions');
 
 module.exports = function() {
-	for (let spawnName in Game.spawns) {
-		let spawn = Game.spawns[spawnName];
-		
-		checkSpawnMemory(spawn);
-        
-		if (spawn.spawning) continue;
-		
-		// Get energy stats
-		let energyCapacity = spawn.room.energyCapacityAvailable;
-		let energyAvailable = spawn.room.energyAvailable;
-		
-		// Spawn failure checks/fixes
-		let roomHarvesters = spawn.room.find(FIND_MY_CREEPS,{
-				filter: c => c.memory.role == 'harvester'
-		}).length;
-		if(!roomHarvesters) energyCapacity = 300;
-		let roomTransporter = spawn.room.find(FIND_MY_CREEPS,{
-				filter: c => c.memory.role == 'transporter'
-		}).length;
-		if(!roomTransporter) energyCapacity = 300;
-		
-		// Check if energy full
-		if(energyAvailable < energyCapacity) continue;
-		
+    for (let spawnName in Game.spawns) {
+        let spawn = Game.spawns[spawnName];
+
+        checkSpawnMemory(spawn);
+
+        if (spawn.spawning) continue;
+
+        // Get energy stats
+        let energyCapacity = spawn.room.energyCapacityAvailable;
+        let energyAvailable = spawn.room.energyAvailable;
+
+        // Spawn failure checks/fixes
+        let roomHarvesters = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'harvester'
+        }).length;
+        if(!roomHarvesters) energyCapacity = 300;
+
+        let roomCollector = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'collector'
+        }).length;
+        if(!roomCollector) energyCapacity = 300;
+
+        let roomTransporter = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'transporter'
+        }).length;
+        if(!roomTransporter) energyCapacity = 300;
+
+        // Check if energy full
+        if(energyAvailable < energyCapacity) continue;
+
         // Check roles for needed creeps
-		for(let roleName in c.creep.role) {
+        for(let roleName in c.creep.role) {
             if (roleNeedsCreep(spawn, roleName)) {
                 if (buildCreep(spawn, roleName, energyAvailable)) break;
             }
-		}
-	}
+        }
+    }
 }
 
 function roleNeedsCreep(spawn, roleName) {
     let role = c.creep.role[roleName];
-    
+
     // roomClaimer
     if(roleName == 'roomClaimer') {
         if(!spawn.memory.claim) return false;
-        
+
         // Check if claim complete
         if(
             Game.rooms[spawn.memory.claim].controller.my &&
@@ -60,21 +66,21 @@ function roleNeedsCreep(spawn, roleName) {
         if(currentCount >= toBuildCount) return false;
         else return true;
     }
-    
+
     // Check if build enough already
     let currentCount = spawn.room.find(FIND_MY_CREEPS,{
         filter: c => c.memory.role == roleName
     }).length;
     let toBuildCount = spawn.memory[roleName+'s'];
     if(currentCount >= toBuildCount) return false;
-    
+
     // Builder (only when constructionSite exists)
     if(roleName == 'builder') {
         let sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length;
         if(!sites) return false;
     }
-    
-    return true;    
+
+    return true;
 }
 
 function checkSpawnMemory(spawn) {
@@ -88,21 +94,21 @@ function checkSpawnMemory(spawn) {
 
 function buildCreep(spawn, roleName, energy) {
     let role = c.creep.role[roleName];
-    
+
     // Get body
     let body = getBody(role.creepType, energy);
     if(!body) return false;
-    
+
     // Name / Memory
     let name = generateName(roleName);
     let memory = {memory:{role:roleName,room:spawn.room.name}};
-    
+
     // Role specific memory
     if(roleName == 'roomClaimer') {
         let roomName = Game.rooms[spawn.memory.claim].name;
         memory = {memory:{role:roleName,room:roomName}};
     }
-    
+
     // Build creep
     let r = spawn.spawnCreep(body, name, memory);
     if(r) {
@@ -116,20 +122,20 @@ function buildCreep(spawn, roleName, energy) {
 }
 
 function generateName(role) {
-	let r = role.charAt(0).toUpperCase();
-	for(let i = 1; i<=100; i++) {
-		let name = r+i;
-		if(!Game.creeps[name]) {
-			return name;
-		}
-	}
-	f.error('Name generation failed ('+type+')');
+    let r = role.charAt(0).toUpperCase();
+    for(let i = 1; i<=100; i++) {
+        let name = r+i;
+        if(!Game.creeps[name]) {
+            return name;
+        }
+    }
+    f.error('Name generation failed ('+type+')');
 }
 
 function getBody(type, energy) {
-	let bodies = c.creep.type[type];
-	for(let i = bodies.length-1; i >= 0; i-- ) {
-		let body = c.creep.type[type][i];
-		if(body.cost <= energy) return body.body;
-	}
+    let bodies = c.creep.type[type];
+    for(let i = bodies.length-1; i >= 0; i-- ) {
+        let body = c.creep.type[type][i];
+        if(body.cost <= energy) return body.body;
+    }
 }
