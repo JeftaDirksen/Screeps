@@ -68,8 +68,8 @@ function roleNeedsCreep(spawn, roleName) {
     }
 
     // Check if build enough already
-    let currentCount = spawn.room.find(FIND_MY_CREEPS,{
-        filter: c => c.memory.role == roleName
+    let currentCount = _.filter(Game.creeps, {
+        memory: {role: roleName, room: spawn.room.name}
     }).length;
     let toBuildCount = spawn.memory[roleName+'s'];
     if(currentCount >= toBuildCount) return false;
