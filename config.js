@@ -32,17 +32,17 @@ module.exports = {
                 defaultAmount: 4,
                 creepType: 'a',
             },
-            builder: {
+            transporter: {
                 defaultAmount: 2,
-                creepType: 'a',
+                creepType: 'b',
             },
             upgrader: {
                 defaultAmount: 1,
                 creepType: 'a',
             },
-            transporter: {
+            builder: {
                 defaultAmount: 2,
-                creepType: 'b',
+                creepType: 'a',
             },
             roomClaimer: {
                 defaultAmount: 5,

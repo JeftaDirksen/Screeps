@@ -14,10 +14,16 @@ module.exports = function() {
         let energyAvailable = spawn.room.energyAvailable;
 
         // Spawn failure checks/fixes
-        let roomHarvesters = spawn.room.find(FIND_MY_CREEPS,{
+        // Harvester required
+        let harvesters = spawn.room.find(FIND_MY_CREEPS,{
                 filter: c => c.memory.role == 'harvester'
         }).length;
-        if(!roomHarvesters) energyCapacity = 300;
+        if(!harvesters) energyCapacity = 300;
+        // Transporter required
+        let transporters = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'transporter'
+        }).length;
+        if(!transporters) energyCapacity = 300;
 
         // Check if energy full
         if(energyAvailable < energyCapacity) continue;
