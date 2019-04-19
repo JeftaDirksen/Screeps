@@ -44,27 +44,27 @@ module.exports = function (creep) {
             jobTarget = Game.getObjectById(creep.memory.jobTarget);
         }
         else {
-            // Find container/link
-            jobTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            // Find spawn/extensions
+            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s => (
-                    s.structureType == STRUCTURE_CONTAINER
-                    || s.structureType == STRUCTURE_LINK
-                )
-                && (
-                    _.sum(s.store) < s.storeCapacity
-                    || s.energy < s.energyCapacity
-                )
-            });
+                    s.structureType == STRUCTURE_SPAWN
+                    || s.structureType == STRUCTURE_EXTENSION
+                    ) && (
+                        s.energy < s.energyCapacity
+                    )
+            });            
 
             if(!jobTarget) {
-                // Find other (spawn/extensions)
-                jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                // Find container/link
+                jobTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s => (
-                        s.structureType == STRUCTURE_SPAWN
-                        || s.structureType == STRUCTURE_EXTENSION
-                        ) && (
-                            s.energy < s.energyCapacity
-                        )
+                        s.structureType == STRUCTURE_CONTAINER
+                        || s.structureType == STRUCTURE_LINK
+                    )
+                    && (
+                        _.sum(s.store) < s.storeCapacity
+                        || s.energy < s.energyCapacity
+                    )
                 });
             }
 
