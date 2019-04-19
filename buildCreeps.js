@@ -69,6 +69,14 @@ function roleNeedsCreep(spawn, roleName) {
         let sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length;
         if(!sites) return false;
     }
+    
+    // Upgrader/Transporter only when container exists
+    if(roleName == 'upgrader' || roleName == 'transporter') {
+        let containers = spawn.room.find(FIND_STRUCTURES, {
+            filter: { structureType: STRUCTURE_CONTAINER }
+        }).length
+        if(!containers) return false;
+    }
 
     return true;
 }
