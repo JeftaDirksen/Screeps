@@ -52,6 +52,10 @@ module.exports = function (creep) {
                 if(r == ERR_NOT_IN_RANGE) creep.goTo(energyDrop);
                 return r;
             }
+            else {
+                creep.memory.build = true;
+                creep.goIdle();
+            }
         }
     }
 }
