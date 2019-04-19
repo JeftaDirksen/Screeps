@@ -13,7 +13,19 @@ module.exports = function (creep) {
 
     // Transport
     if(creep.memory.transport) {
-
+        // Supply links when <20% full
+        if(linkSystemPercentage(creep.room) < 20) {
+            let links = creep.room.find(FIND_MY_STRUCTURES, {
+                filter: s => s.structureType == STRUCTURE_LINK
+            });
+            if(links.length) {
+                let link = creep.pos.findClosestByPath(links);
+                let r = creep.transfer(link, RESOURCE_ENERGY);
+                if(r == ERR_NOT_IN_RANGE) creep.goTo(link);
+                return r;
+            }
+        }
+        
         // Supply spawn/extensions
         let spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
             filter: s => (
@@ -40,14 +52,38 @@ module.exports = function (creep) {
             else if (r) f.error('creep.transfer '+r);
             return;
         }
-
+        
+        // Supply container/storage when link-system >80% full
+        if(linkSystemPercentage(creep.room) > 80) {
+            let storage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
+                filter: s => (
+                    s.structureType == STRUCTURE_CONTAINER
+                    || s.structureType == STRUCTURE_STORAGE
+                ) && s.energy < s.energyCapacity || _.sum(s.store) < s.storeCapacity
+            });
+            if(storage) {
+                let r = creep.transfer(storage, RESOURCE_ENERGY);
+                if(r == ERR_NOT_IN_RANGE) creep.goTo(storage);
+                else if (r) f.error('creep.transfer '+r);
+                return;
+            }
+        }
     }
 
     // Load
     else {
         // Get from link when link-system >80% full
-        if() {
-
+        if(linkSystemPercentage(creep.room) > 80) {
+            // Get energy from link
+            let links = creep.room.find(FIND_MY_STRUCTURES, {
+                filter: s => s.structureType == STRUCTURE_LINK
+            });
+            if(links.length) {
+                let link = creep.pos.findClosestByPath(links);
+                let r = creep.withdraw(link, RESOURCE_ENERGY);
+                if(r == ERR_NOT_IN_RANGE) creep.goTo(link);
+                return r;
+            }
         }
 
         else {
@@ -61,14 +97,14 @@ module.exports = function (creep) {
                     s.energy || (s.store && s.store.energy)
                 )
             });
+            if(structures.length) {
+                let structure = creep.pos.findClosestByPath(structures);
+                let r = creep.withdraw(structure, RESOURCE_ENERGY);
+                if(r == ERR_NOT_IN_RANGE) creep.goTo(structure);
+                return r;
+            }
         }
 
-        if(structures.length) {
-            let structure = creep.pos.findClosestByPath(structures);
-            let r = creep.withdraw(structure, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(structure);
-            return r;
-        }
     }
 
     // goIdle

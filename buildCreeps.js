@@ -19,16 +19,6 @@ module.exports = function() {
         }).length;
         if(!roomHarvesters) energyCapacity = 300;
 
-        let roomCollector = spawn.room.find(FIND_MY_CREEPS,{
-                filter: c => c.memory.role == 'collector'
-        }).length;
-        if(!roomCollector) energyCapacity = 300;
-
-        let roomTransporter = spawn.room.find(FIND_MY_CREEPS,{
-                filter: c => c.memory.role == 'transporter'
-        }).length;
-        if(!roomTransporter) energyCapacity = 300;
-
         // Check if energy full
         if(energyAvailable < energyCapacity) continue;
 

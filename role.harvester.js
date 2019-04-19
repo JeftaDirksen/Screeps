@@ -57,15 +57,13 @@ module.exports = function (creep) {
             });
 
             if(!jobTarget) {
-                // Find other (spawn/extensions/storage)
+                // Find other (spawn/extensions)
                 jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: s => (
                         s.structureType == STRUCTURE_SPAWN
                         || s.structureType == STRUCTURE_EXTENSION
-                        || s.structureType == STRUCTURE_STORAGE
                         ) && (
                             s.energy < s.energyCapacity
-                            || _.sum(s.store) < s.storeCapacity
                         )
                 });
             }
