@@ -25,7 +25,7 @@ module.exports.loop = function () {
 	if(Memory.debug == undefined) Memory.debug = false;
 	if(Memory.signText == undefined) Memory.signText = '';
 	if(Memory.idleThresholdTicks == undefined) Memory.idleThresholdTicks = 15;
-	if(Memory.reusePath == undefined) Memory.reusePath = 10;
+	if(Memory.reusePath == undefined) Memory.reusePath = 5;
 	
 	// Clear memory
 	for (let name in Memory.creeps) {
