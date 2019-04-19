@@ -55,6 +55,9 @@ module.exports = function (creep) {
                 return r;
             }
         }
+        
+        creep.memory.upgrade = true;
+        creep.goIdle();
     }
 }
 
