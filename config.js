@@ -29,7 +29,7 @@ module.exports = {
         },
         role: {
             harvester: {
-                defaultAmount: 2,
+                defaultAmount: 4,
                 creepType: 'a',
             },
             builder: {
