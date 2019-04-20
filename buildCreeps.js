@@ -70,7 +70,7 @@ function roleNeedsCreep(spawn, roleName) {
     let toBuildCount = spawn.memory[roleName+'s'];
     if(currentCount >= toBuildCount) return false;
 
-    // Builder (only when constructionSite exists)
+    // Builder only when constructionSite exists
     if(roleName == 'builder') {
         let sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length;
         if(!sites) return false;
@@ -84,6 +84,14 @@ function roleNeedsCreep(spawn, roleName) {
         if(!containers) return false;
     }
 
+    // Repairer only when no towers
+    if(roleName == 'repairer') {
+        let towers = spawn.room.find(FIND_MY_STRUCTURES, {
+            filter: { structureType: STRUCTURE_TOWER }
+        }).length;
+        if(towers) return false;
+    }
+    
     return true;
 }
 

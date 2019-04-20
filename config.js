@@ -44,6 +44,10 @@ module.exports = {
                 defaultAmount: 2,
                 creepType: 'a',
             },
+            repairer: {
+                defaultAmount: 1,
+                creepType: 'a',
+            },
             roomClaimer: {
                 defaultAmount: 5,
                 creepType: 'c',
