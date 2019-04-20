@@ -103,6 +103,18 @@ module.exports = function (creep) {
                 if(r == ERR_NOT_IN_RANGE) creep.goTo(structure);
                 return r;
             }
+            else {
+                // Get dropped energy
+                let energyDrops = creep.room.find(FIND_DROPPED_RESOURCES, {
+                    filter: e => e.resourceType == RESOURCE_ENERGY
+                });
+                if(energyDrops.length) {
+                    let energyDrop = creep.pos.findClosestByPath(energyDrops);
+                    let r = creep.pickup(energyDrop);
+                    if(r == ERR_NOT_IN_RANGE) creep.goTo(energyDrop);
+                    return r;
+                }
+            }
         }
 
     }
