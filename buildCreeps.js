@@ -46,6 +46,7 @@ function roleNeedsCreep(spawn, roleName) {
 
         // Check if claim complete
         if(
+            Game.rooms[spawn.memory.claim] &&
             Game.rooms[spawn.memory.claim].controller.my &&
             Game.rooms[spawn.memory.claim].find(FIND_MY_STRUCTURES, {
                 filter: { structureType: STRUCTURE_SPAWN }
