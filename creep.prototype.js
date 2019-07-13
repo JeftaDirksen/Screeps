@@ -16,7 +16,7 @@ Creep.prototype.goIdle = function() {
     this.memory.lastIdleTick = Game.time;
     // Go to idle point if ticks idle above threshold
     if(this.memory.ticksIdle >= Memory.idleThresholdTicks)
-        this.goTo(this.room.controller);
+        this.goToIdlePoint();
 }
 
 // goTo
@@ -42,6 +42,16 @@ Creep.prototype.goTo = function(target, maxRooms = 1) {
             this.say(r);
     }
     return r;
+}
+
+// goToIdlePoint
+Creep.prototype.goToIdlePoint = function() {
+    if(Game.flags['Idle']) {
+        this.goTo(Game.flags['Idle']);
+    }
+    else {
+        this.goTo(this.room.controller);
+    }
 }
 
 // isEmpty
