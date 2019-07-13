@@ -92,7 +92,7 @@ module.exports = function (creep) {
                 filter: s => (
                     s.structureType == STRUCTURE_STORAGE
                     || s.structureType == STRUCTURE_CONTAINER
-                    || s.structureType == STRUCTURE_LINK
+                    || (s.structureType == STRUCTURE_LINK && linkSystemPercentage(creep.room) > 50)
                 ) && (
                     s.energy || (s.store && s.store.energy)
                 )
