@@ -77,10 +77,14 @@ function roleNeedsCreep(spawn, roleName) {
         if(!sites) return false;
     }
     
-    // Upgrader/Transporter only when container exists
+    // Upgrader/Transporter only when container/storage exists
     if(roleName == 'upgrader' || roleName == 'transporter') {
         let containers = spawn.room.find(FIND_STRUCTURES, {
-            filter: { structureType: STRUCTURE_CONTAINER }
+            filter: s => (
+                s.structureType == STRUCTURE_CONTAINER
+                || s.structureType == STRUCTURE_STORAGE
+                || s.structureType == STRUCTURE_LINK
+            )
         }).length
         if(!containers) return false;
     }
