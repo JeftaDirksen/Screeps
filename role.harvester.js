@@ -44,15 +44,25 @@ module.exports = function (creep) {
             jobTarget = Game.getObjectById(creep.memory.jobTarget);
         }
         else {
-            // Find spawn/extensions
+            // Find spawn
             jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s => (
                     s.structureType == STRUCTURE_SPAWN
-                    || s.structureType == STRUCTURE_EXTENSION
                     ) && (
                         s.energy < s.energyCapacity
                     )
             });            
+
+            if(!jobTarget) {
+                // Find extensions
+                jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: s => (
+                        s.structureType == STRUCTURE_EXTENSION
+                        ) && (
+                            s.energy < s.energyCapacity
+                        )
+                });
+            }
 
             if(!jobTarget) {
                 // Find container/link
