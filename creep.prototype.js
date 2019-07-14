@@ -46,9 +46,9 @@ Creep.prototype.goTo = function(target, maxRooms = 1) {
 
 // goToIdlePoint
 Creep.prototype.goToIdlePoint = function() {
-    let roomIdleFlag = _.filter(Game.flags, {room: this.room, name: 'Idle'});
-    if(roomIdleFlag) {
-        this.goTo(roomIdleFlag);
+    let roomIdleFlag = _.filter(Game.flags, {room: this.room, color: COLOR_WHITE});
+    if(roomIdleFlag.length) {
+        this.goTo(roomIdleFlag[0]);
     }
     else {
         this.goTo(this.room.controller);
