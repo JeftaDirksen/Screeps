@@ -122,8 +122,8 @@ function buildCreep(spawn, roleName, energy) {
 
     // Role specific memory
     if(roleName == 'roomClaimer') {
-        let roomName = Game.rooms[spawn.memory.claim].name;
-        memory = {memory:{role:roleName,room:roomName}};
+        //let roomName = Game.rooms[spawn.memory.claim].name;
+        memory = {memory:{role:roleName,room:spawn.memory.claim}};
     }
 
     // Build creep
