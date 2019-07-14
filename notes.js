@@ -1,6 +1,6 @@
 /*
 
-ToDo: test sync
-
+ToDo:
+    - Split transporter into supplier / collector
 
 */

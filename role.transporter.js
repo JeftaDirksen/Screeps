@@ -68,6 +68,33 @@ module.exports = function (creep) {
                 return;
             }
         }
+        
+        // Supply storage when containers >80% full
+        const nrOfStorages = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: s => 
+                s.structureType == STRUCTURE_STORAGE
+                && _.sum(s.store) < s.storeCapacity
+        }).length;
+        let containers = creep.room.find(FIND_STRUCTURES,{filter:{structureType:STRUCTURE_CONTAINER}});
+        if (nrOfStorages && containers.length) {
+            const containersAmountStored = _.sum(containers, c => _.sum(c.store));
+            const containersStorageCapacity = _.sum(containers, c => c.storeCapacity);
+            const containersFullPercent = containersAmountStored / containersStorageCapacity * 100;
+            if(containersFullPercent > 80) {
+                let storage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
+                    filter: s => (
+                        s.structureType == STRUCTURE_STORAGE
+                    ) && _.sum(s.store) < s.storeCapacity
+                });
+                if(storage) {
+                    f.debug(creep.name+' supplying storage because containers full');
+                    let r = creep.transfer(storage, RESOURCE_ENERGY);
+                    if(r == ERR_NOT_IN_RANGE) creep.goTo(storage);
+                    else if (r) f.error('creep.transfer '+r);
+                    return;
+                }
+            }
+        }
     }
 
     // Load
