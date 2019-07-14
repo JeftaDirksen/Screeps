@@ -1,6 +1,15 @@
 var c = require('config');
 var f = require('functions');
 
+/*
+    Harvesters should:
+    1. Harvest to full
+    2. Unload at spawn when there is no transporter
+    3. Unload at extensions when there is no transporter
+    4. Unload at closest not full energy storage (container/link/storage)
+*/
+
+
 module.exports = function (creep) {
     // Check if empty
     if(!creep.memory.harvest && creep.isEmpty()) {
@@ -44,32 +53,39 @@ module.exports = function (creep) {
             jobTarget = Game.getObjectById(creep.memory.jobTarget);
         }
         else {
-            // Find spawn
-            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: s => (
-                    s.structureType == STRUCTURE_SPAWN
-                    ) && (
-                        s.energy < s.energyCapacity
-                    )
-            });            
-
-            if(!jobTarget) {
-                // Find extensions
+            const nrOfTransporters = creep.room.find(FIND_MY_CREEPS, {
+                filter: { memory: {role: 'transporter'} }
+            }).length;
+            
+            if(nrOfTransporters == 0) {
+                // Find spawn
                 jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: s => (
-                        s.structureType == STRUCTURE_EXTENSION
+                        s.structureType == STRUCTURE_SPAWN
                         ) && (
                             s.energy < s.energyCapacity
                         )
-                });
+                });            
+    
+                if(!jobTarget) {
+                    // Find extensions
+                    jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                        filter: s => (
+                            s.structureType == STRUCTURE_EXTENSION
+                            ) && (
+                                s.energy < s.energyCapacity
+                            )
+                    });
+                }
             }
 
             if(!jobTarget) {
-                // Find container/link
+                // Find container/link/storage
                 jobTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s => (
                         s.structureType == STRUCTURE_CONTAINER
                         || s.structureType == STRUCTURE_LINK
+                        || s.structureType == STRUCTURE_STORAGE
                     )
                     && (
                         _.sum(s.store) < s.storeCapacity
