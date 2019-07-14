@@ -9,6 +9,7 @@ module.exports = function (creep) {
         if (r == ERR_NOT_IN_RANGE) creep.goTo(creep.room.controller);
         else if (r == ERR_INVALID_TARGET) creep.goIdle();
         else if (r == OK) f.debug(creep.name + ' claimed the controller in ' + creep.room.name + '!');
+        else if (r == ERR_GCL_NOT_ENOUGH) f.debug('GCL too low to claim room '+creep.room.name);
         else f.debug('creep.claimController '+r);
     }
     
