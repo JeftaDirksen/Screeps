@@ -28,6 +28,7 @@ module.exports = function (creep) {
             filter: s =>
                 s.structureType == STRUCTURE_LINK
                 && Memory.links[s.id].type == 'receiver'
+                && s.energy
         });
 
         // Get energy from storage/container
