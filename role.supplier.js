@@ -32,10 +32,10 @@ module.exports = function (creep) {
 
         // Get energy from storage/container
         let structures = creep.room.find(FIND_STRUCTURES, {
-            filter: s =>
+            filter: s => (
                 s.structureType == STRUCTURE_STORAGE
                 || s.structureType == STRUCTURE_CONTAINER
-                && (s.energy || s.store && s.store.energy)
+                ) && (s.energy || s.store && s.store.energy)
         });
         energies = energies.concat(structures);
         
