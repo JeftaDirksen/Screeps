@@ -2,6 +2,6 @@
 
 ToDo:
     x Links: sender and receivers instead of balancing
-    - Split transporter into supplier / collector
+    x Split transporter into supplier / collector
 
 */

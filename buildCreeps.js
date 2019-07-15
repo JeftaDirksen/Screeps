@@ -19,11 +19,11 @@ module.exports = function() {
                 filter: c => c.memory.role == 'harvester'
         }).length;
         if(!harvesters) energyCapacity = 300;
-        // Transporter required
-        let transporters = spawn.room.find(FIND_MY_CREEPS,{
-                filter: c => c.memory.role == 'transporter'
+        // Supplier required
+        let suppliers = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'supplier'
         }).length;
-        if(!transporters) energyCapacity = 300;
+        if(!suppliers) energyCapacity = 300;
 
         // Check if energy full
         if(energyAvailable < energyCapacity) continue;
@@ -82,8 +82,8 @@ function roleNeedsCreep(spawn, roleName) {
         if(!sites) return false;
     }
     
-    // Upgrader/Transporter only when container/storage exists
-    if(roleName == 'upgrader' || roleName == 'transporter') {
+    // Upgrader only when container/storage exists
+    if(roleName == 'upgrader') {
         let containers = spawn.room.find(FIND_STRUCTURES, {
             filter: s => (
                 s.structureType == STRUCTURE_CONTAINER

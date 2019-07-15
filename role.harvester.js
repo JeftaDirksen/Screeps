@@ -1,13 +1,13 @@
-var c = require('config');
-var f = require('functions');
-
 /*
     Harvesters should:
-    1. Harvest to full
-    2. Unload at spawn when there is no transporter
-    3. Unload at extensions when there is no transporter
-    4. Unload at closest not full energy storage (container/link/storage)
+    - Harvest to full
+    - Unload at spawn when there is no supplier
+    - Unload at extensions when there is no supplier
+    - Unload at closest not full energy storage (container/link/storage)
 */
+
+var c = require('config');
+var f = require('functions');
 
 
 module.exports = function (creep) {
@@ -53,11 +53,11 @@ module.exports = function (creep) {
             jobTarget = Game.getObjectById(creep.memory.jobTarget);
         }
         else {
-            const nrOfTransporters = creep.room.find(FIND_MY_CREEPS, {
-                filter: { memory: {role: 'transporter'} }
+            const nrOfSuppliers = creep.room.find(FIND_MY_CREEPS, {
+                filter: { memory: {role: 'supplier'} }
             }).length;
             
-            if(nrOfTransporters == 0) {
+            if(nrOfSuppliers == 0) {
                 // Find spawn
                 jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: s => (
