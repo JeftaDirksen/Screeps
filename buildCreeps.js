@@ -19,11 +19,11 @@ module.exports = function() {
                 filter: c => c.memory.role == 'harvester'
         }).length;
         if(!harvesters) energyCapacity = 300;
-        // Transporter required
-        let transporters = spawn.room.find(FIND_MY_CREEPS,{
-                filter: c => c.memory.role == 'transporter'
+        // Supplier required
+        let suppliers = spawn.room.find(FIND_MY_CREEPS,{
+                filter: c => c.memory.role == 'supplier'
         }).length;
-        if(!transporters) energyCapacity = 300;
+        if(!suppliers) energyCapacity = 300;
 
         // Check if energy full
         if(energyAvailable < energyCapacity) continue;
@@ -44,23 +44,24 @@ function roleNeedsCreep(spawn, roleName) {
     if(roleName == 'roomClaimer') {
         if(!spawn.memory.claim) return false;
         
-        // Check GCL (GCL >= Amount of claimed rooms)
-        let controlledRooms = _.filter(Game.rooms, r => r.controller.my).length;
-        let gcl = Game.gcl.level;
-        if(gcl <= controlledRooms) return false;
-
         // Check if claim complete
         if(
             Game.rooms[spawn.memory.claim] &&
             Game.rooms[spawn.memory.claim].controller.my &&
-            Game.rooms[spawn.memory.claim].find(FIND_MY_STRUCTURES, {
-                filter: { structureType: STRUCTURE_SPAWN }
-            }).length
+            Game.rooms[spawn.memory.claim].find(FIND_MY_SPAWNS).length
         ) {
             f.debug('Claim completed ('+ spawn.memory.claim +')');
             spawn.memory.claim = null;
             return false;
         }
+
+        // Check GCL (GCL >= Amount of claimed rooms (with spawn))
+        let controlledRooms = _.filter(Game.rooms, r =>
+            r.controller.my
+            && r.find(FIND_MY_SPAWNS).length
+        ).length;
+        let gcl = Game.gcl.level;
+        if(gcl <= controlledRooms) return false;
 
         // Check if build enough roomClaimers (in all rooms)
         let currentCount = _.filter(Game.creeps,{memory: {role: 'roomClaimer'}}).length;
@@ -82,8 +83,8 @@ function roleNeedsCreep(spawn, roleName) {
         if(!sites) return false;
     }
     
-    // Upgrader/Transporter only when container/storage exists
-    if(roleName == 'upgrader' || roleName == 'transporter') {
+    // Upgrader only when container/storage exists
+    if(roleName == 'upgrader') {
         let containers = spawn.room.find(FIND_STRUCTURES, {
             filter: s => (
                 s.structureType == STRUCTURE_CONTAINER

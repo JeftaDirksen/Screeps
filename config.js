@@ -32,8 +32,12 @@ module.exports = {
                 defaultAmount: 4,
                 creepType: 'a',
             },
-            transporter: {
-                defaultAmount: 2,
+            supplier: {
+                defaultAmount: 1,
+                creepType: 'b',
+            },
+            collector: {
+                defaultAmount: 1,
                 creepType: 'b',
             },
             upgrader: {
