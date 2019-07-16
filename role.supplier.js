@@ -60,60 +60,62 @@ module.exports = function (creep) {
     // Supply
     else {
         
+        // Set jobTarget
+        let jobTarget;
+        if(creep.memory.jobTarget) {
+            jobTarget = Game.getObjectById(creep.memory.jobTarget);
+        }
+
+        
         // Supply spawn
-        let spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
-            filter: s =>
-                s.structureType == STRUCTURE_SPAWN
-                && s.energy < s.energyCapacity
-        });
-        if(spawn) {
-            let r = creep.transfer(spawn, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(spawn);
-            else if(r) f.error('creep.transfer '+r);
-            return;
+        if (!jobTarget) {
+            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s =>
+                    s.structureType == STRUCTURE_SPAWN
+                    && s.energy < s.energyCapacity
+            });
+            if(jobTarget) creep.memory.jobTarget = jobTarget.id;
         }
         
         // Supply extensions
-        let extension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
-            filter: s =>
-                s.structureType == STRUCTURE_EXTENSION
-                && s.energy < s.energyCapacity
-        });
-        if(extension) {
-            let r = creep.transfer(extension, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(extension);
-            else if(r) f.error('creep.transfer '+r);
-            return;
+        if (!jobTarget) {
+            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s =>
+                    s.structureType == STRUCTURE_EXTENSION
+                    && s.energy < s.energyCapacity
+            });
+            if(jobTarget) creep.memory.jobTarget = jobTarget.id;
         }
         
         // Supply sender links
-        let links = creep.room.find(FIND_MY_STRUCTURES, {
-            filter: s =>
-                s.structureType == STRUCTURE_LINK
-                && Memory.links[s.id].type == 'sender'
-                && s.energy < s.energyCapacity
-        });
-        if(links.length) {
-            let link = creep.pos.findClosestByPath(links);
-            let r = creep.transfer(link, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(link);
-            else if(r) f.error('creep.transfer '+r);
-            return;
+        if (!jobTarget) {
+            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s =>
+                    s.structureType == STRUCTURE_LINK
+                    && Memory.links[s.id].type == 'sender'
+                    && s.energy < s.energyCapacity
+            });
+            if(jobTarget) creep.memory.jobTarget = jobTarget.id;
         }
 
         // Supply tower
-        let tower = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,{
-            filter: s =>
-                s.structureType == STRUCTURE_TOWER
-                && s.energy < s.energyCapacity
-        });
-        if(tower) {
-            let r = creep.transfer(tower, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(tower);
-            else if(r) f.error('creep.transfer '+r);
+        if (!jobTarget) {
+            jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s =>
+                    s.structureType == STRUCTURE_TOWER
+                    && s.energy < s.energyCapacity
+            });
+            if(jobTarget) creep.memory.jobTarget = jobTarget.id;
+        }
+
+        // Supply jobTarget
+        if(jobTarget) {
+            let r = creep.transfer(jobTarget, RESOURCE_ENERGY);
+            if(r == ERR_NOT_IN_RANGE) creep.goTo(jobTarget);
+            else if(r != OK) creep.memory.jobTarget = null;
             return;
         }
-        
+
     }
 
     // goIdle
