@@ -44,8 +44,11 @@ function roleNeedsCreep(spawn, roleName) {
     if(roleName == 'roomClaimer') {
         if(!spawn.memory.claim) return false;
         
-        // Check GCL (GCL >= Amount of claimed rooms)
-        let controlledRooms = _.filter(Game.rooms, r => r.controller.my).length;
+        // Check GCL (GCL >= Amount of claimed rooms (with spawn))
+        let controlledRooms = _.filter(Game.rooms, r =>
+            r.controller.my
+            && r.find(FIND_MY_SPAWNS).length
+        ).length;
         let gcl = Game.gcl.level;
         if(gcl <= controlledRooms) return false;
 
@@ -53,9 +56,7 @@ function roleNeedsCreep(spawn, roleName) {
         if(
             Game.rooms[spawn.memory.claim] &&
             Game.rooms[spawn.memory.claim].controller.my &&
-            Game.rooms[spawn.memory.claim].find(FIND_MY_STRUCTURES, {
-                filter: { structureType: STRUCTURE_SPAWN }
-            }).length
+            Game.rooms[spawn.memory.claim].find(FIND_MY_SPAWNS).length
         ) {
             f.debug('Claim completed ('+ spawn.memory.claim +')');
             spawn.memory.claim = null;
