@@ -34,6 +34,17 @@ module.exports = function (creep) {
             return;
         }
         
+        // Collect from tombstones
+        const tombstone = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
+            filter: t => t.store.energy
+        });
+        if(tombstone) {
+            let r = creep.withdraw(tombstone, RESOURCE_ENERGY);
+            if(r == ERR_NOT_IN_RANGE) creep.goTo(tombstone);
+            else if(r) creep.say(r);
+            return;
+        }
+
         // Collect dropped energy
         const droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
             filter: {resourceType: RESOURCE_ENERGY}
@@ -44,6 +55,7 @@ module.exports = function (creep) {
             else if(r) creep.say(r);
             return;
         }
+        
     }
 
     // Unload
@@ -55,6 +67,8 @@ module.exports = function (creep) {
                 s.structureType == STRUCTURE_CONTAINER && _.sum(s.store) < 0.50 * s.storeCapacity
                 || s.structureType == STRUCTURE_LINK && s.energy < s.energyCapacity
                 || s.structureType == STRUCTURE_STORAGE && _.sum(s.store) < s.storeCapacity
+                || s.structureType == STRUCTURE_SPAWN && s.energy < s.energyCapacity
+                || s.structureType == STRUCTURE_EXTENSION && s.energy < s.energyCapacity 
         });
         if(unloadAt) {
             let r = creep.transfer(unloadAt, RESOURCE_ENERGY);
