@@ -2,7 +2,7 @@
     Collector should:
     - Collect from containers >75%
     - Collect dropped energy
-    - Unload to closest not full, container <50%
+    - Unload to closest not full, not container
 */
 
 var c = require('config');
@@ -21,11 +21,11 @@ module.exports = function (creep) {
     // Collect
     if(creep.memory.collect) {
         
-        // Collect from containers >75%
+        // Collect from containers >50%
         const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s =>
                 s.structureType == STRUCTURE_CONTAINER
-                && _.sum(s.store) > 0.75 * s.storeCapacity
+                && _.sum(s.store) > 0.5 * s.storeCapacity
         });
         if(container) {
             let r = creep.withdraw(container, RESOURCE_ENERGY);
@@ -64,11 +64,11 @@ module.exports = function (creep) {
         // Unload to closest not full, container <50%
         let unloadAt = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s =>
-                s.structureType == STRUCTURE_CONTAINER && _.sum(s.store) < 0.50 * s.storeCapacity
-                || s.structureType == STRUCTURE_LINK && s.energy < s.energyCapacity
+                s.structureType == STRUCTURE_LINK && s.energy < s.energyCapacity
                 || s.structureType == STRUCTURE_STORAGE && _.sum(s.store) < s.storeCapacity
                 || s.structureType == STRUCTURE_SPAWN && s.energy < s.energyCapacity
-                || s.structureType == STRUCTURE_EXTENSION && s.energy < s.energyCapacity 
+                || s.structureType == STRUCTURE_EXTENSION && s.energy < s.energyCapacity
+                || s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity
         });
         if(unloadAt) {
             let r = creep.transfer(unloadAt, RESOURCE_ENERGY);
