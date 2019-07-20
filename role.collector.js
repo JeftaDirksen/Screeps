@@ -61,14 +61,14 @@ module.exports = function (creep) {
     // Unload
     else {
         
-        // Unload to closest container with enough space
+        // Unload to closest container with enough space (at lease half the load)
         let unloadAt = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s =>
-                s.structureType == STRUCTURE_LINK && _.sum(creep.carry) + s.energy < s.energyCapacity
-                || s.structureType == STRUCTURE_STORAGE && _.sum(creep.carry) + _.sum(s.store) < s.storeCapacity
-                || s.structureType == STRUCTURE_SPAWN && _.sum(creep.carry) + s.energy < s.energyCapacity
-                || s.structureType == STRUCTURE_EXTENSION && _.sum(creep.carry) + s.energy < s.energyCapacity
-                || s.structureType == STRUCTURE_TOWER && _.sum(creep.carry) + s.energy < s.energyCapacity
+                s.structureType == STRUCTURE_LINK && .5*_.sum(creep.carry) + s.energy < s.energyCapacity
+                || s.structureType == STRUCTURE_STORAGE && .5*_.sum(creep.carry) + _.sum(s.store) < s.storeCapacity
+                || s.structureType == STRUCTURE_SPAWN && .5*_.sum(creep.carry) + s.energy < s.energyCapacity
+                || s.structureType == STRUCTURE_EXTENSION && .5*_.sum(creep.carry) + s.energy < s.energyCapacity
+                || s.structureType == STRUCTURE_TOWER && .5*_.sum(creep.carry) + s.energy < s.energyCapacity
         });
         if(unloadAt) {
             let r = creep.transfer(unloadAt, RESOURCE_ENERGY);
