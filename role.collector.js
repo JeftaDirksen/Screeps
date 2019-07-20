@@ -79,7 +79,8 @@ module.exports = function (creep) {
 
     }
 
-    // goIdle
+    // unload / goIdle
+    if(creep.memory.collect) creep.memory.collect = false;
     creep.goIdle();
 
 }
