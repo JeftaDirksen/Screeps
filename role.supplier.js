@@ -27,7 +27,7 @@ module.exports = function (creep) {
         let energies = creep.room.find(FIND_MY_STRUCTURES, {
             filter: s =>
                 s.structureType == STRUCTURE_LINK
-                && Memory.links[s.id].type == 'receiver'
+                && Memory.links[s.id] && Memory.links[s.id].type == 'receiver'
                 && s.energy
         });
 
