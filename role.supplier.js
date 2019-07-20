@@ -92,7 +92,7 @@ module.exports = function (creep) {
             jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s =>
                     s.structureType == STRUCTURE_LINK
-                    && Memory.links[s.id].type == 'sender'
+                    && (Memory.links[s.id] && Memory.links[s.id].type == 'sender')
                     && s.energy < s.energyCapacity
             });
             if(jobTarget) creep.memory.jobTarget = jobTarget.id;
@@ -103,7 +103,7 @@ module.exports = function (creep) {
             jobTarget = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s =>
                     s.structureType == STRUCTURE_TOWER
-                    && s.energy < s.energyCapacity
+                    && s.energy < .75*s.energyCapacity
             });
             if(jobTarget) creep.memory.jobTarget = jobTarget.id;
         }
