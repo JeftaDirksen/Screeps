@@ -33,7 +33,7 @@ module.exports = {
                 creepType: 'a',
             },
             supplier: {
-                defaultAmount: 1,
+                defaultAmount: 2,
                 creepType: 'b',
             },
             collector: {
@@ -49,6 +49,10 @@ module.exports = {
                 creepType: 'a',
             },
             repairer: {
+                defaultAmount: 1,
+                creepType: 'a',
+            },
+            mineralHarvester: {
                 defaultAmount: 1,
                 creepType: 'a',
             },
