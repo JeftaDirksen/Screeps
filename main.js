@@ -22,5 +22,6 @@ module.exports.loop = function () {
     require('upgrader')();
     require('builder')();
     require('manager')();
+    require('tower')();
 
 }

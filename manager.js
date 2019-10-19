@@ -27,5 +27,22 @@ function run(creep) {
         else if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(spawn);
     }
     
+    // Energy to tower
+    const tower = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: s => s.structureType == STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY)
+    });
+    if (tower) {
+        if (creep.isEmpty()) {
+            const energySource = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => s.structureType == STRUCTURE_CONTAINER && (s.energy || (s.store && s.store.energy) )
+            });
+            if (energySource) {
+                if (creep.withdraw(energySource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(energySource);
+                return;
+            }
+        }
+        else if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(tower);
+    }    
+    
     
 }
