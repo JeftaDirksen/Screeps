@@ -1,40 +1,44 @@
 module.exports = function () {
-
     for (const spawnName in Game.spawns) {
         const spawn = Game.spawns[spawnName];
-
-        spawn.room.find(FIND_MY_CREEPS, {
+        const creeps = spawn.room.find(FIND_MY_CREEPS, {
             filter: c => c.memory.type == 'harvester'
-        }).forEach(function(h){
-            run(h);
-        })
+        });
+        for (const i in creeps) run(creeps[i]);
     }
 };
 
-function run(harvester) {
+function run(creep) {
     
     // Check if empty/full
-    if(!harvester.memory.harvest && harvester.isEmpty()) {
-        harvester.memory.harvest = true;
+    if(!creep.memory.harvest && creep.isEmpty()) {
+        creep.memory.harvest = true;
     }
-    if(harvester.memory.harvest && harvester.isFull()) {
-        harvester.memory.harvest = false;
+    if(creep.memory.harvest && creep.isFull()) {
+        creep.memory.harvest = false;
     }
     
     // Harvest
-    if (harvester.memory.harvest) {
-        const source = harvester.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-        if(harvester.harvest(source) == ERR_NOT_IN_RANGE) harvester.goTo(source);
+    if (creep.memory.harvest) {
+        const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+        if(creep.harvest(source) == ERR_NOT_IN_RANGE) creep.goTo(source);
     }
     
     // Deliver
     else {
         
         // Spawn
-        const spawn = harvester.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        const spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
             filter: s => s.structureType == STRUCTURE_SPAWN && s.energy < s.energyCapacity
         }); 
-        if (spawn) if(harvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) harvester.goTo(spawn);
+        if (spawn) {
+            if(creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(spawn);
+        }
+        
+        // Drop
+        else {
+            creep.drop(RESOURCE_ENERGY);
+        }
         
     }
 
