@@ -10,21 +10,37 @@ module.exports = function () {
 
 function run(creep) {
     
+    // Link energy
+	const receiver = creep.room.find(FIND_MY_SPAWNS)[0].pos.findClosestByRange(FIND_MY_STRUCTURES, {
+		filter: s => s.structureType == STRUCTURE_LINK
+	});
+	if (receiver.store[RESOURCE_ENERGY] && creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+	    creep.say("Link");
+	    const r = creep.withdraw(receiver, RESOURCE_ENERGY);
+	    if (r == ERR_NOT_IN_RANGE) creep.goTo(receiver);
+	    return;
+	}
+
     // Energy to spawn
     const spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-        filter: s => s.structureType == STRUCTURE_SPAWN && s.energy < s.energyCapacity
+        filter: s => s.structureType == STRUCTURE_SPAWN && s.store.getFreeCapacity(RESOURCE_ENERGY)
     });
     if (spawn) {
         if (creep.isEmpty()) {
+            creep.say("Energy");
             const energySource = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => s.structureType == STRUCTURE_CONTAINER && (s.energy || (s.store && s.store.energy) )
+                filter: s => [STRUCTURE_CONTAINER, STRUCTURE_STORAGE].indexOf(s.structureType) >= 0 && s.store[RESOURCE_ENERGY]
             });
             if (energySource) {
                 if (creep.withdraw(energySource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(energySource);
                 return;
             }
         }
-        else if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(spawn);
+        else {
+            creep.say("Spawn");
+            if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(spawn);
+            return;
+        }
     }
     
     // Energy to tower
@@ -33,6 +49,7 @@ function run(creep) {
     });
     if (tower) {
         if (creep.isEmpty()) {
+            creep.say("Energy");
             const energySource = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType == STRUCTURE_CONTAINER && (s.energy || (s.store && s.store.energy) )
             });
@@ -41,8 +58,29 @@ function run(creep) {
                 return;
             }
         }
-        else if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(tower);
+        else {
+            creep.say("Tower");
+            if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(tower);
+            return;
+        }
     }    
     
-    
+    // Energy to storage
+    if (creep.store.getUsedCapacity(RESOURCE_ENERGY)) {
+        const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: s => (
+                s.structureType == STRUCTURE_CONTAINER
+                || s.structureType == STRUCTURE_STORAGE
+            )
+            && s.store.getFreeCapacity(RESOURCE_ENERGY)
+        });
+        if (storage) {
+            creep.say("Store");
+            const r = creep.transfer(storage, RESOURCE_ENERGY);
+            console.log(r);
+            if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
+            return;
+        }
+    }
+
 }

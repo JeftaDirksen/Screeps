@@ -23,5 +23,6 @@ module.exports.loop = function () {
     require('builder')();
     require('manager')();
     require('tower')();
+    require('link')();
 
 }

@@ -36,16 +36,14 @@ function run(creep) {
             return;
         }
         
-        // Container/Storage
+        // Container/Storage/Link
         const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => (
                 s.structureType == STRUCTURE_CONTAINER
                 || s.structureType == STRUCTURE_STORAGE
+                || s.structureType == STRUCTURE_LINK
             )
-            && (
-                _.sum(s.store) < s.storeCapacity
-                || s.energy < s.energyCapacity
-            )
+            && s.store.getFreeCapacity(RESOURCE_ENERGY)
         });
         if (storage) {
             if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(storage);
