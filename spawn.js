@@ -17,13 +17,15 @@ module.exports = function () {
         }
         
         // Spawn Builder
-        if (countCreeps(spawn.room, "builder") < 1) {
-            const type = 'builder';
-            const name = generateName(type);
-            const body = [WORK, CARRY, MOVE, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
+        if (spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length) {
+            if (countCreeps(spawn.room, "builder") < 2) {
+                const type = 'builder';
+                const name = generateName(type);
+                const body = [WORK, CARRY, MOVE, MOVE];
+                if(spawn.spawnCreep(body, name, {
+                    memory: {type: type}
+                }) == OK) return;
+            }
         }
         
     }
