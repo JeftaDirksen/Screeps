@@ -4,7 +4,7 @@ module.exports = function () {
         const spawn = Game.spawns[spawnName];
 
         spawn.room.find(FIND_MY_CREEPS, {
-            filter: c => c.memory.role == 'harvester'
+            filter: c => c.memory.type == 'harvester'
         }).forEach(function(h){
             run(h);
         })
