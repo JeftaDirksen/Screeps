@@ -19,6 +19,7 @@ module.exports.loop = function () {
 
     require("spawn")();
     require('harvester')();
+    require('upgrader')();
     require('builder')();
     require('manager')();
 
