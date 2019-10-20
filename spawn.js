@@ -6,6 +6,21 @@ module.exports = function () {
         if (spawn.spawning) continue;
         if (spawn.room.energyAvailable < 250) continue;
         
+        // Manager
+        const storages = spawn.room.find(FIND_STRUCTURES, {
+            filter: s => s.structureType == STRUCTURE_STORAGE
+                || s.structureType == STRUCTURE_CONTAINER
+                || s.structureType == STRUCTURE_LINK
+        }).length;
+        if (storages && spawn.room.countCreeps("manager") < 1) {
+            const type = 'manager';
+            const name = spawn.generateCreepName(type);
+            const body = [WORK, CARRY, MOVE];
+            if(spawn.spawnCreep(body, name, {
+                memory: {type: type}
+            }) == OK) return;
+        }        
+
         // Harvester
         if (spawn.room.countCreeps("harvester") < 4) {
             const type = 'harvester';
@@ -38,21 +53,6 @@ module.exports = function () {
                 memory: {type: type}
             }) == OK) return;
         }
-
-        // Manager
-        const storages = spawn.room.find(FIND_STRUCTURES, {
-            filter: s => s.structureType == STRUCTURE_STORAGE
-                || s.structureType == STRUCTURE_CONTAINER
-                || s.structureType == STRUCTURE_LINK
-        }).length;
-        if (storages && spawn.room.countCreeps("manager") < 1) {
-            const type = 'manager';
-            const name = spawn.generateCreepName(type);
-            const body = [WORK, CARRY, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
-        }        
 
     }
     
