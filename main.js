@@ -17,11 +17,11 @@ module.exports.loop = function () {
         delete Memory.creeps[name];
     }
 
-    require("spawn")();
     require('harvester')();
+    require('manager')();
+    require("spawn")();
     require('upgrader')();
     require('builder')();
-    require('manager')();
     require('tower')();
     require('link')();
 

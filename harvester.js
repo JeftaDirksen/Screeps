@@ -27,19 +27,11 @@ function run(creep) {
     // Deliver
     else {
         
-        // Spawn
-        const spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-            filter: s => s.structureType == STRUCTURE_SPAWN && s.energy < s.energyCapacity
-        }); 
-        if (spawn) {
-            if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(spawn);
-            return;
-        }
-        
-        // Container/Storage/Link
+        // Spawn/Container/Storage/Link
         const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => (
-                s.structureType == STRUCTURE_CONTAINER
+                s.structureType == STRUCTURE_SPAWN
+                || s.structureType == STRUCTURE_CONTAINER
                 || s.structureType == STRUCTURE_STORAGE
                 || s.structureType == STRUCTURE_LINK
             )
@@ -47,7 +39,7 @@ function run(creep) {
         });
         if (storage) {
             if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(storage);
-                return;
+            return;
         }
         
         // Drop

@@ -17,7 +17,10 @@ module.exports = function () {
         }
         
         // Upgrader
-        if (spawn.room.countCreeps("upgrader") < 1) {
+        let upgradersNeeded = 2;
+        if (spawn.room.controller.level == 1) upgradersNeeded = 1;
+        if (spawn.room.controller.level == 2) upgradersNeeded = 4;
+        if (spawn.room.countCreeps("upgrader") < upgradersNeeded) {
             const type = 'upgrader';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE, MOVE];
@@ -27,17 +30,16 @@ module.exports = function () {
         }
         
         // Builder
-        if (spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length) {
-            if (spawn.room.countCreeps("builder") < 1) {
-                const type = 'builder';
-                const name = spawn.generateCreepName(type);
-                const body = [WORK, CARRY, MOVE, MOVE];
-                if(spawn.spawnCreep(body, name, {
-                    memory: {type: type}
-                }) == OK) return;
-            }
+        const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
+        if (sites && spawn.room.countCreeps("builder") < 2) {
+            const type = 'builder';
+            const name = spawn.generateCreepName(type);
+            const body = [WORK, CARRY, MOVE, MOVE];
+            if(spawn.spawnCreep(body, name, {
+                memory: {type: type}
+            }) == OK) return;
         }
-        
+
         // Manager
         const storages = spawn.room.find(FIND_STRUCTURES, {
             filter: s => s.structureType == STRUCTURE_STORAGE
