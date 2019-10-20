@@ -1,8 +1,13 @@
 module.exports = function () {
     
+    // Iterate spawns
     for (const spawnName in Game.spawns) {
         const spawn = Game.spawns[spawnName];
         
+        // Setup spawn memory
+        if (spawn.memory.harvesters == undefined) spawn.memory.harvesters = null;
+
+        // Skip spawning
         if (spawn.spawning) continue;
         if (spawn.room.energyAvailable < 250) continue;
         
@@ -22,7 +27,8 @@ module.exports = function () {
         }        
 
         // Harvester
-        if (spawn.room.countCreeps("harvester") < 4) {
+        let harvestersNeeded = spawn.memory.harvesters || 4;
+        if (spawn.room.countCreeps("harvester") < harvestersNeeded) {
             const type = 'harvester';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE, MOVE];
