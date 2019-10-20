@@ -14,7 +14,7 @@ function run(creep) {
 	const receiver = creep.room.find(FIND_MY_SPAWNS)[0].pos.findClosestByRange(FIND_MY_STRUCTURES, {
 		filter: s => s.structureType == STRUCTURE_LINK
 	});
-	if (receiver.store[RESOURCE_ENERGY] && creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
+	if (receiver && receiver.store[RESOURCE_ENERGY] && creep.store.getFreeCapacity(RESOURCE_ENERGY)) {
 	    creep.say("Link");
 	    const r = creep.withdraw(receiver, RESOURCE_ENERGY);
 	    if (r == ERR_NOT_IN_RANGE) creep.goTo(receiver);
