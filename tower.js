@@ -61,7 +61,7 @@ module.exports = function () {
 						|| s.structureType == STRUCTURE_RAMPART
 					)
 					&& s.hits < s.hitsMax
-					&& s.hits < 1000000
+					&& s.hits < (room.controller.level - 2) * 49950000 + 300000
 			});
 			let target = _.sortBy(targets, 'hits')[0];
 			if (target) {
