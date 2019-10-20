@@ -34,6 +34,10 @@ module.exports = function () {
         // Upgrader
         let upgradersNeeded = spawn.room.controller.level;
         if (spawn.room.controller.level == 8) upgradersNeeded = 1;
+        else if (upgradersNeeded > 1) {
+            const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
+            if (sites) upgradersNeeded = 1;
+        }
         if (spawn.room.countCreeps("upgrader") < upgradersNeeded) {
             const type = 'upgrader';
             const name = spawn.generateCreepName(type);
