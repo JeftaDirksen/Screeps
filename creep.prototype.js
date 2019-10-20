@@ -55,6 +55,7 @@ Creep.prototype.getEnergy = function() {
         let energy = this.pos.findClosestByPath(energySources);
         let r = this.withdraw(energy, RESOURCE_ENERGY);
         if (r == ERR_INVALID_TARGET) r = this.pickup(energy);
+        if (r == ERR_INVALID_TARGET) return;
         if (r == ERR_NOT_IN_RANGE) this.goTo(energy);
         else if (r != OK) this.say(r);
     }
