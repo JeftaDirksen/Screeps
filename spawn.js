@@ -4,7 +4,7 @@ module.exports = function () {
         const spawn = Game.spawns[spawnName];
         
         if (spawn.spawning) continue;
-        if (spawn.store.getUsedCapacity(RESOURCE_ENERGY) < 250) continue;
+        if (spawn.room.energyAvailable < 250) continue;
         
         // Harvester
         if (spawn.room.countCreeps("harvester") < 4) {
