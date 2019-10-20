@@ -7,9 +7,11 @@ Creep.prototype.goTo = function(target, maxRooms = 1) {
     });
     switch(r) {
         case OK:
+            return true;
             break;
         case ERR_TIRED:
             this.say('.');
+            return true;
             break;
         case ERR_NO_PATH:
             this.say('?');
@@ -20,7 +22,7 @@ Creep.prototype.goTo = function(target, maxRooms = 1) {
         default:
             this.say(r);
     }
-    return r;
+    return false;
 }
 
 // isEmpty
@@ -55,9 +57,16 @@ Creep.prototype.getEnergy = function() {
         let energy = this.pos.findClosestByPath(energySources);
         let r = this.withdraw(energy, RESOURCE_ENERGY);
         if (r == ERR_INVALID_TARGET) r = this.pickup(energy);
-        if (r == ERR_INVALID_TARGET) return;
-        if (r == ERR_NOT_IN_RANGE) this.goTo(energy);
-        else if (r != OK) this.say(r);
+        if (r == ERR_INVALID_TARGET) return false;
+        if (r == ERR_NOT_IN_RANGE) {
+            this.goTo(energy);
+            return true;
+        }
+        if (r == OK) return true;
+        else {
+            this.say(r);
+            return false;
+        }
     }
     
 }

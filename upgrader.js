@@ -26,7 +26,7 @@ function run(creep) {
     
     // Get energy
     else {
-        creep.getEnergy();
+        if ( !creep.getEnergy() && creep.store[RESOURCE_ENERGY]) creep.memory.upgrade = true;
     }
 
 }
