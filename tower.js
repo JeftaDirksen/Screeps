@@ -53,6 +53,7 @@ module.exports = function () {
 			}
 			
 			// Repair Rampart/Wall
+			if ( (Game.time % 5) ) continue;
 			if (tower.energy < .9*tower.energyCapacity) continue;
 			let targets = tower.room.find(FIND_STRUCTURES, {
 				filter: s =>
