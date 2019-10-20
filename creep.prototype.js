@@ -56,6 +56,7 @@ Creep.prototype.getEnergy = function() {
         let r = this.withdraw(energy, RESOURCE_ENERGY);
         if (r == ERR_INVALID_TARGET) r = this.pickup(energy);
         if (r == ERR_NOT_IN_RANGE) this.goTo(energy);
+        else if (r != OK) this.say(r);
     }
     
 }
