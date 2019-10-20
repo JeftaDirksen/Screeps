@@ -17,8 +17,7 @@ module.exports = function () {
         }
         
         // Upgrader
-        let upgradersNeeded = 2;
-        if (spawn.room.controller.level == 1) upgradersNeeded = 1;
+        let upgradersNeeded = spawn.room.controller.level;
         if (spawn.room.controller.level == 2) upgradersNeeded = 4;
         if (spawn.room.controller.level == 8) upgradersNeeded = 0;
         if (spawn.room.countCreeps("upgrader") < upgradersNeeded) {
