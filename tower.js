@@ -1,16 +1,13 @@
-var c = require('config');
-var f = require('functions');
-
 module.exports = function () {
-	for (let roomName in Game.rooms) {
-		let room = Game.rooms[roomName];
+	for (const roomName in Game.rooms) {
+		const room = Game.rooms[roomName];
 		
-		let towers = Game.rooms[roomName].find(FIND_MY_STRUCTURES, {
+		const towers = Game.rooms[roomName].find(FIND_MY_STRUCTURES, {
 			filter: s => s.structureType == STRUCTURE_TOWER
 		});
 		let towerCount = towers.length;
 		
-		for (t = 0; t < towerCount; t++) {
+		for (let t = 0; t < towerCount; t++) {
 		    // Check if it is this towers turn to fire
 		    if ((Game.time + t) % towerCount) continue;
 		    
@@ -56,7 +53,7 @@ module.exports = function () {
 			}
 			
 			// Repair Rampart/Wall
-			if (tower.energy < .5*tower.energyCapacity) continue;
+			if (tower.energy < .9*tower.energyCapacity) continue;
 			let targets = tower.room.find(FIND_STRUCTURES, {
 				filter: s =>
 					(
@@ -64,6 +61,7 @@ module.exports = function () {
 						|| s.structureType == STRUCTURE_RAMPART
 					)
 					&& s.hits < s.hitsMax
+					&& s.hits < 1000000
 			});
 			let target = _.sortBy(targets, 'hits')[0];
 			if (target) {
@@ -73,4 +71,4 @@ module.exports = function () {
 				
 		}
 	}
-};
+}

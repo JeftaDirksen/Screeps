@@ -1,30 +1,33 @@
-var c = require('config');
-var f = require('functions');
+module.exports = function () {
+    for (const spawnName in Game.spawns) {
+        const spawn = Game.spawns[spawnName];
+        const creeps = spawn.room.find(FIND_MY_CREEPS, {
+            filter: c => c.memory.type == 'builder'
+        });
+        for (const i in creeps) run(creeps[i]);
+    }
+};
 
-module.exports = function (creep) {
-    // Check if empty
+function run(creep) {
+ 
+    // Check if empty/full
     if(creep.memory.build && creep.isEmpty()) {
         creep.memory.build = false;
     }
-    // Check if full
     if(!creep.memory.build && creep.isFull()) {
         creep.memory.build = true;
     }
-
+    
     // Build
-    if(creep.memory.build) {
-        let site = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
+    if (creep.memory.build) {
+        const site = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
         if(site) {
-            let r = creep.build(site);
-            if (r == ERR_NOT_IN_RANGE) creep.goTo(site);
-            return r;
+            if (creep.build(site) == ERR_NOT_IN_RANGE) creep.goTo(site);
         }
-        else creep.goIdle();
     }
-
-    // Load
+    
+    // Get energy
     else {
-        // Get energy from storage/container/link (with enough energy)
         let structures = creep.room.find(FIND_STRUCTURES, {
             filter: s => (
                 s.structureType == STRUCTURE_STORAGE
@@ -36,26 +39,19 @@ module.exports = function (creep) {
         });
         if(structures.length) {
             let structure = creep.pos.findClosestByRange(structures);
-            let r = creep.withdraw(structure, RESOURCE_ENERGY);
-            if(r == ERR_NOT_IN_RANGE) creep.goTo(structure);
-            return r;
+            if (creep.withdraw(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(structure);
         }
-
+        
+        // Get dropped energy
         else {
-            // Get dropped energy
             let energyDrops = creep.room.find(FIND_DROPPED_RESOURCES, {
                 filter: e => e.resourceType == RESOURCE_ENERGY
             });
             if(energyDrops.length) {
                 let energyDrop = creep.pos.findClosestByRange(energyDrops);
-                let r = creep.pickup(energyDrop);
-                if(r == ERR_NOT_IN_RANGE) creep.goTo(energyDrop);
-                return r;
-            }
-            else {
-                creep.memory.build = true;
-                creep.goIdle();
+                if (creep.pickup(energyDrop) == ERR_NOT_IN_RANGE) creep.goTo(energyDrop);
             }
         }
     }
+
 }
