@@ -4,6 +4,7 @@ module.exports = function () {
         const spawn = Game.spawns[spawnName];
         
         if (spawn.spawning) continue;
+        if (spawn.store.getUsedCapacity(RESOURCE_ENERGY) < 250) continue;
         
         // Harvester
         if (spawn.room.countCreeps("harvester") < 4) {
@@ -38,7 +39,12 @@ module.exports = function () {
         }
         
         // Manager
-        if (spawn.room.countCreeps("manager") < 1) {
+        const storages = spawn.room.find(FIND_STRUCTURES, {
+            filter: s => s.structureType == STRUCTURE_STORAGE
+                || s.structureType == STRUCTURE_CONTAINER
+                || s.structureType == STRUCTURE_LINK
+        }).length;
+        if (storages && spawn.room.countCreeps("manager") < 1) {
             const type = 'manager';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE];
@@ -46,8 +52,7 @@ module.exports = function () {
                 memory: {type: type}
             }) == OK) return;
         }        
-        
-        
+
     }
     
 };
