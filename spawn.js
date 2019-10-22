@@ -6,6 +6,7 @@ module.exports = function () {
         
         // Setup spawn memory
         if (spawn.memory.harvesters == undefined) spawn.memory.harvesters = null;
+        if (spawn.memory.upgraders == undefined) spawn.memory.upgraders = null;
 
         // Skip spawning
         if (spawn.spawning) continue;
@@ -38,7 +39,7 @@ module.exports = function () {
         }
         
         // Upgrader
-        let upgradersNeeded = spawn.room.controller.level;
+        let upgradersNeeded = spawn.memory.upgraders || Math.min(spawn.room.controller.level, harvestersNeeded-1);
         if (spawn.room.controller.level == 8) upgradersNeeded = 1;
         else if (upgradersNeeded > 1) {
             const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
