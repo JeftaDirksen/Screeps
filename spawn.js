@@ -49,7 +49,8 @@ module.exports = function () {
         if (spawn.room.countCreeps("upgrader") < upgradersNeeded) {
             const type = 'upgrader';
             const name = spawn.generateCreepName(type);
-            const body = [WORK, CARRY, MOVE, MOVE];
+            let body = [WORK, CARRY, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
             if (r == OK) return;
             else if (r == ERR_NOT_ENOUGH_ENERGY) return;
