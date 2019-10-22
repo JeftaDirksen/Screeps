@@ -7,10 +7,11 @@ module.exports = function () {
         // Setup spawn memory
         if (spawn.memory.harvesters == undefined) spawn.memory.harvesters = null;
         if (spawn.memory.upgraders == undefined) spawn.memory.upgraders = null;
+        if (spawn.memory.builders == undefined) spawn.memory.builders = null;
 
         // Skip spawning
         if (spawn.spawning) continue;
-        if (spawn.room.energyAvailable < 250) continue;
+        //if (spawn.room.energyAvailable < 250) continue;
         
         // Manager
         const storages = spawn.room.find(FIND_STRUCTURES, {
@@ -22,20 +23,20 @@ module.exports = function () {
             const type = 'manager';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
         }        
 
         // Harvester
-        let harvestersNeeded = spawn.memory.harvesters || 4;
+        const harvestersNeeded = spawn.memory.harvesters || 4;
         if (spawn.room.countCreeps("harvester") < harvestersNeeded) {
             const type = 'harvester';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
         }
         
         // Upgrader
@@ -49,20 +50,22 @@ module.exports = function () {
             const type = 'upgrader';
             const name = spawn.generateCreepName(type);
             const body = [WORK, CARRY, MOVE, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
         }
         
         // Builder
+        const buildersNeeded = spawn.memory.builders || 2;
         const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
-        if (sites && spawn.room.countCreeps("builder") < 2) {
+        if (sites && spawn.room.countCreeps("builder") < buildersNeeded) {
             const type = 'builder';
             const name = spawn.generateCreepName(type);
-            const body = [WORK, CARRY, MOVE, MOVE];
-            if(spawn.spawnCreep(body, name, {
-                memory: {type: type}
-            }) == OK) return;
+            let body = [WORK, CARRY, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
         }
 
     }

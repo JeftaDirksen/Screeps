@@ -2,6 +2,7 @@
 require('creep.prototype');
 require('spawn.prototype');
 require('room.prototype');
+require('string.prototype');
 
 module.exports.loop = function () {
 

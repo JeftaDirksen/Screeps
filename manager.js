@@ -20,6 +20,26 @@ function run(creep) {
 	    return;
 	}
 
+    // Energy to extensions
+    const extension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: s => s.structureType == STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY)
+    });
+    if (extension) {
+        if (creep.isEmpty()) {
+            const energySource = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => [STRUCTURE_CONTAINER, STRUCTURE_STORAGE].indexOf(s.structureType) >= 0 && s.store[RESOURCE_ENERGY]
+            });
+            if (energySource) {
+                if (creep.withdraw(energySource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(energySource);
+                return;
+            }
+        }
+        else {
+            if (creep.transfer(extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.goTo(extension);
+            return;
+        }
+    }    
+
     // Energy to spawn
     const spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
         filter: s => s.structureType == STRUCTURE_SPAWN && s.store.getFreeCapacity(RESOURCE_ENERGY)
