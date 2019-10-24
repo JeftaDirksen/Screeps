@@ -49,6 +49,10 @@ Creep.prototype.getEnergy = function() {
     energySources = energySources.concat(this.room.find(FIND_TOMBSTONES, {
         filter: t => t.store[RESOURCE_ENERGY]
     }));    
+    // Ruins
+    energySources = energySources.concat(this.room.find(FIND_RUINS, {
+        filter: r => r.store[RESOURCE_ENERGY]
+    }));
     // Dropped energy
     energySources = energySources.concat(this.room.find(FIND_DROPPED_RESOURCES, {
             filter: { resourceType: RESOURCE_ENERGY }
