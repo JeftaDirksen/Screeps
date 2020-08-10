@@ -8,6 +8,7 @@ module.exports = function () {
         if (spawn.memory.harvesters == undefined) spawn.memory.harvesters = null;
         if (spawn.memory.upgraders == undefined) spawn.memory.upgraders = null;
         if (spawn.memory.builders == undefined) spawn.memory.builders = null;
+        if (spawn.memory.transporters == undefined) spawn.memory.transporters = null;
 
         // Skip spawning
         if (spawn.spawning) continue;
@@ -46,6 +47,18 @@ module.exports = function () {
         const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
         if (sites && spawn.room.countCreeps("builder") < buildersNeeded) {
             const type = 'builder';
+            const name = spawn.generateCreepName(type);
+            let body = [WORK, CARRY, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
+        }
+
+        // Transporter
+        const transportersNeeded = spawn.memory.transporters || 2;
+        if (spawn.room.countCreeps("transporter") < transportersNeeded) {
+            const type = 'transporter';
             const name = spawn.generateCreepName(type);
             let body = [WORK, CARRY, MOVE, MOVE];
             if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];

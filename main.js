@@ -22,6 +22,7 @@ module.exports.loop = function () {
     require("spawn")();
     require('upgrader')();
     require('builder')();
+    require('transporter')();
     require('tower')();
     require('link')();
 
