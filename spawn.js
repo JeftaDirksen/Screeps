@@ -13,21 +13,6 @@ module.exports = function () {
         if (spawn.spawning) continue;
         //if (spawn.room.energyAvailable < 250) continue;
         
-        // Manager
-        const storages = spawn.room.find(FIND_STRUCTURES, {
-            filter: s => s.structureType == STRUCTURE_STORAGE
-                || s.structureType == STRUCTURE_CONTAINER
-                || s.structureType == STRUCTURE_LINK
-        }).length;
-        if (storages && spawn.room.countCreeps("manager") < 1) {
-            const type = 'manager';
-            const name = spawn.generateCreepName(type);
-            const body = [WORK, CARRY, MOVE];
-            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
-            if (r == OK) return;
-            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
-        }        
-
         // Harvester
         const harvestersNeeded = spawn.memory.harvesters || 4;
         if (spawn.room.countCreeps("harvester") < harvestersNeeded) {

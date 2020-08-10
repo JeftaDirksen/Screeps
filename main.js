@@ -19,7 +19,6 @@ module.exports.loop = function () {
     }
 
     require('harvester')();
-    require('manager')();
     require("spawn")();
     require('upgrader')();
     require('builder')();
