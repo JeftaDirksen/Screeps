@@ -21,10 +21,10 @@ function run(creep) {
     // Transport
     if (creep.memory.transport) {
 
-        // Spawn/Extension
+        // Spawn/Extension/Tower
         const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => 
-                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
+                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER)
                 && s.store.getFreeCapacity(RESOURCE_ENERGY)
         });
         if (storage) {
