@@ -24,11 +24,15 @@ function run(creep) {
         if(site) {
             if (creep.build(site) == ERR_NOT_IN_RANGE) creep.goTo(site);
         }
+        else {
+            creep.idle();
+        }
     }
     
     // Get energy
-    else {
-        if ( !creep.getEnergy() && creep.store[RESOURCE_ENERGY]) creep.memory.build = true;
+    else if(!creep.getEnergy()) {
+        if(creep.store[RESOURCE_ENERGY]) creep.memory.build = true;
+        creep.idle();
     }
 
 }
