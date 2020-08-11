@@ -74,3 +74,12 @@ Creep.prototype.getEnergy = function() {
     }
     
 }
+
+// Idle
+Creep.prototype.idle = function() {
+    let spawn = this.pos.findClosestByRange(FIND_MY_SPAWNS);
+    // Move towards spawn
+    if(!this.pos.inRangeTo(spawn, 3)) this.goTo(spawn);
+    // Move random
+    else this.move(Math.floor(Math.random() * 8) + 1);
+}
