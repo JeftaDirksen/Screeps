@@ -40,11 +40,9 @@ function run(creep) {
             return;
         }
         
-        // Drop at spawn
+        // Drop
         else {
-            const spawn = creep.room.find(FIND_MY_SPAWNS)[0];
-            if ( creep.pos.inRangeTo(spawn, 2) ) creep.drop(RESOURCE_ENERGY);
-            else creep.goTo(spawn);
+            creep.drop(RESOURCE_ENERGY);
         }
         
     }
