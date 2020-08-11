@@ -60,7 +60,7 @@ module.exports = function () {
         if (spawn.room.countCreeps("transporter") < transportersNeeded) {
             const type = 'transporter';
             const name = spawn.generateCreepName(type);
-            let body = [WORK, CARRY, MOVE, MOVE];
+            let body = [CARRY, CARRY, MOVE, MOVE];
             if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
             if (r == OK) return;
