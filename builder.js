@@ -18,18 +18,8 @@ function run(creep) {
         creep.memory.build = true;
     }
     
-    // Repair / Build
+    // Build
     if (creep.memory.build) {
-		const structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-			filter: s =>
-				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER)
-				&& s.hits < s.hitsMax
-		});        
-        if(structure) {
-            if (creep.repair(structure) == ERR_NOT_IN_RANGE) creep.goTo(structure);
-            return;
-        }
-
         const site = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
         if(site) {
             if (creep.build(site) == ERR_NOT_IN_RANGE) creep.goTo(site);
