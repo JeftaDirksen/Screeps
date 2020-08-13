@@ -45,7 +45,13 @@ module.exports = function () {
         // Builder
         const buildersNeeded = spawn.memory.builders || 2;
         const sites = spawn.room.find(FIND_MY_CONSTRUCTION_SITES).length
-        if (sites && spawn.room.countCreeps("builder") < buildersNeeded) {
+		const repairs = spawn.room.find(FIND_STRUCTURES, {
+			filter: s =>
+				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER)
+				&& s.hits < s.hitsMax
+		}).length;
+
+        if ((sites || repairs) && spawn.room.countCreeps("builder") < buildersNeeded) {
             const type = 'builder';
             const name = spawn.generateCreepName(type);
             let body = [WORK, CARRY, MOVE, MOVE];
