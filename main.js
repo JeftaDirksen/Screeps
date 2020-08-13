@@ -23,6 +23,7 @@ module.exports.loop = function () {
     require('upgrader')();
     require('builder')();
     require('transporter')();
+    require('repairer')();
     require('tower')();
     require('link')();
 

@@ -9,6 +9,7 @@ module.exports = function () {
         if (spawn.memory.upgraders == undefined) spawn.memory.upgraders = null;
         if (spawn.memory.builders == undefined) spawn.memory.builders = null;
         if (spawn.memory.transporters == undefined) spawn.memory.transporters = null;
+        if (spawn.memory.repairers == undefined) spawn.memory.repairers = null;
 
         // Skip spawning
         if (spawn.spawning) continue;
@@ -61,6 +62,27 @@ module.exports = function () {
             const type = 'transporter';
             const name = spawn.generateCreepName(type);
             let body = [CARRY, CARRY, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
+        }
+
+        // Repairer
+        const repairersNeeded = spawn.memory.repairers || 1;
+        const repairs = spawn.room.find(FIND_STRUCTURES, {
+			filter: s =>
+				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER)
+				&& s.hits < s.hitsMax
+        }).length;
+        const towers = spawn.room.find(FIND_MY_STRUCTURES, {
+			filter: s =>
+				s.structureType == STRUCTURE_TOWER
+        }).length;
+        if (!towers && repairs && spawn.room.countCreeps("repairer") < repairersNeeded) {
+            const type = 'repairer';
+            const name = spawn.generateCreepName(type);
+            let body = [WORK, CARRY, MOVE, MOVE];
             if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
             if (r == OK) return;
