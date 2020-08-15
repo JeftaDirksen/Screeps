@@ -13,6 +13,7 @@ module.exports = function () {
         if (spawn.memory.attackers == undefined) spawn.memory.attackers = null;
         if (spawn.memory.attackID == undefined) spawn.memory.attackID = null;
         if (spawn.memory.squadSize == undefined) spawn.memory.squadSize = 3;
+        if (spawn.memory.observeRoom == undefined) spawn.memory.observeRoom = null;
 
         // Skip spawning
         if (spawn.spawning) continue;

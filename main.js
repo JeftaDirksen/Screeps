@@ -27,5 +27,6 @@ module.exports.loop = function () {
     require('attacker')();
     require('tower')();
     require('link')();
+    require('observer')();
 
 }
