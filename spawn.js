@@ -10,6 +10,8 @@ module.exports = function () {
         if (spawn.memory.builders == undefined) spawn.memory.builders = null;
         if (spawn.memory.transporters == undefined) spawn.memory.transporters = null;
         if (spawn.memory.repairers == undefined) spawn.memory.repairers = null;
+        if (spawn.memory.attackers == undefined) spawn.memory.attackers = null;
+        if (spawn.memory.squadSize == undefined) spawn.memory.squadSize = 3;
 
         // Skip spawning
         if (spawn.spawning) continue;
@@ -85,6 +87,20 @@ module.exports = function () {
             let body = [WORK, CARRY, MOVE, MOVE];
             if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
+        }
+
+        // Attacker
+        const attackersNeeded = spawn.memory.attackers || 5;
+        if(spawn.memory.attackID && spawn.room.countCreeps("attackers") < attackersNeeded) {
+            const type = 'attacker';
+            const name = spawn.generateCreepName(type);
+            let body = [ATTACK, ATTACK, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 390) body = [ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: 
+                {type: type, attackID: spawn.memory.attackID, pause: true}
+            });
             if (r == OK) return;
             else if (r == ERR_NOT_ENOUGH_ENERGY) return;
         }

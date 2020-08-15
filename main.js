@@ -24,6 +24,7 @@ module.exports.loop = function () {
     require('builder')();
     require('transporter')();
     require('repairer')();
+    require('attacker')();
     require('tower')();
     require('link')();
 
