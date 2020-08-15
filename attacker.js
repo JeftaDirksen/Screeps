@@ -24,7 +24,10 @@ function run(creep) {
     }
 
     let target = Game.getObjectById(creep.memory.attackID);
-    if(!target) creep.say('?');
-    if(creep.attack(target) == ERR_NOT_IN_RANGE) creep.moveTo(target);
+    if(!target) {
+        creep.say('t?');
+        creep.idle();
+    }
+    else if(creep.attack(target) == ERR_NOT_IN_RANGE) creep.moveTo(target);
 
 }

@@ -11,6 +11,7 @@ module.exports = function () {
         if (spawn.memory.transporters == undefined) spawn.memory.transporters = null;
         if (spawn.memory.repairers == undefined) spawn.memory.repairers = null;
         if (spawn.memory.attackers == undefined) spawn.memory.attackers = null;
+        if (spawn.memory.attackID == undefined) spawn.memory.attackID = null;
         if (spawn.memory.squadSize == undefined) spawn.memory.squadSize = 3;
 
         // Skip spawning
