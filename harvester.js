@@ -27,24 +27,40 @@ function run(creep) {
     // Deliver
     else {
         
-        // Spawn/Extension/Container/Storage/Link
-        const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: s => 
-                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION,
-                    STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK)
-                && s.store.getFreeCapacity(RESOURCE_ENERGY)
-        });
-        if (storage) {
-            const r = creep.transfer(storage, RESOURCE_ENERGY);
-            if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
-            return;
+        // Spawn/Extension
+        if(!creep.room.countCreeps("transporter")) {
+            const storage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s => 
+                    s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
+                    && s.store.getFreeCapacity(RESOURCE_ENERGY)
+            });
+            if (storage) {
+                const r = creep.transfer(storage, RESOURCE_ENERGY);
+                if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
+                return;
+            }
         }
-        
-        // Drop
+
+        // Container/Storage/Link
         else {
-            creep.drop(RESOURCE_ENERGY);
+            const storage2 = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => 
+                    s.structureType.isInList(STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK)
+                    && s.store.getFreeCapacity(RESOURCE_ENERGY)
+            });
+            if (storage2) {
+                const r = creep.transfer(storage2, RESOURCE_ENERGY);
+                if (r == ERR_NOT_IN_RANGE) creep.goTo(storage2);
+                return;
+            }
+
+            // Drop
+            else {
+                creep.drop(RESOURCE_ENERGY);
+            }
+
         }
-        
+
     }
 
 }
