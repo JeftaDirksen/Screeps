@@ -21,20 +21,19 @@ function run(creep) {
     // Transport
     if (creep.memory.transport) {
 
-        // Spawn/Extension/Tower
+        // Spawn/Extension
         const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => 
                 s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
                 && s.store.getFreeCapacity(RESOURCE_ENERGY)
         });
+        // Tower
         const towers = creep.room.find(FIND_MY_STRUCTURES, {
             filter: s => 
                 s.structureType == STRUCTURE_TOWER
-                && s.store.getFreeCapacity(RESOURCE_ENERGY)
+                && s.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY)
         });
-        const tower = _.sortBy(towers, function (tower) {
-            return tower.store.getUsedCapacity(RESOURCE_ENERGY);
-        })[0];
+        const tower = _.sortBy(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))[0];
         if (storage) {
             const r = creep.transfer(storage, RESOURCE_ENERGY);
             if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
