@@ -9,53 +9,53 @@ module.exports = function () {
 		
 		for (let t = 0; t < towerCount; t++) {
 		    // Check if it is this towers turn to fire
-		    if ((Game.time + t) % towerCount) continue;
+		    //if ((Game.time + t) % towerCount) continue;
 		    
 		    let tower = towers[t];
 
 			// Attack healers
-			let healer = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+			let healer = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 5, {
 				filter: function (hostile) {
 					return _.includes(JSON.stringify(hostile.body),'heal');
 				}
-			});
+			})[0];
 			if (healer != undefined) {
 				tower.attack(healer);
 				continue;
 			}
 			
 			// Attack hostiles
-			let hostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+			let hostile = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 5)[0];
 			if (hostile) {
 			    tower.attack(hostile);
 			    continue;
 			}
-			
+
 			// Heal my creeps
-			let healCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+			let healCreep = tower.pos.findInRange(FIND_MY_CREEPS, 5, {
 				filter: c => c.hits < c.hitsMax
-			});
+			})[0];
 			if (healCreep) {
 			    tower.heal(healCreep);
 			    continue;
 			}
 
 			// Repair
-			let repairTarget = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+			let repairTarget = tower.pos.findInRange(FIND_STRUCTURES, 5, {
 				filter: s =>
 					s.structureType != STRUCTURE_WALL
 					&& s.structureType != STRUCTURE_RAMPART
 					&& s.hits < s.hitsMax
-			});
+			})[0];
 			if (repairTarget) {
 				tower.repair(repairTarget);
 				continue;
 			}
 			
 			// Repair Rampart/Wall
-			if ( (Game.time % 5) ) continue;
-			if (tower.energy < .9*tower.energyCapacity) continue;
-			let targets = tower.room.find(FIND_STRUCTURES, {
+			//if ( (Game.time % 5) ) continue;
+			//if (tower.energy < .9*tower.energyCapacity) continue;
+			let targets = tower.pos.findInRange(FIND_STRUCTURES, 5, {
 				filter: s =>
 					(
 						s.structureType == STRUCTURE_WALL

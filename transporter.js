@@ -24,13 +24,26 @@ function run(creep) {
         // Spawn/Extension/Tower
         const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => 
-                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER)
+                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
                 && s.store.getFreeCapacity(RESOURCE_ENERGY)
         });
+        const towers = creep.room.find(FIND_MY_STRUCTURES, {
+            filter: s => 
+                s.structureType == STRUCTURE_TOWER
+                && s.store.getFreeCapacity(RESOURCE_ENERGY)
+        });
+        const tower = _.sortBy(towers, function (tower) {
+            return tower.store.getUsedCapacity(RESOURCE_ENERGY);
+        })[0];
         if (storage) {
             const r = creep.transfer(storage, RESOURCE_ENERGY);
             if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
             return;
+        }
+        else if (tower) {
+            const r = creep.transfer(tower, RESOURCE_ENERGY);
+            if (r == ERR_NOT_IN_RANGE) creep.goTo(tower);
+            return;            
         }
         else if(!creep.isFull()) {
             creep.memory.transport = false;
