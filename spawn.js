@@ -73,17 +73,13 @@ module.exports = function () {
         }
 
         // Repairer
-        const repairersNeeded = spawn.memory.repairers || 1;
+        const repairersNeeded = spawn.memory.repairers || 2;
         const repairs = spawn.room.find(FIND_STRUCTURES, {
 			filter: s =>
-				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER)
+				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_WALL, STRUCTURE_RAMPART)
 				&& s.hits < s.hitsMax
         }).length;
-        const towers = spawn.room.find(FIND_MY_STRUCTURES, {
-			filter: s =>
-				s.structureType == STRUCTURE_TOWER
-        }).length;
-        if (!towers && repairs && spawn.room.countCreeps("repairer") < repairersNeeded) {
+        if (repairs && spawn.room.countCreeps("repairer") < repairersNeeded) {
             const type = 'repairer';
             const name = spawn.generateCreepName(type);
             let body = [WORK, CARRY, MOVE, MOVE];

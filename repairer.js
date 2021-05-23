@@ -20,11 +20,12 @@ function run(creep) {
     
     // Repair
     if (creep.memory.repair) {
-		const structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+		const structures = creep.room.find(FIND_STRUCTURES, {
 			filter: s =>
-				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER)
+				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_WALL, STRUCTURE_RAMPART)
 				&& s.hits < s.hitsMax
-		});        
+		});
+		const structure = _.sortBy(structures, 'hits')[0];
         if(structure) {
             if (creep.repair(structure) == ERR_NOT_IN_RANGE) creep.goTo(structure);
         }
