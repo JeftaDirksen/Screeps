@@ -6,35 +6,38 @@ module.exports = function () {
 };
 
 function run(creep) {
- 
-    // Check if empty/full
-    if(creep.memory.repair && creep.isEmpty()) {
-        creep.memory.repair = false;
-    }
-    if(!creep.memory.repair && creep.isFull()) {
-        creep.memory.repair = true;
-    }
-    
-    // Repair
-    if (creep.memory.repair) {
-		const structures = creep.room.find(FIND_STRUCTURES, {
-			filter: s =>
-				s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_WALL, STRUCTURE_RAMPART)
-				&& s.hits < s.hitsMax
-		});
-		const structure = _.sortBy(structures, 'hits')[0];
-        if(structure) {
-            if (creep.repair(structure) == ERR_NOT_IN_RANGE) creep.goTo(structure);
-        }
-        else {
-            creep.idle();
-        }
-    }
+    // Get job
+    if (!creep.memory.job) creep.memory.job = getRepairJob(creep);
     
     // Get energy
-    else if(!creep.getEnergy()) {
-        if(creep.store[RESOURCE_ENERGY]) creep.memory.repair = true;
-        creep.idle();
+    if (creep.memory.job == 'getEnergy') {
+        if (creep.isFull()) creep.memory.job = getRepairJob(creep);
+        else creep.getEnergy();
     }
 
+    // Do job
+    let job = Game.getObjectById(creep.memory.job);
+    let r = creep.repair(job);
+    if (r == OK) return;
+    else if (r == ERR_NOT_IN_RANGE) creep.goTo(job);
+    else if (r == ERR_NOT_ENOUGH_RESOURCES) {
+        creep.memory.job = 'getEnergy';
+        creep.getEnergy();
+        return;
+    }
+    else {
+        creep.say('?');
+        creep.memory.job = getRepairJob(creep);
+    }
+}
+
+function getRepairJob(creep) {
+	const structures = creep.room.find(FIND_STRUCTURES, {
+		filter: s =>
+			s.structureType.isInList(STRUCTURE_ROAD, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_WALL, STRUCTURE_RAMPART)
+			&& s.hits < s.hitsMax
+	});
+	const structure = _.sortBy(structures, 'hits')[0];
+    if(structure) return structure.id;
+    else return false;
 }
