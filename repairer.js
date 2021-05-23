@@ -18,7 +18,10 @@ function run(creep) {
     // Do job
     let job = Game.getObjectById(creep.memory.job);
     let r = creep.repair(job);
-    if (r == OK) return;
+    if (r == OK) {
+        if (job.hits == job.hitsMax) creep.memory.job = getRepairJob(creep);
+        return;
+    }
     else if (r == ERR_NOT_IN_RANGE) creep.goTo(job);
     else if (r == ERR_NOT_ENOUGH_RESOURCES) {
         creep.memory.job = 'getEnergy';
