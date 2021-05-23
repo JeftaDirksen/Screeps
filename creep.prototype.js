@@ -91,8 +91,8 @@ Creep.prototype.switchRoom = function() {
         let room = Game.rooms[roomName];
         // Room visible
         if(room) {
-            if(this.pos.inRangeTo(room.controller, 5)) this.memory.room = null;
-            this.goTo(room.controller, 16);
+            if(this.pos.inRangeTo(new RoomPosition(25, 25, roomName), 20)) this.memory.room = null;
+            this.moveTo(new RoomPosition(25, 25, roomName), {range: 15, visualizePathStyle: {}});
             return true;
         }
         // Room not visible yet
