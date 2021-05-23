@@ -28,5 +28,6 @@ module.exports.loop = function () {
     require('tower')();
     require('link')();
     require('observer')();
+    require('guard')();
 
 }

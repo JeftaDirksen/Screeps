@@ -5,6 +5,7 @@ module.exports = function () {
         const spawn = Game.spawns[spawnName];
         
         // Setup spawn memory
+        if (spawn.memory.guards == undefined) spawn.memory.guards = null;
         if (spawn.memory.harvesters == undefined) spawn.memory.harvesters = null;
         if (spawn.memory.upgraders == undefined) spawn.memory.upgraders = null;
         if (spawn.memory.builders == undefined) spawn.memory.builders = null;
@@ -19,6 +20,18 @@ module.exports = function () {
         if (spawn.spawning) continue;
         //if (spawn.room.energyAvailable < 250) continue;
         
+        // Guard
+        let guardsNeeded = spawn.memory.guards || 1;
+        if(spawn.room.find(FIND_HOSTILE_CREEPS).length) guardsNeeded += 3;
+        if (spawn.room.countCreeps("guard") < guardsNeeded) {
+            const type = 'guard';
+            const name = spawn.generateCreepName(type);
+            const body = [ATTACK, ATTACK, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
+        }
+
         // Harvester
         const harvestersNeeded = spawn.memory.harvesters || 4;
         if (spawn.room.countCreeps("harvester") < harvestersNeeded) {
