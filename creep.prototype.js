@@ -36,15 +36,20 @@ Creep.prototype.isFull = function() {
 }
 
 // getEnergy
-Creep.prototype.getEnergy = function() {
+Creep.prototype.getEnergy = function(fromStorage = true) {
     // Structures
     let energySources = this.room.find(FIND_STRUCTURES, {
         filter: s => (
-            s.structureType == STRUCTURE_STORAGE
-            || s.structureType == STRUCTURE_CONTAINER
+            s.structureType == STRUCTURE_CONTAINER
             || s.structureType == STRUCTURE_LINK
         ) && s.store[RESOURCE_ENERGY]
     });
+    // Storage
+    if (fromStorage) {
+        energySources = energySources.concat(this.room.find(FIND_MY_STRUCTURES, {
+            filter: s => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY]
+        }));
+    }
     // Tombstones
     energySources = energySources.concat(this.room.find(FIND_TOMBSTONES, {
         filter: t => t.store[RESOURCE_ENERGY]

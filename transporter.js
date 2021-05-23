@@ -15,45 +15,53 @@ function run(creep) {
         creep.memory.transport = true;
     }
     
-    // Transport
-    if (creep.memory.transport) {
-
-        // Spawn/Extension
-        const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: s => 
-                s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
-                && s.store.getFreeCapacity(RESOURCE_ENERGY)
-        });
-        // Tower
-        const towers = creep.room.find(FIND_MY_STRUCTURES, {
-            filter: s => 
-                s.structureType == STRUCTURE_TOWER
-                && s.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY)
-        });
-        const tower = _.sortBy(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))[0];
-        if (storage) {
-            const r = creep.transfer(storage, RESOURCE_ENERGY);
-            if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
-            return;
-        }
-        else if (tower) {
-            const r = creep.transfer(tower, RESOURCE_ENERGY);
-            if (r == ERR_NOT_IN_RANGE) creep.goTo(tower);
-            return;            
-        }
-        else if(!creep.isFull()) {
-            creep.memory.transport = false;
-        }
-        else {
-            creep.idle();
-        }
-
+    // Spawn/Extension
+    const spawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: s => 
+            s.structureType.isInList(STRUCTURE_SPAWN, STRUCTURE_EXTENSION)
+            && s.store.getFreeCapacity(RESOURCE_ENERGY)
+    });
+    if (spawn && creep.memory.transport) {
+        const r = creep.transfer(spawn, RESOURCE_ENERGY);
+        if (r == ERR_NOT_IN_RANGE) creep.goTo(spawn);
+        return;
+    }    
+    if (spawn && !creep.memory.transport) {
+        if (creep.getEnergy()) return;
     }
     
-    // Get energy
-    else if(!creep.getEnergy()) {
-        if(creep.store[RESOURCE_ENERGY]) creep.memory.transport = true;
-        creep.idle();
+    // Tower
+    const towers = creep.room.find(FIND_MY_STRUCTURES, {
+        filter: s => 
+            s.structureType == STRUCTURE_TOWER
+            && s.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY)
+    });    
+    const tower = _.sortBy(towers, t => t.store.getUsedCapacity(RESOURCE_ENERGY))[0];    
+    if (tower && creep.memory.transport) {
+        const r = creep.transfer(tower, RESOURCE_ENERGY);
+        if (r == ERR_NOT_IN_RANGE) creep.goTo(tower);
+        return;
+    }    
+    if (tower && !creep.memory.transport) {
+        if (creep.getEnergy()) return;
+    }
+    
+    // Storage
+    const storage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: s => 
+            s.structureType == STRUCTURE_STORAGE
+            && s.store.getFreeCapacity(RESOURCE_ENERGY)
+    });
+    if (storage && creep.memory.transport) {
+        const r = creep.transfer(storage, RESOURCE_ENERGY);
+        if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
+        return;
+    }    
+    if (storage && !creep.memory.transport) {
+        if (creep.getEnergy(false)) return;
     }
 
+    // Idle
+    creep.idle();
+    
 }
