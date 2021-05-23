@@ -1,14 +1,13 @@
 module.exports = function () {
-    for (const spawnName in Game.spawns) {
-        const spawn = Game.spawns[spawnName];
-        const creeps = spawn.room.find(FIND_MY_CREEPS, {
-            filter: c => c.memory.type == 'harvester'
-        });
-        for (const i in creeps) run(creeps[i]);
+    for (const creepName in Game.creeps) {
+        const creep = Game.creeps[creepName];
+        if(creep.memory.type == 'harvester') run(creep);
     }
 };
 
 function run(creep) {
+    // Switch room
+    if(creep.switchRoom()) return;
     
     // Check if empty/full
     if(!creep.memory.harvest && creep.isEmpty()) {
@@ -38,6 +37,11 @@ function run(creep) {
                 const r = creep.transfer(storage, RESOURCE_ENERGY);
                 if (r == ERR_NOT_IN_RANGE) creep.goTo(storage);
                 return;
+            }
+            
+            // Drop
+            else {
+                creep.drop(RESOURCE_ENERGY);
             }
         }
 
