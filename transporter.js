@@ -6,7 +6,11 @@ module.exports = function () {
 };
 
 function run(creep) {
- 
+    // Switch room
+    if(creep.switchRoom()) {
+        return;
+    }
+    
     // Check if empty/full
     if(creep.memory.transport && creep.isEmpty()) {
         creep.memory.transport = false;

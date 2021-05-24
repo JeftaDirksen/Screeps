@@ -6,6 +6,11 @@ module.exports = function () {
 };
 
 function run(creep) {
+    // Switch room
+    if(creep.switchRoom()) {
+        return;
+    }
+    
     // Get job
     if (!creep.memory.job) creep.memory.job = getRepairJob(creep);
     
