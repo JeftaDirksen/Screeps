@@ -8,6 +8,7 @@ module.exports = function () {
 		for (let t = 0; t < towers.length; t++) {
 		    const tower = towers[t];
 
+            /*
 			// Attack healers
 			let healer = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 5, {
 				filter: function (hostile) {
@@ -18,9 +19,11 @@ module.exports = function () {
 				tower.attack(healer);
 				continue;
 			}
+			*/
 			
 			// Attack hostiles
-			let hostile = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 5)[0];
+			let hostiles = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 20);
+			let hostile = hostiles[Math.floor(Math.random() * hostiles.length)];
 			if (hostile) {
 			    tower.attack(hostile);
 			    continue;
