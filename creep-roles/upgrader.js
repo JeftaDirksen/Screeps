@@ -1,10 +1,7 @@
 module.exports = function () {
-    for (const spawnName in Game.spawns) {
-        const spawn = Game.spawns[spawnName];
-        const creeps = spawn.room.find(FIND_MY_CREEPS, {
-            filter: c => c.memory.type == 'upgrader'
-        });
-        for (const i in creeps) run(creeps[i]);
+    for (const creepName in Game.creeps) {
+        const creep = Game.creeps[creepName];
+        if(creep.memory.type == 'upgrader') run(creep);
     }
 };
 
