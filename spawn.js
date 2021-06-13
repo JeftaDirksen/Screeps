@@ -21,12 +21,26 @@ module.exports = function () {
         //if (spawn.room.energyAvailable < 250) continue;
         
         // Guard
+        /*
         let guardsNeeded = spawn.memory.guards || 1;
         if(spawn.room.find(FIND_HOSTILE_CREEPS).length) guardsNeeded += 3;
         if (spawn.room.countCreeps("guard") < guardsNeeded) {
             const type = 'guard';
             const name = spawn.generateCreepName(type);
             const body = [ATTACK, ATTACK, MOVE, MOVE];
+            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
+            if (r == OK) return;
+            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
+        }
+        */
+
+        // Transporter
+        const transportersNeeded = spawn.memory.transporters || 2;
+        if (spawn.room.countCreeps("transporter") < transportersNeeded) {
+            const type = 'transporter';
+            const name = spawn.generateCreepName(type);
+            let body = [CARRY, CARRY, MOVE, MOVE];
+            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
             if (r == OK) return;
             else if (r == ERR_NOT_ENOUGH_ENERGY) return;
@@ -67,18 +81,6 @@ module.exports = function () {
             const type = 'builder';
             const name = spawn.generateCreepName(type);
             let body = [WORK, CARRY, MOVE, MOVE];
-            if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
-            const r = spawn.spawnCreep(body, name, {memory: {type: type}});
-            if (r == OK) return;
-            else if (r == ERR_NOT_ENOUGH_ENERGY) return;
-        }
-
-        // Transporter
-        const transportersNeeded = spawn.memory.transporters || 2;
-        if (spawn.room.countCreeps("transporter") < transportersNeeded) {
-            const type = 'transporter';
-            const name = spawn.generateCreepName(type);
-            let body = [CARRY, CARRY, MOVE, MOVE];
             if (spawn.room.energyCapacityAvailable >= 350) body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
             const r = spawn.spawnCreep(body, name, {memory: {type: type}});
             if (r == OK) return;
